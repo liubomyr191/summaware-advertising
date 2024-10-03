@@ -1,0 +1,102 @@
+    {% extends "templates/base.html" %}
+
+    {% block page-header %}<i class="fa fa-circle-o-notch"></i> Circulation{% endblock %}
+
+    {% block breadcrumb %}
+    <li class="active">Circulation</li>
+    {% endblock %}
+
+	{% block content %}
+	<style>
+		#instance_select_text {
+			margin-bottom: 25px;
+			text-align: center;
+			font-size: 25px;
+			color: #21215f;
+		}
+		.org_img {
+			display: inline-block;
+			background-size: 241px 49px;
+			width: 241px;
+			height: 49px;
+		}
+
+        #circ_org_button_container {
+			width: fit-content;
+			margin: auto; 
+        }
+
+        .circ_org_button_div {
+			height: 140px;
+			width: 320px;
+			margin-right: 25px;
+        }
+
+        .circ_org_button {
+            background-color: white;
+            color: #21215f;
+            border: 1px solid lightgray;
+            border-radius: 4px;
+            -webkit-box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+            box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+            z-index: 1;
+            height: 140px;
+            overflow: hidden;
+        }
+
+        @media only screen and (max-width: 600px) {
+        	#content {
+        		padding: 0px !important;
+        	}
+
+        	#circ_org_button_container {
+				display: block;
+			}
+
+			.circ_org_button_div {
+				margin-bottom: 25px;
+				text-align: center;
+			}
+
+			.circ_org_button {
+            	padding: 20px
+            }
+		}
+
+		@media only screen and (min-width: 640px) {
+			#circ_org_button_container {
+				display: flex;
+			}
+
+			.circ_org_button {
+            	padding: 15px 90px 15px 40px;
+            	width: 320px;
+            }
+		}
+	</style>
+    <div id="content">
+		<div class="col-md-12">
+			{% if access == "deny" %}
+			<div id="message">{{ message }}</div>
+			{% else %}
+			<div id="message">{{ message }}</div>
+			<div>
+				<div id="instance_select_text">Select Organization:</div>
+				<div id="circ_org_button_container">
+					<div class="circ_org_button_div">
+						<button type="button" class="circ_org_button">
+							<a class="org_img" href="https://circulation.championcarolinas.com/wp-admin/admin.php?page=circulation_home" style="background-image:url(https://circulation.championcarolinas.com/wp-content/uploads/2022/07/champion_media-1.png);"></a>
+						</button>
+					</div>
+					<div class="circ_org_button_div">
+						<button type="button" class="circ_org_button">
+							<a class="org_img" href="https://subscribe.avantpubs.com/wp-admin/admin.php?page=circulation_home" style="background-image:url(https://subscribe.avantpubs.com/wp-content/uploads/2022/07/avant_publications-1.png);"></a>
+						</button>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endblock %}

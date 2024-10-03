@@ -1,0 +1,46 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    {% comment %} <div class="col-md-10"> {% endcomment %}
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+            
+            <div class="main">
+                <div class="row">
+                    <div class="col-md-4">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'create_account' %}">Create Account</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_salesperson' %}">Create Sales Person</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_publication' %}">Create Publication</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_rate' %}">Create Ad Rate</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_order' %}">Create Ad Order</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_service_charge' %}">Create Service Charge</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_adjustment' %}">Create Adjustment</a></li>
+                            <li class="list-group-item"><a href="{% url 'list_companies' %}">Create Company</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_classified_ad' %}">Create Classified Ad Order</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% comment %} </div> {% endcomment %}
+</div>
+{% endblock %}

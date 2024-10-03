@@ -1,0 +1,104 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="col-md-10">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+                <h2>Edit Publication</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- {{ form.as_p }} -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ publication.name }}" placeholder="Enter name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="{{ publication.address }}" placeholder="Enter address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" value="{{ publication.city }}" placeholder="Enter city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state" value="{{ publication.state }}" placeholder="Enter state" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip_code">Zip</label>
+                                <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ publication.zip_code }}" placeholder="Enter zip" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="runDays">Run Days</label>
+                                <select class="form-control" id="runDays" name="runDays" multiple required>
+                                    <option value="">Select...</option>
+                                    <option value="monday" {% if pubRunDays.monday %}selected{% endif %}>Monday</option>
+                                    <option value="tuesday" {% if pubRunDays.tuesday %}selected{% endif %}>Tuesday</option>
+                                    <option value="wednesday" {% if pubRunDays.wednesday %}selected{% endif %}>Wednesday</option>
+                                    <option value="thursday" {% if pubRunDays.thursday %}selected{% endif %}>Thursday</option>
+                                    <option value="friday" {% if pubRunDays.friday %}selected{% endif %}>Friday</option>
+                                    <option value="saturday" {% if pubRunDays.saturday %}selected{% endif %}>Saturday</option>
+                                    <option value="sunday" {% if pubRunDays.sunday %}selected{% endif %}>Sunday</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spot_color">Spot Color</label>
+                                <select name="spot_color" id="spot_color" class="form-control">
+                                    <option value="Black" {% if publication.spot_color == "Black" %}selected{% endif %}>Black</option>
+                                    <option value="Cyan" {% if publication.spot_color == "Cyan" %}selected{% endif %}>Cyan</option>
+                                    <option value="Yellow" {% if publication.spot_color == "Yellow" %}selected{% endif %}>Yellow</option>
+                                    <option value="Magenta" {% if publication.spot_color == "Magenta" %}selected{% endif %}>Magenta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-4">
+                            <h4>Page Dimensions</h4>
+                            <div class="form-group">
+                                <label for="page_size">Page Size</label>
+                                <input type="number" class="form-control" id="page_size" name="page_size"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="columns_per_page">Columns Per Page</label>
+                                <input type="number" class="form-control" id="columns_per_page" name="columns_per_page"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="column_width">Column Width</label>
+                                <input type="number" class="form-control" id="column_width" name="column_width"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_width">Page Width</label>
+                                <input type="number" class="form-control" id="page_width" name="page_width"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_height">Page Height</label>
+                                <input type="number" class="form-control" id="page_height" name="page_height"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_border">Page Border</label>
+                                <input type="number" class="form-control" id="page_border" name="page_border"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="gutter_size">Gutter Size</label>
+                                <input type="number" class="form-control" id="gutter_size" name="gutter_size"/>
+                            </div>
+                        </div> -->
+                    </div>
+                    <button type="submit" class="btn btn-default btn-primary">Save</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>    
+{% endblock %}

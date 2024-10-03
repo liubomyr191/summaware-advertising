@@ -1,0 +1,49 @@
+<div id="editRegion" class="modal my-modal">
+  <div class="modal-content w-50 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('editRegion').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">Edit Region</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-4">
+          <label for="">Name:</label>
+          <input type="text" name="" id="codeInput" class="form-control" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-4">
+          <label for="">Code:</label>
+          <input type="text" name="" id="" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="item-select-container">
+      <div class="available-pubs">
+        <b>Available Publications:</b><br />
+        <select multiple="multiple" id="lstBox1" class="form-select">
+          <option value="times-leader-print-edition">Times Leader - Print Edition</option>
+          <option value="times-leader-e-edition">Times Leader - E Edition</option>
+        </select>
+      </div>
+      <div class="transferBtns">
+        <input type="button" id="btnRight" value="  >  " />
+        <br /><input type="button" id="btnLeft" value="  <  " />
+      </div>
+      <div class="selected-pubs">
+        <b>Selected Publications: </b><br />
+        <select multiple="multiple" id="lstBox2" class="form-select"></select>
+      </div>
+    </div>
+
+    <div class="btn-container text-center mt-5">
+      <button class="btn btn-danger px-5">Deactivate</button>
+      <button class="btn btn-gray px-5">Archive</button>
+      <button class="btn btn-secondary px-5">Save Changes</button>
+    </div>
+  </div>
+</div>

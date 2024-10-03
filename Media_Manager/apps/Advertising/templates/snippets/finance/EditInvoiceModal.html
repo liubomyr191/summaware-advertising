@@ -1,0 +1,43 @@
+<div id="edit_invoice_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="edit_invoice_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="bill_end">Due Date</label>
+                                <input class="form-control" type="date" name="bill_end" id="bill_end" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <input class="form-control" type="number" name="amount" id="amount" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="memo">Memo</label>
+                            <textarea class="form-control" name="memo" id="memo" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="edit_submit_btn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

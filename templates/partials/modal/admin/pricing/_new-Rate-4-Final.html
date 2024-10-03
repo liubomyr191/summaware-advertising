@@ -1,0 +1,45 @@
+{% load static %}
+<div id="new_rate_4_final" class="modal modal-md my-modal chase-modal">
+    <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;">
+        <span class="close" onclick="document.getElementById('new_rate_4_final').style.display='none'">&times;</span>
+        <br>  
+        <div class="heading-container text-center mb-5">
+        <h3 class="heading">New Rate</h3>
+        </div>      
+        <div class="progress-icons">
+        <div id="progress_0" class="progress-active"></div>
+        <div id="progress_1" class="progress-active"></div>
+        <div id="progress_2" class="progress-active"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">  
+                <br>     
+                <br>   
+                <div class="row">
+                    <div class="col-md-12 text-center">                        
+                        <h2 class="success-label">Rate has been created!</h2>
+                        <div id="favoriteIcon1" class="mt-2 adsuccess-mark" style="width: 202px; height: 202px;border-radius: 50%;background-color: #03A803;margin-left: auto;margin-right: auto;">
+                            <img src="{% static "svg/Vector (2).svg" %}" style="height: 140px; margin-top: 35px;">
+                        </div>
+                    </div>
+                </div>  
+                <br>     
+                <br>     
+                <br>                
+                <div class="row btn-container">
+                    <div class="col-md-6 text-left">
+                        <button class="btn px-5 btn-gray" onclick="document.getElementById('new_rate_1_general_info').style.display='block';document.getElementById('new_rate_4_final').style.display='none';"> Create another rate  </button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_4_final').style.display='none';"> Done  </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

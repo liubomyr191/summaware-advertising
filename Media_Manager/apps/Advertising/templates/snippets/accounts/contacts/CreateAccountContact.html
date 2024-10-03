@@ -1,0 +1,53 @@
+<section id="create_account_contact">
+    <div class="section-title">
+        New Contact
+    </div>
+    <form id="create_contact_form" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstName">First Name: </label>
+                            <input class="form-control" type="text" id="firstName" name="firstName" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastName">Last Name: </label>
+                            <input class="form-control" type="text" id="lastName" name="lastName" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email: </label>
+                    <input class="form-control" type="email" id="email" name="email" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="department">Department: </label>
+                            <input class="form-control" type="text" id="department" name="department" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone">Phone Number: </label>
+                            <input class="form-control" type="text" id="phone" name="phone" />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="default" class="form-check-label">Primary Company Contact: </label>
+                    <input type="checkbox" name="default" id="default" class="form-check-input">
+                </div>
+                <div class="row" id="submit_cancel_btns">
+                    <button type="submit" class="btn" id="create_contact_submit">Create Contact</button>
+                    <button class="btn" id="create_contact_cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

@@ -1,0 +1,56 @@
+<div id="editAdType" class="modal my-modal">
+  <div class="modal-content w-75 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('editAdType').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">Edit Ad Type</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="form-container d-flex justify-content-center">
+      <div class="form-group w-50 text-center">
+        <label for="" class="">Name:</label>
+        <input type="text" class="form-control" name="" id="" />
+      </div>
+    </div>
+
+    <div class="form-container d-flex justify-content-center mb-3">
+      <div class="form-group w-50 text-center">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="" class="">Code:</label>
+            <input type="text" class="form-control" name="" id="" />
+          </div>
+          <div class="col-md-6">
+            <label for="" class="">Default Rate:</label>
+            <select name="" id="" class="form-select"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-select-container mt-5">
+      <div class="available-pubs">
+        Available Publications:<br />
+        <select multiple="multiple" id="lstBox1" class="form-select">
+          <option value="times-leader-print-edition">Times Leader - Print Edition</option>
+          <option value="times-leader-e-edition">Times Leader - E Edition</option>
+        </select>
+      </div>
+      <div class="transferBtns">
+        <input class="mb-2" type="button" id="btnRight" value="  >  " />
+        <br /><input type="button" id="btnLeft" value="  <  " />
+      </div>
+      <div class="selected-pubs">
+        Selected Publications:<br />
+        <select multiple="multiple" id="lstBox2" class="form-select"></select>
+      </div>
+    </div>
+
+    <div class="btn-container text-center mt-5">
+      <button class="btn btn-danger">Deactivate</button>
+      <button class="btn btn-gray">Archive</button>
+      <button class="btn btn-secondary">Save Changes</button>
+    </div>
+  </div>
+</div>

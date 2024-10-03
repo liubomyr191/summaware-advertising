@@ -1,0 +1,50 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <a href="{% url 'add_rate_location' %}"><button type="button" class="btn btn-default btn-md"><i class="fa fa-plus"></i> Create Rate Location</button></a>
+
+        {% if locations %}
+            <h2>Rate Locations</h2>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Rate Name</th>
+                        <th>Location</th>
+                        <th>Publication Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for location in locations %}
+                        <tr>
+                            <td>{{ location.id }}</td>
+                            <td>{{ location.rate.name }}</td>
+                            <td>{{ location.location }}</td>
+                            <td>{{ location.publication.name }}</td>
+                            <td>$ {{ location.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <p>No Sizes</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

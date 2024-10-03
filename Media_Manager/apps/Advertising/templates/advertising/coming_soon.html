@@ -1,0 +1,158 @@
+    {% extends "templates/base.html" %}
+
+    {% block page-header %}<i class="fa fa-id-card"></i> Advertising{% endblock %}
+
+    {% block breadcrumb %}
+    <li class="active">Advertising</li>
+    {% endblock %}
+
+	{% block content %}
+	<style>
+		#coming_soon_container {
+			background-color: rgba(255,255,255,0.8);
+			z-index: 5;
+			padding: 15px;
+			border-radius: 5px;
+			margin-top: 25px; 
+			margin-left:25%;
+		}
+
+		#coming_soon_header {
+			font-weight: bold;
+			font-size: 48px;
+			color: #21215f;
+			border-bottom: 3px solid #f26722;
+			width: fit-content;
+    		margin: auto;
+		}
+
+		#coming_soon_headline1 {
+			color:#21215f; 
+			margin: 15px 30px 30px 30px;
+		}
+
+		.summaware_icon {
+			display: inline-grid;
+		    font-size: 18px;
+		    background-image: url(../static/dist/img/summaware-icon-500.png);
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    background-size: contain;
+		    width: 30px;
+		    height: 30px;
+		    vertical-align: bottom;
+		    margin-left: 20px;
+		}
+
+		#coming_soon_description {
+			margin:15px 30px 30px 30px; 
+			text-align:center;
+		}
+
+		.coming_soon_font {
+			font-size: 22px;
+    		font-weight: 500;
+		}
+
+		.submit_button {
+			background-color: #21215f;
+			color: white;
+			border-radius: 5px;
+			padding: 5px;
+		}
+
+		.icon {
+			color: #1DA1F2;
+		}
+
+		#coming_soon_image {
+			width: 440px;
+			height: 350px;
+			background: darkgray;
+			border-radius: 10px;
+			margin: 5px;
+			text-align:center;
+			padding-top:35%;
+		}
+
+		#coming_soon_notify_header {
+			margin:30px 30px 0px 30px;
+		}
+
+		#coming_soon_notify_inputs {
+			margin-left:30px
+		}
+
+		#coming_soon_notify_email {
+			width:200px;
+		}
+
+		#coming_soon_socials {
+			margin:15px 15px 0px 30px;
+		}
+
+		#coming_soon_video_text {
+			color:white;
+		}
+
+		@media only screen and (max-width: 600px) {
+
+		}
+
+		@media only screen and (min-width: 640px) {
+
+		}
+	</style>
+	<form>
+	    <div id="content container">
+			<div class="row">
+				<div class="col-md-6" id="coming_soon_container">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-12">
+									<h1 id="coming_soon_header">Coming Soon!</h1>
+								</div>
+							</div>
+							<div class="row" id="coming_soon_headline1">
+								<div class="col-md-12">
+									<div class="coming_soon_font">A new tool from <span class="summaware_icon"></span></div>
+								</div>
+							</div>
+							<div class="row" id="coming_soon_description">
+								<div class="col-md-12">
+									<div class="coming_soon_font">A new and streamline way to create, manage, and book your advertisments!</div>
+								</div>
+							</div>
+							<div class="row" id="coming_soon_notify_header">
+								<div class="col-md-12">
+									<div class="coming_soon_font">Notify Me!</div>
+								</div>
+							</div>
+							<div class="row" id="coming_soon_notify_inputs">
+								<div class="col-md-12">
+									<input type="email" id="coming_soon_notify_email" placeholder="Enter Email Address" />
+									<button type="submit" class="submit_button">Submit</button>
+								</div>
+							</div>
+							<div class="row" id="coming_soon_socials">
+								<div class="col-md-12">
+									<span class="coming_soon_font">Follow us: </span>
+									<a href=""><i class="fa fa-twitter fa-2x icon"></i></a>
+									<!--<a href=""><i class="fa fa-indeed"></i></a>-->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div id="coming_soon_image">
+									<span class="coming_soon_font" id="coming_soon_video_text">Video coming soon!</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/salesperson/ListSalesperson.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/salesperson/ListSalesperson.css" %}">
+<link rel="stylesheet" href="{% static "admin/css/successrep.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div id="content_box">
+        <div class="column" id="left_side">
+            <div style="background-color: #cecfdc;border-bottom: 1px solid black;">
+                <div id="header_box" style="border-bottom: 0px">
+                    {% if numReps > 0 %}
+                        <div id="header_title">Sales Representatives (<span>{{ numReps }}</span>)</div>
+                    {% else %}
+                        <div id="header_title">Sales Representatives</div>
+                    {% endif %}
+                    <div id="header_search">
+                        <button id="search_btn"><i class="fa fa-search"></i></button>
+                        <button id="filter_btn"><i class="fa fa-filter"></i></button>
+                        <button id="add_btn"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="search-section" style="margin-top:0px;margin-bottom: 10px;">
+                    <input type="search" id="search-sales" placeholder="Search contacts...">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            
+            <div id="left_side_content" style="overflow-y: scroll; ">
+                <div id="active_contact_list">
+                    {% for person in salespersonList %}
+                    <div class="item active" id="active_contact_row">
+                        <h3 class="item-id">{{ forloop.counter }}</h3>
+                        <div class="item-content">
+                            <div class="item-name">
+                                <strong><a href="{% url 'view_salesperson' person.id %}" id="person-name">{{ person.first_name }} {{ person.last_name }}</a></strong> - <small>{{ person.company }}</small>
+                            </div>
+                            <div class="item-contact">
+                                <div class="item-phone">
+                                    <div class="item-phone-label">
+                                        <i class="fa fa-phone"></i> 
+                                        Phone: 
+                                    </div>
+                                    {{ person.phone_number }}
+                                </div>
+                                <div class="item-email" id="person-email">
+                                    <div class="item-email-label">
+                                        <i class="fa fa-envelope"></i> 
+                                        Email: 
+                                    </div>
+                                    {{ person.email }}
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="item-icons" data-salesperson-id="{{ person.id }}">
+                            <i class="fa fa-pencil edit-icon"></i>
+                            <i class="fa fa-trash delete-icon"></i>
+                        </div> {% endcomment %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="column" id="right_side">
+            <section id="new_salesrep_section">
+                <button class="btn" id="new_salesrep_btn">Add a New Sales Representative</button>
+            </section>
+            {% include 'snippets/salesperson/AddSalesperson.html' %}
+        </div>
+    </div>
+</div>
+<script>
+    const searchBtn = document.querySelector('#search_btn');
+    const filterBtn = document.querySelector('#filter_btn');
+    const addSalespersonBtn = document.querySelector('#add_btn');
+    const newSalespersonBtn = document.querySelector('#new_salesrep_btn');
+
+    const cancelBtns = document.querySelectorAll('.cancel-btn');
+    const createBtn = document.querySelectorAll('#cancel_btn');
+
+    const createSalespersonForm = document.querySelector('#create_salesperson_form');
+    const createFormInputs = document.querySelectorAll('.create-salesrep-input');
+
+    const searchSection = document.querySelector('.search-section');
+    let searchflag = false;
+
+    addSalespersonBtn.addEventListener('click', handleClickNew);
+    newSalespersonBtn.addEventListener('click', handleClickNew);
+    searchBtn.addEventListener('click', handleSearch);
+
+    cancelBtns.forEach(button => button.addEventListener('click', handleCancel));
+
+    function handleClickNew(e) {
+        newSalespersonBtn.style.display = 'none';
+        createSalespersonForm.style.display = 'block';
+    }
+
+    function handleCancel(e) {
+        createSalespersonForm.style.display = 'none';
+        clearInputs();
+        
+        newSalespersonBtn.style.display = 'block';
+    }
+
+    function handleSearch(e) {
+        searchflag = !searchflag;
+        
+        if (searchflag == true) searchSection.style.display = 'flex';
+        else searchSection.style.display = 'none';
+    }
+
+    function clearInputs() {
+        createFormInputs.forEach(input => {
+            input.value = '';
+        })
+    }
+
+    const searchInput = document.querySelector('#search-sales');
+    const active_contact_list = document.querySelector('#active_contact_list');
+    const active_contact_row = active_contact_list.querySelectorAll('#active_contact_row');
+    searchInput.addEventListener('keyup', () => {
+        const searchValue = searchInput.value;
+        searchSales(searchValue)
+    });
+
+    const searchSales = (searchValue) => {
+        active_contact_row.forEach(row => {
+        const rowName = row.querySelector('#person-name').innerText;
+        const rowEmail = row.querySelector('#person-email').innerText;
+
+        if (searchValue === "") {
+            row.style.display = '';
+        } else if (!rowName.toLowerCase().includes(searchValue.toLowerCase()) && !rowEmail.toLowerCase().includes(searchValue.toLowerCase()))
+            row.style.display = 'none';
+    });
+    }
+</script>
+{% endblock %}

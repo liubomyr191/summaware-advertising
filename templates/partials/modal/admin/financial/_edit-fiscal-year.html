@@ -1,0 +1,84 @@
+<div id="editFiscalYear" class="modal my-modal">
+  <div class="custom-modal-content">
+    <form method="post" id="edit-fiscalyear-form">
+      <span class="close" onclick="document.getElementById('editFiscalYear').style.display='none'">&times;</span>
+
+      <div class="heading-container text-center mb-5">
+        <h3 class="heading">Edit Fiscal Year</h3>
+        <hr class="w-50 m-auto" />
+      </div>
+
+      <div class="form-group w-75 mx-auto mb-5">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="edit-fiscalyear-name" value="{% if fiscal_years %} {{ fiscal_years.name }} {% endif %}" class="form-control" />
+
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="start-date">Start Date:</label>
+              <input type="text" placeholder="e.g 2024-09-14" value="{% if fiscal_years %} {{ fiscal_years.start_date|date:'Y-m-d'}} {% endif %}" name="start_date" id="edit-fiscalyear-start-date" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="end-date">End Date:</label>
+              <input type="text" name="end_date" placeholder="e.g 2025-09-14" value="{% if fiscal_years %} {{ fiscal_years.end_date|date:'Y-m-d' }} {% endif %}" id="edit-fiscalyear-end-date" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="btn-container text-center">
+      <button class="btn btn-danger" id="edit-fiscalyear-active" onclick="saveChange(2)">Close Year</button>
+      <button class="btn btn-gray" onclick="saveChange(1)">Archive</button>
+      <button class="btn btn-secondary" onclick="saveChange(3)">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function saveChange(index) {
+      let form = $('#edit-fiscalyear-form');
+      var formData = new FormData(form[0]);
+      var data = {};
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      data['active'] = localStorage.getItem('edit-fiscalyear-active') == 'true' ? true : false;
+      data['status'] = localStorage.getItem('edit-fiscalyear-status');
+      if(index == 1) {
+        data['status'] = 2;
+      } else if(index == 2) {
+        data['active'] = !data['active'];
+      }
+      data['id'] = localStorage.getItem('edit-fiscalyear-id');
+      if (data['id'] == null) {
+        data['id'] = `{{ fiscal_years.id }}`;
+        if (data['id'] !== null) {
+          data['id'] = parseInt(data['id']);
+        }
+      }
+      fetch("/advertising/adadmin/financial/edit-fiscalyear", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          if (`{{ fiscal_years.id }}` == null) {
+            window.location.href = `/advertising/adadmin/financial/fiscal-year/`;
+          } else {
+            window.location.href = `/advertising/adadmin/financial/fiscal-year/{{ fiscal_years.id }}`;
+          }
+        } else {
+          $.toastr.error("Saving FiscalYear Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving FiscalYear Failed");
+      })
+    }
+  </script>
+</div>

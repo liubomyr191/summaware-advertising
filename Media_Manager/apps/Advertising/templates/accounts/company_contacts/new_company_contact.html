@@ -1,0 +1,54 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="col-md-10">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+                <h2>Add a Company Contact</h2>
+                <h4>{{ id }}</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <input type="text" class="form-control" id="department" name="department"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" class="form-check" id="default" name="default"/>
+                                <label for="default">Default</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Create Company Contact</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

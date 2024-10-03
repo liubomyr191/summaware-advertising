@@ -1,0 +1,191 @@
+<div id="financial_company_code" style="display: none;">
+	<div class="table-header">
+
+		<div class="group-name">
+			Company Codes
+		</div>
+		<button class="create-new-code">
+			<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 19 18" fill="none" style="margin-right:5px;">
+				<path d="M17.6429 7.07143H11.5357V1.28571C11.5357 0.575759 10.928 0 10.1786 0H8.82143C8.07203 0 7.46429 0.575759 7.46429 1.28571V7.07143H1.35714C0.607746 7.07143 0 7.64719 0 8.35714V9.64286C0 10.3528 0.607746 10.9286 1.35714 10.9286H7.46429V16.7143C7.46429 17.4242 8.07203 18 8.82143 18H10.1786C10.928 18 11.5357 17.4242 11.5357 16.7143V10.9286H17.6429C18.3923 10.9286 19 10.3528 19 9.64286V8.35714C19 7.64719 18.3923 7.07143 17.6429 7.07143Z" fill="white"/>
+			</svg>
+			New Company Code
+		</button>
+		<div class="filter-active">
+			Active
+		</div>
+		<div class="filter-inactive">
+			| Incative
+		</div>
+		<div class="filter-archived">
+			| Archived
+		</div>
+
+		<div class="input-group-rounded search-input">
+			<input type="text" id="search-input" class="form-control c-search" placeholder="Search Company..."/>
+			<span class="input-group-mark">
+				<i class="glyphicon glyphicon-search mr-1" style="color: #000000"></i>
+			</span>
+		</div>
+	</div>
+	<div class="advertising-table">
+		<table id="account-table" class="w-full financial-table">
+			<thead>
+				<th>ID</th>
+				<th>Code</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th></th>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>Test 1</td>
+					<td>Type 1</td>
+					<td>
+						<div class="btn-group btn-toggle">
+							<button class="active-button btn btn-xs btn-warning active">Active</button>
+							<button class="inactive-button btn btn-xs btn-default">Inactive</button>
+						</div>
+					</td>
+					<td>
+						<div class="">
+							<svg style="margin-right: 15px;" width="22" height="20" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M9.08573 2.73147L13.0862 6.48211L4.39929 14.6265L0.832505 14.9956C0.355018 15.0451 -0.0484094 14.6666 0.00471426 14.219L0.401579 10.8726L9.08573 2.73147ZM15.5606 2.17306L13.6822 0.411994C13.0962 -0.137331 12.146 -0.137331 11.56 0.411994L9.7929 2.06876L13.7934 5.81941L15.5606 4.16264C16.1465 3.61302 16.1465 2.72238 15.5606 2.17306Z"
+									fill="#21215F" />
+							</svg>
+							<svg width="22" height="20" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M15.7761 5.62213L12.8403 0.667938C12.7185 0.462475 12.5535 0.294008 12.36 0.17749C12.1665 0.0609708 11.9504 3.90578e-06 11.7309 0H4.26914C4.04964 7.90914e-07 3.83353 0.0609665 3.64 0.177486C3.44647 0.294005 3.28151 0.462473 3.15975 0.667938L0.223944 5.62213C0.0779189 5.86851 -3.21479e-06 6.15802 0 6.45416L0 10.5C0 11.3284 0.596944 12 1.33333 12H14.6667C15.4031 12 16 11.3284 16 10.5V6.45416C16 6.15802 15.9221 5.86851 15.7761 5.62213ZM4.507 2H11.493L13.8634 6H10.4444L9.55556 8H6.44444L5.55556 6H2.13661L4.507 2Z"
+									fill="#21215F" />
+							</svg>
+								
+						</div>								
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Test 2</td>
+					<td>Type 2</td>
+					<td>
+						<div class="btn-group btn-toggle">
+							<button class="active-button btn btn-xs btn-warning active">Active</button>
+							<button class="inactive-button btn btn-xs btn-default">Inactive</button>
+						</div>
+					</td>
+					<td>
+						<div class="">
+							<svg style="margin-right: 15px;" width="22" height="20" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M9.08573 2.73147L13.0862 6.48211L4.39929 14.6265L0.832505 14.9956C0.355018 15.0451 -0.0484094 14.6666 0.00471426 14.219L0.401579 10.8726L9.08573 2.73147ZM15.5606 2.17306L13.6822 0.411994C13.0962 -0.137331 12.146 -0.137331 11.56 0.411994L9.7929 2.06876L13.7934 5.81941L15.5606 4.16264C16.1465 3.61302 16.1465 2.72238 15.5606 2.17306Z"
+									fill="#21215F" />
+							</svg>
+							<svg width="22" height="20" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M15.7761 5.62213L12.8403 0.667938C12.7185 0.462475 12.5535 0.294008 12.36 0.17749C12.1665 0.0609708 11.9504 3.90578e-06 11.7309 0H4.26914C4.04964 7.90914e-07 3.83353 0.0609665 3.64 0.177486C3.44647 0.294005 3.28151 0.462473 3.15975 0.667938L0.223944 5.62213C0.0779189 5.86851 -3.21479e-06 6.15802 0 6.45416L0 10.5C0 11.3284 0.596944 12 1.33333 12H14.6667C15.4031 12 16 11.3284 16 10.5V6.45416C16 6.15802 15.9221 5.86851 15.7761 5.62213ZM4.507 2H11.493L13.8634 6H10.4444L9.55556 8H6.44444L5.55556 6H2.13661L4.507 2Z"
+									fill="#21215F" />
+							</svg>
+								
+						</div>	
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Test 3</td>
+					<td>Type 3</td>
+					<td>
+						<div class="btn-group btn-toggle">
+							<button class="active-button btn btn-xs btn-warning active">Active</button>
+							<button class="inactive-button btn btn-xs btn-default">Inactive</button>
+						</div>
+					</td>
+					<td>
+						<div class="">
+							<svg style="margin-right: 15px;" width="22" height="20" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M9.08573 2.73147L13.0862 6.48211L4.39929 14.6265L0.832505 14.9956C0.355018 15.0451 -0.0484094 14.6666 0.00471426 14.219L0.401579 10.8726L9.08573 2.73147ZM15.5606 2.17306L13.6822 0.411994C13.0962 -0.137331 12.146 -0.137331 11.56 0.411994L9.7929 2.06876L13.7934 5.81941L15.5606 4.16264C16.1465 3.61302 16.1465 2.72238 15.5606 2.17306Z"
+									fill="#21215F" />
+							</svg>
+							<svg width="22" height="20" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M15.7761 5.62213L12.8403 0.667938C12.7185 0.462475 12.5535 0.294008 12.36 0.17749C12.1665 0.0609708 11.9504 3.90578e-06 11.7309 0H4.26914C4.04964 7.90914e-07 3.83353 0.0609665 3.64 0.177486C3.44647 0.294005 3.28151 0.462473 3.15975 0.667938L0.223944 5.62213C0.0779189 5.86851 -3.21479e-06 6.15802 0 6.45416L0 10.5C0 11.3284 0.596944 12 1.33333 12H14.6667C15.4031 12 16 11.3284 16 10.5V6.45416C16 6.15802 15.9221 5.86851 15.7761 5.62213ZM4.507 2H11.493L13.8634 6H10.4444L9.55556 8H6.44444L5.55556 6H2.13661L4.507 2Z"
+									fill="#21215F" />
+							</svg>
+								
+						</div>	
+					</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Test 4</td>
+					<td>Type 4</td>
+					<td>
+						<div class="btn-group btn-toggle">
+							<button class="active-button btn btn-xs btn-warning active">Active</button>
+							<button class="inactive-button btn btn-xs btn-default">Inactive</button>
+						</div>
+					</td>
+					<td>
+						<div class="">
+							<svg style="margin-right: 15px;" width="22" height="20" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M9.08573 2.73147L13.0862 6.48211L4.39929 14.6265L0.832505 14.9956C0.355018 15.0451 -0.0484094 14.6666 0.00471426 14.219L0.401579 10.8726L9.08573 2.73147ZM15.5606 2.17306L13.6822 0.411994C13.0962 -0.137331 12.146 -0.137331 11.56 0.411994L9.7929 2.06876L13.7934 5.81941L15.5606 4.16264C16.1465 3.61302 16.1465 2.72238 15.5606 2.17306Z"
+									fill="#21215F" />
+							</svg>
+							<svg width="22" height="20" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M15.7761 5.62213L12.8403 0.667938C12.7185 0.462475 12.5535 0.294008 12.36 0.17749C12.1665 0.0609708 11.9504 3.90578e-06 11.7309 0H4.26914C4.04964 7.90914e-07 3.83353 0.0609665 3.64 0.177486C3.44647 0.294005 3.28151 0.462473 3.15975 0.667938L0.223944 5.62213C0.0779189 5.86851 -3.21479e-06 6.15802 0 6.45416L0 10.5C0 11.3284 0.596944 12 1.33333 12H14.6667C15.4031 12 16 11.3284 16 10.5V6.45416C16 6.15802 15.9221 5.86851 15.7761 5.62213ZM4.507 2H11.493L13.8634 6H10.4444L9.55556 8H6.44444L5.55556 6H2.13661L4.507 2Z"
+									fill="#21215F" />
+							</svg>
+								
+						</div>	
+					</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>Test 5</td>
+					<td>Type 5</td>
+					<td>
+						<div class="btn-group btn-toggle">
+							<button class="active-button btn btn-xs btn-warning active">Active</button>
+							<button class="inactive-button btn btn-xs btn-default">Inactive</button>
+						</div>
+					</td>
+					<td>
+						<div class="">
+							<svg style="margin-right: 15px;" width="22" height="20" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M9.08573 2.73147L13.0862 6.48211L4.39929 14.6265L0.832505 14.9956C0.355018 15.0451 -0.0484094 14.6666 0.00471426 14.219L0.401579 10.8726L9.08573 2.73147ZM15.5606 2.17306L13.6822 0.411994C13.0962 -0.137331 12.146 -0.137331 11.56 0.411994L9.7929 2.06876L13.7934 5.81941L15.5606 4.16264C16.1465 3.61302 16.1465 2.72238 15.5606 2.17306Z"
+									fill="#21215F" />
+							</svg>
+							<svg width="22" height="20" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M15.7761 5.62213L12.8403 0.667938C12.7185 0.462475 12.5535 0.294008 12.36 0.17749C12.1665 0.0609708 11.9504 3.90578e-06 11.7309 0H4.26914C4.04964 7.90914e-07 3.83353 0.0609665 3.64 0.177486C3.44647 0.294005 3.28151 0.462473 3.15975 0.667938L0.223944 5.62213C0.0779189 5.86851 -3.21479e-06 6.15802 0 6.45416L0 10.5C0 11.3284 0.596944 12 1.33333 12H14.6667C15.4031 12 16 11.3284 16 10.5V6.45416C16 6.15802 15.9221 5.86851 15.7761 5.62213ZM4.507 2H11.493L13.8634 6H10.4444L9.55556 8H6.44444L5.55556 6H2.13661L4.507 2Z"
+									fill="#21215F" />
+							</svg>
+								
+						</div>	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="financial-pagination">
+		<ul class="pagination pagination-sm">
+			<li>
+				<a href="#" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			<li><a href="#">1</a></li>
+			<li class="active"><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li>
+				<a href="#" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>

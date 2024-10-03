@@ -1,0 +1,348 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifieds/NewClassified.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/datepicker.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/classifieds/classifieds.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h2>Create a New Classified Ad</h2>
+        <form method="post" enctype="multipart/form-data" id="new_classified_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-7">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#details_section">Details</a></li>
+                        <li><a data-toggle="tab" href="#text_section">Text</a></li>
+                        <li><a data-toggle="tab" href="#graphics_section">Graphics</a></li>
+                        <li><a data-toggle="tab" href="#frame_section">Frame</a></li>
+                        <li><a data-toggle="tab" href="#adjustments_section">Adjustments</a></li>
+                    </ul>
+                    <br />
+
+                    <div class="tab-content">
+                        <div id="details_section" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Have an Account?</h4>
+                                    <div class="switch-field">
+                                        <input class="account-switch" type="radio" id="account-yes" name="account-switch"
+                                            value="yes" checked />
+                                        <label for="account-yes">Yes</label>
+                                        <input class="account-switch" type="radio" id="account-no" name="account-switch"
+                                            value="no" />
+                                        <label for="account-no">No</label>
+                                    </div>
+                                    <div class="form-group" id="account-select">
+                                        <label for="account">Account</label>
+                                        <select class="form-control" name="account" id="account">
+                                            <option value="">Select an Account...</option>
+                                            {% for account in accounts %}
+                                            <option value="{{ account.id }}">{{ account.id }} - {{ account.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div id="account-details" style="display:none">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input class="form-control" type="text" id="name" name="name"
+                                                placeholder="John Smith" />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email Address</label>
+                                                    <input class="form-control" type="email" name="email" id="email"
+                                                        placeholder="john.smith@gmail.com" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Phone Number</label>
+                                                    <input class="form-control" type="text" name="phone" id="phone"
+                                                        placeholder="(123) 456-7890" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="classification">Classification</label>
+                                        <select class="form-control" name="classification" id="classification">
+                                            <option value="">Select a classification ...</option>
+                                            {% for classification in classificationList %}
+                                            <option value="{{ classification.id }}">{{ classification.code }} - {{ classification.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="publication">Publication</label>
+                                        <select class="form-control" name="publication" id="publication" multiple>
+                                            {% for publication in publications %}
+                                            <option value="{{ publication.id}}">{{ publication.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adType">Ad Type</label>
+                                        <select name="adType" id="adType" class="form-control">
+                                            <option value="">Select an ad type ...</option>
+                                            {% for type in adTypes %}
+                                                <option value="{{ type.id }}">{{ type.code }} - {{ type.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="submitter">Ad Taker/Submitter</label>
+                                        <input class="form-control" type="text" name="submitter" id="submitter" value="{{ request.user.username }}" disabled required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="salesperson">Salesperson</label>
+                                        <select class="form-control" name="salesperson" id="salesperson">
+                                            <option value="">Select a salesperson ...</option>
+                                            {% for salesperson in salespersonList %}
+                                            <option value="{{ salesperson.id }}">{{ salesperson.id }} - {{ salesperson.first_name }} {{ salesperson.last_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                    {% include 'snippets/classifieds/rates/PublicationRateModal.html' %}
+
+                                    <div class="form-group" id="dates_section">
+                                        <label for="dates">Dates</label>
+                                        <input class="form-control" type="text" name="dates" id="dates"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="recurring-check" id="recurring-check" class="form-check">
+                                        <label for="recurring">Recurring</label>
+                                    </div>
+                                    <div class="form-group" id="recurring_section" style="display:none">
+                                        <div class="form-group">
+                                            <label for="start_date">Start Date</label>
+                                            <input type="date" name="start_date" id="start_date" class="form-control" />
+                                        </div>
+                                        <input type="number" name="recurring-amount" id="recurring-amount" step="1" min="1">
+                                        <select name="recurring-time" id="recurring-time">
+                                            <option value="">Select a time period ...</option>
+                                            <option value="days">Days</option>
+                                            <option value="weeks">Weeks</option>
+                                            <option value="months">Months</option>
+                                            <option value="insertions">Insertions</option>
+                                        </select>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-sunday" id="recurr-sunday" value="sunday">Sunday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-monday" id="recurr-monday" value="monday">Monday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-tuesday" id="recurr-tuesday" value="tuesday">Tuesday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-wednesday" id="recurr-wednesday" value="wednesday">Wednesday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-thursday" id="recurr-thursday" value="thursday">Thursday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-friday" id="recurr-friday" value="friday">Friday
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="recurr-saturday" id="recurr-saturday" value="saturday">Saturday
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="notes">Notes</label>
+                                        <textarea class="form-control" name="notes" id="notes" cols="30"
+                                            rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="text_section" class="tab-pane fade in">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lines">Lines</label>
+                                        <input class="form-control" type="number" name="lines" id="lines" min="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {{ form }}     
+                            <input type="hidden" name="text-content" id="text-content"/>  
+                            <div class="row">
+                                <div class="col-md-6"> 
+                                    <div class="form-group">
+                                        <label for="size">Size</label>
+                                        <select class="form-control" name="size" id="size">
+                                            <option value="">Select a size...</option>
+                                            <option value="quarter_page">Quarter Page</option>
+                                            <option value="half_page">Half Page</option>
+                                            <option value="column_based">Column Based</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="column_section" style="display:none;">
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <label for="columns"># of Columns</label>
+                                            <input type="number" name="columns" id="columns" class="form-control" step="1" min="0"/>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group" >
+                                            <label for="column_length">Column Length</label>
+                                            <input type="number" name="column_length" id="column_length" class="form-control" step="1" min="0"/>
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4>Column Inches or Inches?</h4>
+                                        <div class="form-group">
+                                            <input type="radio" id="con-col-in" name="conversion-type" value="con-col-in" checked />
+                                            <label for="con-col-in">Col. Inches</label><br /> 
+                                            <input type="radio" id="con-in" name="conversion-type" value="con-in" />
+                                            <label for="con-in">Inches</label>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>
+                        <div id="graphics_section" class="tab-pane fade in">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3>File List</h3>
+                                    <ul class="list-group">
+                                        {% for file in fileList %}
+                                            <li class="list-group-item">
+                                                <input type="checkbox" class="add-graphic-btn" />
+                                                <img src="{{ file.file_path }}" width="100" height="100" id="{{ file.id }}" class="graphic" file_id="{{file.id}}" draggable="true" ondragover="allowDrop(event)"/>
+                                                <label for="{{ file.id }}">{{ file.file.name }}</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+                        <div id="frame_section" class="tab-pane fade in">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-check-input" type="checkbox" id="addFrameInput" />
+                                        <label for="addFrameInput">Add Frame</label>
+                                    </div>
+                                    <div class="form-group" style="display:none;" id="frameSizeInput">
+                                        <label for="frameSize">Select a Frame Width</label>
+                                        <input class="form-control" type="number" name="frameSize" id="frameSize" max="10"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-check-input" type="checkbox" id="addInsetCheckbox" />
+                                        <label for="addInset">Add Inset</label>
+                                    </div>
+                                    <div class="form-group" style="display:none;" id="insetSelectGroup">
+                                        <label for="inset">Select an Inset Amount</label>
+                                        <select class="form-control" name="inset" id="inset">
+                                            <option value="">Select an inset amount ...</option>
+                                            <option value="2px">2px</option>
+                                            <option value="4px">4px</option>
+                                            <option value="6px">6px</option>
+                                            <option value="8px">8px</option>
+                                            <option value="10px">10px</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+                        <div id="adjustments_section" class="tab-pane fade in">
+                            <br />
+                            <input type="text" id="adjustment-search" placeholder="Search here ..." /><br /><br />
+                            <table class="table table-hover table-striped table-condensed" id="adjustments_table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Value Type</th>
+                                        <th>Amount</th>
+                                        <th>Credit/Debit</th>
+                                        <th>Apply Level</th>
+                                        <th>Publication</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9">No adjustments found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="content_preview" style="line-height:20px"></div>
+                </div>
+            </div>
+            <div class="row">
+                {% include 'snippets/classifieds/ClassifiedSummaryModal.html' %}
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const contentLabel = document.querySelector('label[for="id_content"]');
+    contentLabel.style.display = 'none';
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+    {% comment %} document.getElementById("phone").addEventListener("input", () => {
+        let number = document.getElementById("phone");
+        number.value = formatPhoneNumber(number.value);
+    });
+
+    function formatPhoneNumber(phoneNumberString) {
+        var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+        var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+            return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+        }
+        return phoneNumberString;
+    } {% endcomment %}
+
+</script>
+{% endblock %}

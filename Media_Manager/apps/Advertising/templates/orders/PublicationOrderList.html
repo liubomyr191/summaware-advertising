@@ -1,0 +1,57 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h2>{{ publication.name }}'s Orders</h2>
+
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Status</th>
+                        <th>Rate</th>
+                        <th>Ad Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orderList %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.status|title }}</td>
+                        {% if order.rate != None %}
+                        <td>{{ order.rate }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td>{{ order.ad_type.name }}</td>
+                        <td>{{ order.start_date }}</td>
+                        <td>{{ order.end_date }}</td>
+                        <td><a href="{% url 'view_order' order.id %}"><i class="fa fa-eye"></i> View</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No Orders</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,398 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% comment %} {% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %} {% endcomment %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/ViewPublication.js" %}"></script>
+
+<script src="{% static "dist/js/advertising/publications/PageDimensions.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/DefaultStyles.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/Sections.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/Adjustments.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/Deadlines.js" %}"></script> 
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/publications/view_publication.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div id="page_content">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h1 id="publication_name">{{ publication.name }}</h1>
+
+            <div id="content_box">
+                <div id="header_box">
+                    <div id="header_nav">
+                        <button class="page_nav" id="nav_left">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                        <div id="current_page">Details</div>
+                        <button class="page_nav" id="nav_right">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div id="header_nav_buttons">
+                        <button class="button_nav active" id="details">Details</button>
+                        <button class="button_nav" id="ad_deadlines">Ad Deadlines</button>
+                        <button class="button_nav" id="page_dimensions">Page Dimensions</button>
+                        <button class="button_nav" id="adjustments">Adjustments</button>
+                        <button class="button_nav" id="default_styles">Default Styles</button>
+                        <button class="button_nav" id="finance">Finance</button>
+                        <button class="button_nav" id="sections">Sections</button>
+                    </div>
+                </div>
+                <div id="details_page" style="display:none;">
+                    <div class="content-row">
+                        <div class="column" id="left-side">
+                            <div class="section-header">
+                                <h2>Publication Information</h2>
+                                <button class="page_button">
+                                    <a href="{% url 'edit_publication' publication.id %}"><i class="fa fa-pencil"></i> Edit</a>
+                                </button>
+                            </div>
+                            <div class="section_body">
+                                <h3>{{ publication.name }}</h3>
+
+                                {% if runDays == '' %}
+                                    <p>Run Days: </p> None Selected
+                                {% else %}
+                                    <p><strong>Run Days</strong>: {{ runDays }}</p>
+                                {% endif %}
+
+                                <div id="address_section">
+                                    <h4>Address:</h4>
+                                    <p>{{ publication.address }}</p>
+                                    <p>{{ publication.city }}, {{ publication.state }} {{ publication.zip_code }}</p>
+                                </div>
+
+                                <div id="technical_details">
+                                    <div id="spot_color_section">
+                                        <h4>Spot Color:</h4>
+                                        {% if publication.spot_color %}
+                                            <p>{{ publication.spot_color }}</p>
+                                        {% else %}
+                                            <p>None Selected</p>
+                                        {% endif %}
+                                    </div>
+                                    <div id="charge_tax_section">
+                                        <h4>Charge Tax:</h4>
+                                        {% if publication.charge_tax %}
+                                            <p>Yes</p>
+                                        {% else %}
+                                            <p>No</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column" id="right-side">
+                            <div class="section-header">
+                                <h2>Orders</h2>
+                                <button class="page_button">
+                                    <a href="{% url 'create_order' %}">Start an Order</a>
+                                </button>
+                            </div>
+                            <div class="section_body">
+                                {% if advertising_orders %}
+                                    <table id="advertising_orders_table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Status</th>
+                                                <th>Ad Type</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Total Price</th>
+                                                <th>View Order</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for row in advertising_orders %}
+                                            <tr>
+                                                    <td>{{ row.order.id }}</td>
+                                                    <td>{{ row.order.status|title }}</td>
+                                                    <td>{{ row.order.ad_type.name }}</td>
+                                                    <td>{{ row.order.start_date }}</td>
+                                                    <td>{{ row.order.end_date }}</td>
+                                                    <td>${{ row.order.total_price }}</td>
+                                                {% if perms.advertising.can_access_ad %}
+                                                    <td><a href="{% url 'view_order' row.order.id %}"><i class="fa fa-eye"></i> View Order</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td><i class="fa fa-eye"></i> View Order</td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <p>No orders have been placed for this publication.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ad_deadlines_page" style="display:none;">
+                    <div id="deadlines_content">
+                        <div id="deadlines_header">
+                            <div id="deadlines_search">
+                                <input type="text" placeholder="Search for a deadline ..." />
+                                <button class="search_filter"><i class="fa fa-filter"></i></button>
+                            </div>
+                            <div id="add_deadline_btn_section">
+                                <button type="button" id="add_deadline_btn" data-toggle="modal" data-target="#add_deadline_modal">
+                                    <i class="fa fa-plus"></i> Add a New Deadline
+                                </button>
+                            </div>
+
+                        </div>
+                        <div id="deadlines_body">
+                            {% for deadline in deadlines %}
+                                <div class="deadline-card">
+                                    <div class="deadline-card-row first-row">
+                                        <div class="deadline-card-title">{{ deadline.ad_type.name }}</div>
+                                    </div>
+                                    <div class="deadline-card-row second-row">
+                                        <p>ID: <strong>{{ deadline.id }}</strong></p>
+                                        <p>Publication Day: <strong>{{ deadline.publication_day|title }}</strong></p>
+                                    </div>
+                                    <div class="deadline-card-row third-row">
+                                        <p>Days Prior: <strong>{{ deadline.days_prior }}</strong></p>
+                                        <p>Time: <strong>{{ deadline.time }}</strong></p>
+
+                                        <div class="priority-level">Priority Level:
+                                            {% if deadline.priority_level == 'low' %}
+                                                <div class="low-priority">
+                                                    <svg class="low-priority" width="29" height="15" viewBox="0 0 29 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 2C0 0.89543 0.895431 0 2 0H27C28.1046 0 29 0.895431 29 2V8.51194C29 9.39516 28.4207 10.1738 27.5747 10.4276L14.5952 14.3215C14.2075 14.4377 13.7937 14.4337 13.4084 14.3099L1.38798 10.4461C0.560875 10.1803 0 9.41086 0 8.54208V2Z" fill="#04BB04"/>
+                                                    </svg>
+                                                </div>
+                                            {% elif deadline.priority_level == 'medium' %}
+                                                <div class="medium-priority">
+                                                    <svg class="low-priority" width="29" height="15" viewBox="0 0 29 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 2C0 0.89543 0.895431 0 2 0H27C28.1046 0 29 0.895431 29 2V8.51194C29 9.39516 28.4207 10.1738 27.5747 10.4276L14.5952 14.3215C14.2075 14.4377 13.7937 14.4337 13.4084 14.3099L1.38798 10.4461C0.560875 10.1803 0 9.41086 0 8.54208V2Z" fill="#04BB04"/>
+                                                    </svg>
+                                                </div>
+                                            {% elif deadline.priority_level == 'high' %}
+                                                <div class="high-priority">
+                                                    <svg class="low-priority" width="29" height="15" viewBox="0 0 29 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 2C0 0.89543 0.895431 0 2 0H27C28.1046 0 29 0.895431 29 2V8.51194C29 9.39516 28.4207 10.1738 27.5747 10.4276L14.5952 14.3215C14.2075 14.4377 13.7937 14.4337 13.4084 14.3099L1.38798 10.4461C0.560875 10.1803 0 9.41086 0 8.54208V2Z" fill="#04BB04"/>
+                                                    </svg>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="deadline-card-edit fourth-row" data-deadline-id="{{ deadline.id }}">
+                                        <a href="#" class="edit-deadline"><i class="fa fa-pencil"></i> Edit </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div id="page_dimensions_page" style="display:none;">
+                    <div id="page_row">
+                        <div id="page_column" class="left_side">
+                            {% if pageDimensions %}
+                                <div id="page_dimensions_table">
+                                    <div id="dimensions_header">
+                                        <h2>Page Specs</h2>
+                                        <button data-toggle="modal" data-target="#edit_dimensions_modal" id="edit_dimensions_btn">
+                                            <i class="fa fa-pencil"></i> Edit
+                                        </button>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Page Size</h4>
+                                        <p>{{ pageDimensions.page_size }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Columns Per Page</h4>
+                                        <p>{{ pageDimensions.columns_per_page }}</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Column Width</h4>
+                                        <p>{{ pageDimensions.column_width }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Page Width</h4>
+                                        <p>{{ pageDimensions.page_width }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Page Height</h4>
+                                        <p>{{ pageDimensions.page_height }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Page Border</h4>
+                                        <p>{{ pageDimensions.page_border }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Gutter Size</h4>
+                                        <p>{{ pageDimensions.gutter_size }} inches</p>
+                                    </div>
+                                    <div class="dimensions-row">
+                                        <h4>Default Size</h4>
+                                        <p>{{ pageDimensions.default_size|title }} Page</p>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div id="no_dimensions_message">
+                                    {% include 'snippets/publications/page_dimensions/CreatePageDimensionsModal.html' %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div id="page_column" class="right_side"></div>
+                    </div>
+                </div>
+                <div id="adjustments_page" style="display:none;">
+                    <div id="adjustments_content">
+                        <div id="adjustments_header">
+                            <div id="adjustments_search">
+                                <input type="text" placeholder="Search for a adjustment ..." />
+                                <button class="search_filter"><i class="fa fa-filter"></i></button>
+                            </div>
+                            <div id="add_adjustment_btn_section">
+                                {% include 'snippets/publications/adjustments/CreateAdjustmentModal.html' %}
+                                {% comment %} <button type="button" id="add_adjustment_btn" data-toggle="modal" data-target="#add_adjustment_modal">
+                                    <i class="fa fa-plus"></i> Create an Adjustment
+                                </button> {% endcomment %}
+                            </div>
+
+                        </div>
+                        <div id="adjustments_body">
+                            {% for adjustment in adjustments %}
+                            <div class="adjustment-card">
+                                <div class="adjustment-card-body">
+                                    <div class="adjustment-card-header">
+                                        <h2>{{ adjustment.code }}</h2>
+                                        {% if adjustment.value_type == 'amount' %}
+                                        <h2>${{ adjustment.amount }}</h2>
+                                        {% elif adjustment.value_type == 'percentage' %}
+                                        <h2>{{ adjustment.amount }}%</h2>
+                                        {% endif %}
+                                    </div>
+                                    <div class="adjustment-card-details">
+                                        <div class="adjustment-card-row adjustment-first-row">
+                                            <p>Description: <strong>{{ adjustment.description }}</strong></p>
+                                        </div>
+                                        <div class="adjustment-card-row adjustment-second-row">
+                                            <p>Apply Level: <strong>{{ adjustment.apply_level|title }}</strong></p>
+                                            {% if adjustment.section %}
+                                                <p>Section: <strong>{{ adjustment.section.name }}</strong></p>
+                                            {% else %}
+                                                <p>Section: None</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="adjustment-card-row adjustment-third-row">
+                                            <p>Value Type: <strong>{{ adjustment.value_type|title }}</strong></p>
+                                            <p>Value: <strong>{{ adjustment.type|title }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="adjustment-card-btn edit-adjustment" data-adjustment-id="{{ adjustment.id }}">
+                                    <i class="fa fa-pencil"></i>
+                                    Edit
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div id="default_styles_page" style="display:none;">
+                    <div id="default_styles_content">
+                        <div id="default_styles_header">Current Default Style</div>
+                        <div id="default_styles_table">
+                            <div class="default-styles-row">
+                                <div class="row-content">
+                                    <div class="content-label">Font: </div>
+                                    <h3>{{ defaultStyles.font|title }}</h3>
+                                </div>
+                                <div class="row-content">
+                                    <div class="content-label">Font Size: </div>
+                                    <h3>{{ defaultStyles.font_size }}px</h3>
+                                </div>
+                            </div>
+                            <div class="default-styles-row">
+                                <div class="row-content">
+                                    <div class="content-label">Inset: </div>
+                                    <h3>{{ defaultStyles.inset }}px</h3>
+                                </div>
+                                <div class="row-content">
+                                    <div class="content-label">Frame Width: </div>
+                                    <h3>{{ defaultStyles.frame_width }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="default_styles_footer">
+                            {% include 'snippets/publications/default_styles/EditDefaultStylesModal.html'%}
+                        </div>
+                    </div>
+                </div>
+                <div id="finance_page" style="display:none;">
+                    Finance
+                </div>
+                <div id="sections_page" style="display:none;">
+                    <div id="sections_content">
+                        <div id="sections_body">
+                            <div id="section_btn">
+                                <button id="create_section_btn" data-toggle="modal" data-target="#create_section_modal">
+                                    <i class="fa fa-plus"></i> Create a New Section
+                                </button>
+                            </div>
+                            <table id="sections_table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Page Count</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for section in sectionList %}
+                                    <tr>
+                                        <td>{{ section.name }}</td>
+                                        <td>{{ section.number_pages }}</td>
+                                        <td data-section-id="{{ section.id }}">
+                                            <i class="fa fa-trash delete-section"></i>
+                                            <i class="fa fa-pencil edit-section"></i>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'snippets/publications/ad_deadlines/AddDeadlineModal.html' %}
+            {% include 'snippets/publications/ad_deadlines/EditDeadlineModal.html' %}
+
+            {% include 'snippets/publications/page_dimensions/EditPageDimensionsModal.html' %}
+
+            {% include 'snippets/publications/adjustments/EditAdjustmentModal.html' %}
+
+            {% include 'snippets/publications/sections/CreatePublicationSectionModal.html' %}
+            {% include 'snippets/publications/sections/EditPublicationSectionModal.html' %}
+
+        {% endif %}
+    </div>
+</div>
+<script>
+    const publication_id = "{{ publication.id }}";
+</script>
+{% endblock %}

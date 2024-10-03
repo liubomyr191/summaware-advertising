@@ -1,0 +1,41 @@
+      {% extends "templates/base.html" %}
+
+    {% block breadcrumb %}
+    {% endblock %}
+
+      {% block content %}
+	  <!--
+      <div id="logo" style="width:100%; height:100vh; position: relative">
+      	<img src="/static/dist/img/summaware-1000px.png" alt="mbms_logo" width="1000" height="300" style="margin:auto; display:block; position:absolute;top:25%;left:20%">
+      </div>
+	  -->
+		<div id="logo" style="width:100%; margin-top:25vh; position: relative">
+			<img id="summaware_logo" style="width: 100%; max-width: 1000px;margin:auto; display:block; position:absolute;top:25%;left:20%" src="http://www.summaware.com/wp-content/uploads/2022/07/summaware-logo-animated2.gif" />
+		</div>
+      {% endblock %}
+
+      {% block settings-sidebar %}
+      	
+      {% endblock %}
+
+      {% block endjs %}
+        {% if api_request is not None and api_request != False and encrypted_string is not None and encrypted_string != False %}
+          <script type="text/javascript">
+            $(document).ready(function() {
+              {% for api_instance in api_request %}
+              $.ajax({
+                type: "GET",
+                url: "{{api_instance}}?action=put&method=encrypted_string&encrypted_string={{encrypted_string}}&cache=0.1.4",
+                xhrFields: {
+                   withCredentials: true
+                },
+                crossDomain: true,
+                success: function (data) {
+                  console.log(data);
+                }
+              });
+              {% endfor %}
+            });
+          </script>
+        {% endif %}
+     {% endblock %}

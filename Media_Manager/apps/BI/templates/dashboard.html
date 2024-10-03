@@ -1,0 +1,247 @@
+	{% extends "templates/base.html" %}
+	{% load static %}
+	{% load templatetags %}
+	{% block page-header %}Dashboard Editor{% endblock %}
+	{% block breadcrumb %}
+    <li class="active"><a href="{{url}}/bi">BI</a></li>
+    <li class="active">Edit Dashboard</li>
+	{% endblock %}
+	{% block content %}
+	{% if access == "deny" %}
+	<div id="message">{{ message }}</div>
+	{% else %}
+	<style>
+		/* required file for gridstack to work */
+		@import "https://cdn.jsdelivr.net/npm/gridstack@1.1.2/dist/gridstack.min.css";
+		.panel-title {
+			position: relative;
+		}
+
+		.panel-title::after {
+			content: "\f107";
+			color: #333;
+			top: -2px;
+			right: 0px;
+			position: absolute;
+			font-family: "FontAwesome"
+		}
+
+		.panel-title[aria-expanded="true"]::after {
+			content: "\f106";
+		}
+
+
+
+		/* Optional styles for demos */
+		.btn-primary {
+			color: #fff;
+			background-color: #007bff;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: .375rem .75rem;
+			line-height: 1.5;
+			border-radius: .25rem;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2.5rem;
+			margin-bottom: .5rem;
+		}
+
+		.grid-stack {
+			background: gray;
+		}
+
+		.grid-stack-item-content {
+			color: #2c3e50;
+			text-align: center;
+			background-color: #3bf9d4;
+		}
+
+		.grid-stack-item-removing {
+			opacity: 0.8;
+			filter: blur(5px);
+		}
+
+		#trash {
+			background: rgba(255, 0, 0, 0.4);
+		}
+	</style>
+
+	<script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.2/dist/gridstack.all.js"></script>
+
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<h2 class="page-header" id="dashboard_id" dashboard_id="{{dashboard.id}}"><a href="/bi/viewdashboard/{{dashboard.id}}/">{% if dashboard.name %}{{dashboard.name}}</a>{% else %}New Dashboard{% endif %}</h2>
+				<div class="box-tools pull-right btn">
+					<button type="button" class="btn-box-tool btn" style="outline-offset: 0px; outline: -webkit-focus-ring-color 0px;"><i class="fa fa-gear"></i></button>
+				</div>
+			</div>
+			<div class="box-body">
+				<div id="message">{{ message }}</div>
+				<div class="col-md-12">
+					<div class="row table-scroll">
+						<div class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title" data-toggle="collapse" data-target="#dashboardProperties">Properties</h4>
+								</div>
+								<div id="dashboardProperties" class="panel-collapse collapse in">
+									<div class="panel-body">
+										<form method="POST">{% csrf_token %}
+											<fieldset class="module aligned">
+												<div class="form-row">
+													<div class="form-group">
+														<label for="dashboardName">Dashboard Name</label>
+														<input type="text" class="form-control" id="dashboardName" placeholder="Name" value="{{ dashboard.name}}" name="dashboardName" />
+													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group">
+														<label for="dashboardDescription">Dashboard Description</label>
+														<textarea id="dashboardDescription" class="form-control" style="resize:vertical" name="dashboardDescription">{{dashboard.description}}</textarea>
+													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group">
+														<label for="dashboardStatus">Status</label>
+														<input type="text" class="form-control" id="dashboardStatus" placeholder="Status" value="{{ dashboard.status}}" name="dashboardStatus" />
+													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group">
+														<label for="dashboardTags">Tags</label>
+														<select multiple class="form-control" name="dashboardTags">
+															<option value="0">Ads</option>
+															<option value="1">Preprints</option>
+															<option value="2">Other</option>
+														</select>
+													</div>
+												</div>
+											</fieldset>
+											<button type="submit" name="submit" value="dashboardProperties" class="btn btn-primary">{% if id != '-1' %}Update{% else %}Create{% endif %}</button>
+										</form>
+									</div>
+								</div>
+							</div>
+							{% if id != '-1' %}
+							<br />
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title" data-toggle="collapse" data-target="#dashboardFilters">Filters</h4>
+								</div>
+								<div id="dashboardFilters" class="panel-collapse collapse in">
+									<div class="panel-body">
+
+									</div>
+								</div>
+							</div>
+							<br />
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title" data-toggle="collapse" data-target="#dashboardQuery">Charts</h4>
+								</div>
+								<div id="dashboardQuery" class="panel-collapse collapse in">
+									<div class="panel-body">
+										<form method="POST">{% csrf_token %}
+											<fieldset class="module aligned">
+												<div class="form-row">
+													<div class="form-group">
+														<label for="chartsLayout">Charts Layout</label>
+														<div style="margin:auto">
+															<div class="col-md-6 d-none d-md-block" style="margin-bottom:25px;">
+																<div class="newWidget grid-stack-item" style="display:inline-block; width:50%; height:60px;" title="Drag me in to add a chart to the dashboard!">
+																	<div class="card-body grid-stack-item-content">
+																		<ion-icon name="add-circle" style="font-size: 400%"></ion-icon>
+																	</div>
+																</div>
+																<div id="trash" class="text-center" style="display:inline-block; float:right; width:50%;" title="Drop a chart here to remove!">
+																	<ion-icon name="trash" style="font-size: 400%"></ion-icon>
+																</div>
+															</div>
+															<div class="col-sm-12 col-md-10">
+																<div style="background-color:gray; padding:11px 0;">
+																	<div>{{dashboard.charts.layout}}</div>
+																	<div class="grid-stack" data-gs-animate="yes">{{charts}}</div>
+																</div>
+															</div>
+															<script type="text/javascript">
+																var grid = GridStack.init({
+																	alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+																	navigator.userAgent
+																	),
+																	resizable: {
+																		handles: 'e, se, s, sw, w'
+																	},
+																	removable: '#trash',
+																	removeTimeout: 100,
+																	acceptWidgets: '.newWidget'
+																});
+
+																grid.on('added', function(e, items) { log('added ', items) });
+																grid.on('removed', function(e, items) { log('removed ', items) });
+																grid.on('change', function(e, items) { log('change ', items) });
+																function log(type, items) {
+																	var str = '';
+																	items.forEach(function(item) { str += ' (x,y)=' + item.x + ',' + item.y; });
+																	console.log(type + items.length + ' items.' + str );
+																}
+
+														// TODO: switch jquery-ui out
+														$('.newWidget').draggable({
+															revert: 'invalid',
+															scroll: false,
+															appendTo: 'body',
+															helper: 'clone'
+														});
+													</script>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+									<button type="submit" class="btn btn-primary">Update</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse" data-target="#dashboardPermissions">Permissions</h4>
+						</div>
+						<div id="dashboardPermissions" class="panel-collapse collapse in">
+							<div class="panel-body">
+								<form method="POST">{% csrf_token %}
+									<fieldset class="module aligned">
+										<div class="form-row">
+											<div class="form-group">
+												<label for="dashboardAccess">Access Group</label>
+												<select multiple class="form-control" name="dashboardAccess">
+													<option value="0" selected="true">Admin</option>
+													<option value="1">Champions</option>
+												</select>
+											</div>
+										</div>
+									</fieldset>
+									<button type="submit" class="btn btn-primary">Update</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endblock %}

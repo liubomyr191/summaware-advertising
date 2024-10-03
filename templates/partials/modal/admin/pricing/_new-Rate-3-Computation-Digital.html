@@ -1,0 +1,112 @@
+<style>
+    .switch2.custom input.check-toggle-round-flat + label:after {
+        width: 60px;
+    }
+</style>
+<div id="new_rate_3_computation_digital" class="modal modal-md my-modal chase-modal">
+    <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;">
+        <span class="close" onclick="document.getElementById('new_rate_3_computation_digital').style.display='none'">&times;</span>
+        <br>  
+        <div class="heading-container text-center mb-5">
+            <h3 class="heading">New Rate</h3>
+        </div>      
+        <div class="progress-icons">
+            <div id="progress_0" class="progress-active"></div>
+            <div id="progress_1" class="progress-active"></div>
+            <div id="progress_2" class="progress-active"></div>
+        </div>
+        <br>
+        <h3 class="heading text-center" style="margin-bottom: 0px;">
+            <a style="cursor: pointer;" onclick="document.getElementById('new_rate_3_computation_digital').style.display='none';document.getElementById('new_rate_3_computation').style.display='block';">Digital</a> 
+        </h3>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <hr style="margin:0px">
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <br>
+        <div class="">            
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">                          
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <strong>Select Impression:</strong>                                
+                                <div class="text-center">
+                                    <div style="cursor: pointer;" onclick="document.getElementById('new_rate_3_computation_digital_1').style.display='block';document.getElementById('new_rate_3_computation_digital').style.display='none';" class="switch2">
+                                        <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                        <label for="cc-toggle"></label>                        
+                                        <span class="active">Flat Rate</span>
+                                        <span class="deactivate">CPM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 text-center">
+                                <table>                                    
+                                    <tr>
+                                        <td width="40%">
+                                            <strong>Default Flat Rate Pricing:</strong>
+                                            <div class="form-group mb-4">
+                                                <input id="" class="form-control" placeholder="$" />
+                                            </div>
+                                        </td>
+                                        <td class="text-center" width="20%">
+                                            For
+                                        </td>
+                                        <td width="40%">
+                                            <strong> &nbsp; </strong>
+                                            <div class="form-group mb-4">                                    
+                                                <input id="" class="form-control text-right" style="width:100px;" value="Days"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>                     
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3 text-center">
+                                <strong>Modular Override Rates:</strong>
+                            </div>
+                            <div class="col-md-3 text-center=">
+                                <div class="">
+                                    <div class="switch2 custom" style="width: 120px;">
+                                        <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                        <label for="cc-toggle"></label>                        
+                                        <span class="deactivate">Yes</span>
+                                        <span class="active">No</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <a>Advanced Options <i class="fa fa-chevron-down"></i></a>
+                    </div>
+                </div>
+                <div class="row btn-container">
+                    <div class="col-md-6 text-left">
+                        <button class="btn px-5 btn-gray" onclick="document.getElementById('new_rate_2_date').style.display='block';document.getElementById('new_rate_3_computation_digital').style.display='none';"> Previous  </button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_3_computation_digital').style.display='none';document.getElementById('new_rate_4_final').style.display='block';"> Create Rate  </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

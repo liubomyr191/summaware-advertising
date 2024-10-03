@@ -1,0 +1,77 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/rates/CompanyRates.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="search_inputs">
+                        <select id="company_select">
+                            <option value="">Select a company...</option>
+                            {% for company in companies %}
+                                <option value="{{ company.id }}">{{ company.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="rate_search" placeholder="Search for a rate..." style="float: right;"/>
+                    </div>
+                </div>
+            </div><br />
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-striped table-condensed" id="company_rate_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Ad Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rate in rates %}
+                                <tr>
+                                    <td>{{ rate.id }}</td>
+                                    <td>{{ rate.name }}</td>
+                                    <td>{{ rate.description }}</td>
+                                    <td>{{ rate.ad_type.name }}</td>
+                                    <td>{{ rate.start_date }}</td>
+                                    <td>{{ rate.end_date }}</td>
+                                    <td data-rate-id="{{ rate.id }}">
+                                        <input type="checkbox" class="rate-checkbox"/>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>       
+
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

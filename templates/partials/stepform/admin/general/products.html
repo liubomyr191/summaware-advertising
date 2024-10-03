@@ -1,0 +1,220 @@
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Products</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="text-container text-center mb-5">
+        <p>
+          Click on an option below to create a<br />
+          new product Type
+        </p>
+      </div>
+
+      <div class="product-boxes">
+        <div class="row">
+          <div class="col-md-3">
+            <a href="{% url 'adminNewMagazine' %}" target="_blank" class="product-box">
+              <i class="fa fa-solid fa-book-open"></i>
+              <span>New Magazine</span>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'adminNewNewspaper' %}" target="_blank" class="product-box">
+              <i class="fa fa-solid fa-newspaper"></i>
+              <span>New Newspaper</span>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'adminNewDigital' %}" class="product-box">
+              <i class="fa fa-solid fa-laptop"></i>
+              <span>New Digital Product</span>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <button href="" class="product-box" disabled>
+              <i class="fa fa-solid fa-pencil"></i>
+              <span>New Custom Product</span>
+              <small class="mgt-1"><strong>Coming soon, contact us for special request</strong></small>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-search-container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="filter-container">
+          <div class="filters d-flex align-items-center item-status"><a class="active" id="item-status">Active</a>&nbsp;|&nbsp;<a id="item-status">Inactive</a>&nbsp;|&nbsp;<a id="item-status">Archived</a></div>
+          <div class="filters d-flex align-items-center">
+            <a id="product-type" class="active" onclick="showProducts('all', this)">All</a>&nbsp;|&nbsp;
+            <a id="product-type" onclick="showProducts('#newspaper-product', this)">Print</a>&nbsp;|&nbsp;
+            <a id="product-type" onclick="showProducts('#digital-product', this)">Digital</a>&nbsp;|&nbsp;
+            <a id="product-type" onclick="showProducts('#magazine-product', this)">Magazine</a>&nbsp;|&nbsp;
+            <a>Custom</a></div>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <div class="billing-terms-list-container">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Fold Orientation</th>
+            <th scope="col">Product Type</th>
+            <th scope="col">Dimensions</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="rate-table-body">
+          {% for newspaper in newspapers %}
+          <tr id="newspaper-product" class="product-list">
+              <td>{{newspaper.id}}</td>
+              <td>{{newspaper.product_mag}}</td>
+              <td>{{newspaper.fold_orientation}}</td>
+              <td>Newspaper</td>
+              <td>See full specs</td>
+              <td>
+                <div class="toggle-switch-container">
+                  <div class="switch-field">
+                    <input type="radio" id="{{newspaper.id}}-newspaper-product-radio-one" name="{{newspaper.id}}-product-switch-one" value="active" {{newspaper.active | yesno:"checked, unchecked"}} />
+                    <label for="{{newspaper.id}}-newspaper-product-radio-one">Active</label>
+                    <input type="radio" id="{{newspaper.id}}-newspaper-product-radio-two" name="{{newspaper.id}}-product-switch-one" value="inactive" {{newspaper.active | yesno:"unchecked, checked"}} />
+                    <label for="{{newspaper.id}}-newspaper-product-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                  <a href = "{% url 'adminEditNewspaper' id=newspaper.id %}" class="pe-5 mgr-1"><i class="fa fa-solid fa-pencil"></i></a>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+          </tr>
+          {% endfor %}
+          {% for digital in digitals %}
+          <tr id="digital-product" class="product-list">
+              <td>{{digital.id|add:total_newspapers}}</td>
+              <td>{{digital.product_mag}}</td>
+              <td>{{digital.fold_orientation}}</td>
+              <td>Digital</td>
+              <td>See full specs</td>
+              <td>
+                <div class="toggle-switch-container">
+                  <div class="switch-field">
+                    <input type="radio" id="{{digital.id}}-digital-product-radio-one" name="{{digital.id}}-digital-product-switch-one" value="active" {{digital.active | yesno:"checked, unchecked"}} />
+                    <label for="{{digital.id}}-digital-product-radio-one">Active</label>
+                    <input type="radio" id="{{digital.id}}-digital-product-radio-two" name="{{digital.id}}-digital-product-switch-one" value="inactive" {{digital.active | yesno:"unchecked, checked"}} />
+                    <label for="{{digital.id}}-digital-product-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                  <a href = "{% url 'adminEditDigital' id=digital.id %}" class="pe-5 mgr-1"><i class="fa fa-solid fa-pencil"></i></a>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+          </tr>
+          {% endfor %}
+          {% for magazine in magazines %}
+          <tr id="magazine-product" class="product-list">
+              <td>{{magazine.id|add:total_newspapers|add:total_digitals}}</td>
+              <td>{{magazine.product_mag}}</td>
+              <td>{{magazine.fold_orientation}}</td>
+              <td>Magazine</td>
+              <td>See full specs</td>
+              <td>
+                <div class="toggle-switch-container">
+                  <div class="switch-field">
+                    <input type="radio" id="{{magazine.id}}-magazine-product-radio-one" name="{{magazine.id}}-magazine-product-switch-one" value="active" {{magazine.active | yesno:"checked, unchecked"}} />
+                    <label for="{{magazine.id}}-magazine-product-radio-one">Active</label>
+                    <input type="radio" id="{{magazine.id}}-magazine-product-radio-two" name="{{magazine.id}}-magazine-product-switch-one" value="inactive" {{magazine.active | yesno:"unchecked, checked"}} />
+                    <label for="{{magazine.id}}-magazine-product-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                  <a href = "{% url 'adminEditMagazine' id=magazine.id %}" class="pe-5 mgr-1"><i class="fa fa-solid fa-pencil"></i></a>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+          </tr> 
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+  <div class="save-container d-flex justify-content-end mt-5">
+    <button class="btn btn-secondary-light">Save Changes</button>
+  </div>
+  <script>
+    function showProducts(type, clickedElement) {
+      if(type == 'all') {
+        document.querySelectorAll('.product-list').forEach(element => {
+          element.style.display = 'table-row';
+        });
+      }
+      else {
+        document.querySelectorAll('.product-list').forEach(element => {
+          element.style.display = 'none';
+        });
+        const elements = document.querySelectorAll(type);
+        elements.forEach(element => {
+            element.style.display = 'table-row';
+        });
+      }
+      document.querySelectorAll('#product-type').forEach(element => {
+        element.classList.remove('active');
+      })
+      clickedElement.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all radio buttons with name ending in '-adjustment-switch-one'
+      const radioButtons = document.querySelectorAll('input[name$="-product-switch-one"]');
+      
+      // Add change event listener to each radio button
+      radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function(event) {
+          handleRadioChange(event);
+        });
+      });
+
+      // Function to handle the change event
+      function handleRadioChange(event) {
+        const selectedValue = event.target.value;
+        const productId = event.target.id.split('-')[0]; // Extract the adjustment ID from the name attribute
+        const productType = event.target.id.split('-')[1];
+        let data = {};
+        data['active'] = selectedValue == 'active' ? true : false;
+        data['status_only'] = true;
+        fetch(`/advertising/adadmin/financial/edit-${productType}/${productId}/save`, {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": getCookie('csrftoken'),
+                "Accept": "application/json",
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            $.toastr.success('Saved Success');
+        })
+        .catch(error => {
+            $.toastr.error("Saved failure");
+        });
+        // You can perform any other actions here, such as sending an AJAX request to update the server
+      }
+    });
+  </script>
+</div>

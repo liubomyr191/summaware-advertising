@@ -1,0 +1,307 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% comment %} {% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %} {% endcomment %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "js/jquery.countrySelector.js" %}"></script>
+<script src="{% static "dist/js/advertising/accounts/CreateAccount.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-countryselector.min.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/accounts/create_account.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    {% if access == "deny" %}
+    <div id="message">{{ message }}</div>
+    {% else %}
+    <div id="message">{{ message }}</div>
+    <div class="container" style="height: auto;">
+        <div id="title">Create a New Account!</div>
+        <div class="row">
+            <form method='post' id="new_account_form">
+                {% csrf_token %}
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label for="accountType">Account Type: </label>
+                                <select class="form-control" name="accountType" id="accountType" required>
+                                    <option value="">Select ...</option>
+                                    {% for type in accountTypes %}
+                                    <option value="{{ type.id }}">{{ type.code }} - {{ type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contact Name: </label>
+                                <input type="text" name="first_name" id="first_name" class="form-control"
+                                    placeholder="First Name ..." required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="text" name="last_name" id="last_name" class="form-control"
+                                    placeholder="Last Name ..." required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Account Name: </label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Account Name ..." required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="address">Address: </label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address ..." required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="address">Secondary Address(optional): </label>
+                                <input type="text" class="form-control" id="address_2" name="address_2" placeholder="Enter Secondary Address ..."/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="country">Country</label>                                
+                                <select id="country" name="country" class="form-control" data-role="country-selector"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city"
+                                    placeholder="Enter City ..." required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state"
+                                    placeholder="Enter State ..." min="2" max="2" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="zip_code">Zip</label>
+                                <input type="text" class="form-control" id="zip_code" name="zip_code"
+                                    placeholder="Enter Zip Code ..." min="5" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone"> <i class="fa fa-phone"></i> Phone Number</label>
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    placeholder="(111) 111-1111" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="john.smith@gmail.com" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="text" class="form-control" id="website" name="website" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="company_name_1">Company 1</label>
+                                <input type="text" class="form-control" id="company_name_1" name="company_name_1" placeholder="Enter company name ..." />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="company_name_1">Company 2</label>
+                                <input type="text" class="form-control" id="company_name_2" name="company_name_2" placeholder="Enter company name ..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="industry_code">Industry Code</label>
+                                <select class="form-control" id="industry_code" name="industry_code">
+                                    <option value="">Select ...</option>
+                                    {% for code in industryCodes %}
+                                    <option value="{{ code.id }}">{{ code.code }} - {{ code.description }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sales_person">Sales Person</label>
+                                <select class="form-control" id="sales_person" name="sales_person">
+                                    <option value="">Select...</option>
+                                    {% for person in salespersonList %}
+                                    <option value="{{ person.id }}">
+                                        {{ person.id }} - {{ person.first_name }} {{ person.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="submitter">Submitter/Ad Taker</label>
+                                <input type="text" class="form-control" id="submitter" name="submitter"
+                                    value="{{ request.user.username }}" placeholder="Enter Submitter/Ad Taker ..."
+                                    disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="legacy_id">Legacy ID (optional)</label>
+                                <input type="text" class="form-control" id="legacy_id" name="legacy_id"
+                                    placeholder="Enter Legacy ID ..." />
+                            </div>
+                        </div>
+                    </div>
+
+                    {% comment %} 
+                    If it is set to use a new address, these fields are required. 
+                    If its set to same address, the fields are not required.
+                    {% endcomment %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="section_title">
+                                <h3>Billing Info</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tax_id"> Tax ID</label>
+                                <input type="text" name="tax_id" id="tax_id" class="form-control"
+                                    placeholder="Please Enter" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tearsheets"> Tearsheets </label>
+                                <input type="text" name="tearsheets" id="tearsheets" class="form-control"
+                                    placeholder="Please Enter" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="prepay_required"> Prepay Required?</label>
+                                <select class="form-control" name="prepay_required" id="prepay_required">
+                                    <option value="0">NO</option>
+                                    <option value="1">YES</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="billingEmail"><i class="fa fa-envelope"></i> Billing Email</label>
+                                <input type="text" name="billingEmail" id="billingEmail" class="form-control"
+                                    placeholder="companyemail@gmail.com" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="billing_address_toggle">
+                            <div class="radio-toggle">
+                                <input type="radio" name="use-billing-address" value="different" />
+                                <label>New Address</label>
+                            </div>
+
+                            <div class="radio-toggle">
+                                <input type="radio" name="use-billing-address" value="same" />
+                                <label>Use Same Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="new_billing_address_section">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="address">Address: </label>
+                                    <input type="text" class="form-control" id="billing-address" name="billing-address"
+                                        placeholder="Enter Address ..." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="billing-city" name="billing-city"
+                                        placeholder="Enter City ..." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" class="form-control" id="billing-state" name="billing-state"
+                                        placeholder="Enter State ..." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="zip-code">Zip</label>
+                                    <input type="text" class="form-control" id="billing-zip-code" name="billing-zip-code"
+                                        placeholder="Enter Zip Code ..." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="final_buttons">
+                        <button class="btn btn-danger">Cancel</button>
+                        <button class="btn dark-blue">Create Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

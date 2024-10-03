@@ -1,0 +1,79 @@
+<button type="button" id="add_page_dimensions_btn" class="page_button" data-toggle="modal" data-target="#add_page_dimensions_modal">
+    <i class="fa fa-plus"></i> Add Page Dimensions
+</button>
+
+<section id="add_page_dimensions_modal" class="modal fade" role="dialog" data-publication="{{ publication.id }}">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Page Dimensions</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="add_dimensions">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="newPageSize">Page Size</label>
+                                <input type="number" class="form-control" id="newPageSize" name="newPageSize" placeholder="Enter page size..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newColumnsPerPage">Columns Per Page</label>
+                                <input type="number" class="form-control" id="newColumnsPerPage" name="newColumnsPerPage" placeholder="Enter columns per page..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newColumnWidth">Column Width</label>
+                                <input type="number" class="form-control" id="newColumnWidth" name="newColumnWidth" placeholder="Enter column width..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPageWidth">Page Width</label>
+                                <input type="number" class="form-control" id="newPageWidth" name="newPageWidth" placeholder="Enter page width..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPageHeight">Page Height</label>
+                                <input type="number" class="form-control" id="newPageHeight" name="newPageHeight" placeholder="Enter page height..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPageBorder">Page Border</label>
+                                <input type="number" class="form-control" id="newPageBorder" name="newPageBorder" placeholder="Enter page border..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newGutterSize">Gutter Size</label>
+                                <input type="number" class="form-control" id="newGutterSize" name="newGutterSize" placeholder="Enter gutter size..." required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="newColumnInches">Column Inches</label>
+                                        <input type="number" class="form-control" id="newColumnInches" name="newColumnInches" placeholder="Enter conversion..." required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="newInches">Inches</label>
+                                        <input type="number" class="form-control" id="newInches" name="newInches" placeholder="Enter conversion..." required>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="newDefaultSize">Default Size</label>
+                                <select name="newDefaultSize" id="newDefaultSize" class="form-control" required>
+                                    <option value="">Select size...</option>
+                                    <option value="quarter">Quarter Page</option>
+                                    <option value="half">Half Page</option>
+                                    <option value="full">Full Page</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="add_dimensions_submit">Add</button>
+            </div>
+        </div>
+    </div>
+</section>

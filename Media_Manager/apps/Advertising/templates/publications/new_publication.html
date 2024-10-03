@@ -1,0 +1,194 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/publications/NewPublication.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h2>Create a New Publication</h2>
+        <form method="post" id="new_pub_form">
+            {% csrf_token %}
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#details">Details</a></li>
+                <li><a data-toggle="tab" href="#page_dimensions">Page Dimensions</a></li>
+                <li><a data-toggle="tab" href="#deadlines">Deadlines</a></li>
+            </ul>
+            <div class="tab-content"><br />
+                <div id="details" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name..." required />
+                            </div>
+                            <div class="form-group">
+                                <label for="runDays">Run Days</label>
+                                <select class="form-control" id="runDays" name="runDays" multiple required />
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                    <option value="saturday">Saturday</option>
+                                    <option value="sunday">Sunday</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="charge_tax" id="charge_tax" />
+                                <label for="charge_tax">Charge Tax?</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" id="address" name="address"
+                                            placeholder="Enter address..." required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter city..."
+                                            value="{{ city }}" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="Enter state..."
+                                            value="{{ state }}" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="credit_memo">Credit Memo</label>
+                                        <input type="text" name="credit_memo" id="credit_memo" class="form-control" placeholder="Enter credit memo..." />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="zip_code">Zip Code</label>
+                                        <input type="text" class="form-control" id="zip_code" name="zip_code"
+                                            placeholder="Enter zip code..." required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="spot_color">Spot Color</label>
+                                        <select name="spot_color" id="spot_color" class="form-control" required />
+                                            <option value="">Select spot color...</option>
+                                            <option value="Black">Black</option>
+                                            <option value="Cyan">Cyan</option>
+                                            <option value="Yellow">Yellow</option>
+                                            <option value="Magenta">Magenta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="page_dimensions" class="tab-pane fade in">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="page_size">Page Size</label>
+                                <input type="number" class="form-control" id="page_size" name="page_size"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="columns_per_page">Columns Per Page</label>
+                                <input type="number" class="form-control" id="columns_per_page" name="columns_per_page"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="column_width">Column Width</label>
+                                <input type="number" class="form-control" id="column_width" name="column_width"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="page_width">Page Width</label>
+                                        <input type="number" step="0.1" class="form-control" id="page_width" name="page_width"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="page_height">Page Height</label>
+                                        <input type="number" step="0.1" class="form-control" id="page_height" name="page_height"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_border">Page Border</label>
+                                <input type="number" class="form-control" id="page_border" name="page_border" />
+                            </div>
+                            <div class="form-group">
+                                <label for="gutter_size">Gutter Size</label>
+                                <input type="number" class="form-control" id="gutter_size" name="gutter_size" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="column_inches">Column Inches</label>
+                                        <input type="number" class="form-control" id="column_inches" name="column_inches" placeholder="Enter column inches..." >
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inches">Inches</label>
+                                        <input type="number" class="form-control" id="inches" name="inches" placeholder="Enter inches..." >
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="default_size">Default Size</label>
+                                <select name="default_size" id="default_size" class="form-control" required>
+                                    <option value="">Select size...</option>
+                                    <option value="quarter">Quarter Page</option>
+                                    <option value="half">Half Page</option>
+                                    <option value="full">Full Page</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="deadlines" class="tab-pane fade in">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#add_deadline_modal">Add Deadline</button>
+                    {% include 'snippets/publications/ad_deadlines/AddDeadlineModal.html' %}
+                    <br />
+                    <table class="table table-hover table-striped table-condensed" id="new_deadlines_table">
+                        <thead>
+                            <tr>
+                                <th>Publication Day</th>
+                                <th>Time</th>
+                                <th>Ad Type</th>
+                                <th>Days Prior</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div><br />
+            <button type="button" class="btn btn-primary" id="new_pub_submit_btn">Create</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

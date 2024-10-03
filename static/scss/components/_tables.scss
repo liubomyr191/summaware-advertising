@@ -1,0 +1,62 @@
+.table-container {
+  background-color: $offwhite;
+  box-shadow: $shadow;
+  height: auto;
+  border-radius: 0 0 10px 10px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    th {
+      background-color: $secondary-light-alpha;
+      padding: 10px;
+      &:first-of-type {
+        border-top-left-radius: 10px;
+      }
+      &:last-of-type {
+        border-top-right-radius: 10px;
+      }
+    }
+
+    tr {
+      //box-shadow: $shadow;
+      td {
+        padding: 10px;
+      }
+    }
+  }
+  .end-of-list-heading-container {
+    padding: 50px 0;
+  }
+}
+
+.product-table-container {
+  background-color: $offwhite;
+  box-shadow: $shadow;
+  height: 450px;
+  border-radius: 10px;
+  border: 1px solid $black;
+  .product-table {
+    th {
+      background-color: $secondary-light-alpha;
+      font-size: 12px;
+      &:first-of-type {
+        border-top-left-radius: 10px;
+      }
+      &:last-of-type {
+        border-top-right-radius: 10px;
+      }
+    }
+  }
+}

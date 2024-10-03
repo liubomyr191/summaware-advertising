@@ -1,0 +1,1012 @@
+<div id="editRate" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editRate').style.display='none'">&times;</span>
+
+    <div class="multistep-container mgt-5 mgb-100 edit-rate-container" data-index="">
+      {% load static %}
+      <div class="c-card">
+        <div class="heading-container text-center mb-5" style="position: relative; z-index: 2">
+          <h3 class="heading">Edit Rate</h3>
+        </div>
+        <div class="progress-icons">
+          <div class="progress-dot-container">
+            <div id="progress_0" class="progress-dot progress-active">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">General Info</p>
+          </div>
+          <div class="progress-dot-container">
+            <div id="progress_1" class="progress-dot">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">Dates</p>
+          </div>
+          <div class="progress-dot-container">
+            <div id="progress_2" class="progress-dot">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">Computation</p>
+          </div>
+        </div>
+
+        <div id="section1" class="section multistep-content mgt-5 mgb-3">
+          <!-- <div class="heading-container text-center">
+            <h3 class="heading">General Info</h3>
+          </div> -->
+          <form method="post" id="edit-rate-info-form">
+            <div class="content w50 center-block">
+              <div class="form-group mb-4">
+                <label for=""><strong>Rate Name:</strong></label>
+                <input type="text" name="name" id="edit-rate-name" class="form-control" />
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Measurement Type:</strong></label>
+                    <select name="measurement_type" id="measurementSelect" class="form-control edit-rate-type">
+                      <option>Select a measurment type</option>
+                      <option value="lines">Lines</option>
+                      <option value="words">Words</option>
+                      <option value="units">Units</option>
+                      <option value="digital">Digital</option>
+                      <option value="inches">Inches</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Ad Type:</strong></label>
+                    <select name="ad_type" id="edit-rate-adtype" class="form-control">
+                      {% for adtype in adtypes %}
+                      <option value="{{adtype.id}}">{{adtype.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Pricing:</strong></label>
+                    <div class="custom-toggle-container">
+                      <div class="switch-field">
+                        <input type="radio" id="edit-rate-pricing-one" name="pricing" value="standard" />
+                        <label for="edit-rate-pricing-one">Standard</label>
+                        <input type="radio" id="edit-rate-pricing-two" name="pricing" value="customary" />
+                        <label for="edit-rate-pricing-two">Customary</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Tax Category:</strong></label>
+                    <select name="tax_category" id="edit-rate-tax-category" class="form-control">
+                      <option value="no">No Tax</option>
+                      <option value="yes">Tax</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Override Previlieges:</strong></label>
+                    <div class="custom-toggle-container">
+                      <div class="switch-field">
+                        <input type="radio" id="edit-rate-override-privileges-one" name="override_privileges" value="yes" />
+                        <label for="edit-rate-override-privileges-one">Yes</label>
+                        <input type="radio" id="edit-rate-override-privileges-two" name="override_privileges" value="no" />
+                        <label for="edit-rate-override-privileges-two">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Default GL Code (optional):</strong></label>
+                    <select name="default_gl_code" id="edit-rate-gl-code" class="form-control">
+                      {% for glcode in glcodes %}
+                      <option value="{{glcode.id}}">{{glcode.code}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    With Override Privilieges, a user can<br />
+                    request an override from their<br />
+                    administrator
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for=""><strong>Assign Rate to other groups?:</strong></label>
+                    <div class="custom-toggle-container">
+                      <div class="switch-field">
+                        <input type="radio" id="edit-assigned_groups-one" class="edit-rate-assigned-groups-one" name="assigned_groups" value="yes" />
+                        <label for="edit-assigned_groups-one">Yes</label>
+                        <input type="radio" id="edit-assigned_groups-two" class="edit-rate-assigned-groups-two" name="assigned_groups" value="no" />
+                        <label for="edit-assigned_groups-two">No</label>
+                      </div>
+                    </div>
+                    <br />
+                    <div id="edit_select_extra_group" style="display: none">
+                      <label for=""><strong>Select extra group:</strong></label>
+                      <select multiple="multiple" id="edit_rate_extra_lstBox1" class="form-select form-control">
+                        {% for extra_group in extra_groups %}
+                        <option value="{{extra_group.id}}">{{extra_group.name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="btn-container text-right">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div>
+
+        <div id="section2" class="section multistep-content mgt-5 mgb-3 hide">
+          <div class="content w50 center-block">
+            <div class="text-container text-center">
+              <p>Select your desired dates. These can also<br />be changed and updated later.</p>
+            </div>
+            <form method="post" id="edit-rate-dates-form">
+              <div class="row mgt-5">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Start Date</label>
+                    <input type="date" name="start_date" id="edit-rate-start-date" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="">End Date: (optional)</label>
+                    <input type="date" name="end_date" id="edit-rate-end-date" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="btn-container content-even">
+            <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+            <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+          </div>
+        </div>
+
+        <div id="section3" class="section multistep-content mgt-5 mgb-3 hide">
+          <div class="content center-block">
+            <div id="lines" class="measurment-container hide">
+              <div class="heading-container text-center">
+                <h3 class="heading mgb-0">Lines</h3>
+                <hr class="mgt-0" />
+              </div>
+              <form method="post" id="edit-rate-lines-computation-form">
+                <div class="row">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="insertions">
+                      <p>
+                        <small><strong>Number of insertions</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="insertion_min" id="edit-rate-lines-insertion-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="insertion_max" id="edit-rate-lines-insertion-max" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="custom-toggle-container">
+                            <div class="switch-field">
+                              <input type="radio" id="edit-rate-lines-insertion-one" name="lines_insertion_status" value="on" checked />
+                              <label for="edit-rate-lines-insertion-one">On</label>
+                              <input type="radio" id="edit-rate-lines-insertion-two" name="lines_insertion_status" value="off" />
+                              <label for="edit-rate-lines-insertion-two">Off</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="number-of-lines">
+                      <p>
+                        <small><strong>Number of lines for an ad (optional):</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="line_for_ad_min" id="edit-rate-lines-ad-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="line_for_ad_max" id="edit-rate-lines-ad-max" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="custom-toggle-container">
+                            <div class="switch-field">
+                              <input type="radio" id="edit-rate-lines-ad-one" name="lines_ad_status" value="on" checked />
+                              <label for="edit-rate-lines-ad-one">On</label>
+                              <input type="radio" id="edit-rate-lines-ad-two" name="lines_ad_status" value="off" />
+                              <label for="edit-rate-lines-ad-two">Off</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 col-lg-6">
+                    <div class="row mgb-3">
+                      <div class="col-lg-6">
+                        <p>
+                          <small><strong>Charge for:</strong></small>
+                        </p>
+                        <div class="custom-toggle-container">
+                          <div class="switch-field">
+                            <input type="radio" id="edit-rate-lines-charge-one" name="lines_charge_for" value="all" checked />
+                            <label for="edit-rate-lines-charge-one">All</label>
+                            <input type="radio" id="edit-rate-lines-charge-two" name="lines_charge_for" value="free After" />
+                            <label for="edit-rate-lines-charge-two">Free After</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label for="">Enter No. of Insertions:</label>
+                        <div class="input-group">
+                          <input type="text" name="insertion_count" id="edit-rate-lines-insertions" class="form-control" />
+                          <span class="input-group-addon">Insertion(s)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mgb-3">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>Base cost:</strong></label>
+                          <input type="text" name="base_cost" id="edit-rate-lines-base-cost" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>No. of lines allowed for starting charge:</strong></label>
+                          <input type="text" name="base_count" id="edit-rate-lines-base-count" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <p>
+                          <small><strong>Additional cost (optional):</strong></small>
+                        </p>
+                        <div class="content-between">
+                          <div class="form-group">
+                            <label for="charge">Charge:</label>
+                            <input type="text" name="additional_cost" id="edit-rate-lines-additional-cost" class="form-control" />
+                          </div>
+                          <span><strong>For</strong></span>
+                          <div class="form-group">
+                            <label for="extra-lines">No. of extra lines:</label>
+                            <input type="text" name="additional_count" id="edit-rate-lines-additional-count" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center mgt-5">
+                <a class="text-link" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Advanced Options <i class="fa fa-solid fa-chevron-down"></i></a>
+              </div>
+              <div class="collapse" id="collapseExample">
+                <div class="w50 center-block text-center">
+                  <hr />
+                  <p>Download the template below and input your data. Then upload the template to import the data into this system.</p>
+                </div>
+
+                <div class="content-even mgt-5">
+                  <button class="btn btn-dl-template mgb-0">Download Template <i class="fa fa-solid fa-arrow-down"></i></button>
+                  <button class="btn btn-secondary">Upload Template <i class="fa fa-solid fa-arrow-up"></i></button>
+                </div>
+              </div>
+            </div>
+            <div id="words" class="measurment-container hide">
+              <div class="heading-container text-center">
+                <h3 class="heading mgb-0">Words</h3>
+                <hr class="mgt-0" />
+              </div>
+              <form method="post" id="edit-rate-words-computation-form">
+                <div class="row">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="insertions">
+                      <p>
+                        <small><strong>Number of insertions</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="insertion_min" id="edit-rate-words-insertion-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="insertion_max" id="edit-rate-words-insertion-max" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="custom-toggle-container">
+                            <div class="switch-field">
+                              <input type="radio" id="edit-rate-words-insertion-one" name="words_insertion_status" value="on" checked />
+                              <label for="edit-rate-words-insertion-one">On</label>
+                              <input type="radio" id="edit-rate-words-insertion-two" name="words_insertion_status" value="off" />
+                              <label for="edit-rate-words-insertion-two">Off</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="number-of-lines">
+                      <p>
+                        <small><strong>Number of lines for an ad (optional):</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="line_for_ad_min" id="edit-rate-words-ad-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="line_for_ad_max" id="edit-rate-words-ad-max" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="custom-toggle-container">
+                            <div class="switch-field">
+                              <input type="radio" id="edit-rate-words-ad-one" name="words_ad_status" value="on" checked />
+                              <label for="edit-rate-words-ad-one">On</label>
+                              <input type="radio" id="edit-rate-words-ad-two" name="words_ad_status" value="off" />
+                              <label for="edit-rate-words-ad-two">Off</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 col-lg-6">
+                    <div class="row mgb-3">
+                      <div class="col-lg-6">
+                        <p>
+                          <small><strong>Charge for:</strong></small>
+                        </p>
+                        <div class="custom-toggle-container">
+                          <div class="switch-field">
+                            <input type="radio" id="edit-rate-words-charge-one" name="words_charge_for" value="all" checked />
+                            <label for="edit-rate-words-charge-one">All</label>
+                            <input type="radio" id="edit-rate-words-charge-two" name="words_charge_for" value="free After" />
+                            <label for="edit-rate-words-charge-two">Free After</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mgb-3">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>Base cost:</strong></label>
+                          <input type="text" name="base_cost" id="edit-rate-words-base-cost" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>No. of words allowed for starting charge:</strong></label>
+                          <input type="text" name="base_count" id="edit-rate-words-base-count" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <p>
+                          <small><strong>Additional cost (optional):</strong></small>
+                        </p>
+                        <div class="content-between">
+                          <div class="form-group">
+                            <label for="charge">Charge:</label>
+                            <input type="text" name="additional_cost" id="edit-rate-words-additional-cost" class="form-control" />
+                          </div>
+                          <span><strong>For</strong></span>
+                          <div class="form-group">
+                            <label for="extra-words">No. of extra words:</label>
+                            <input type="text" name="additional_count" id="edit-rate-words-additional-count" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center mgt-5">
+                <a class="text-link" type="button" data-toggle="collapse" data-target="#wordsAdvOptions" aria-expanded="false" aria-controls="wordsAdvOptions">Advanced Options <i class="fa fa-solid fa-chevron-down"></i></a>
+              </div>
+              <div class="collapse" id="wordsAdvOptions">
+                <div class="w50 center-block text-center">
+                  <hr />
+                  <p>Download the template below and input your data. Then upload the template to import the data into this system.</p>
+                </div>
+
+                <div class="content-even mgt-5">
+                  <button class="btn btn-dl-template mgb-0">Download Template <i class="fa fa-solid fa-arrow-down"></i></button>
+                  <button class="btn btn-secondary">Upload Template <i class="fa fa-solid fa-arrow-up"></i></button>
+                </div>
+              </div>
+            </div>
+            <div id="units" class="measurment-container hide">
+              <div class="heading-container text-center">
+                <h3 class="heading mgb-0">Units</h3>
+                <hr class="mgt-0" />
+              </div>
+
+              <form method="post" id="edit-rate-units-computation-form">
+                <div class="row">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="insertions">
+                      <p>
+                        <small><strong>Number of insertions</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="insertion_min" id="edit-rate-units-insertion-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="insertion_max" id="edit-rate-units-insertion-max" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="custom-toggle-container">
+                            <div class="switch-field">
+                              <input type="radio" id="edit-rate-units-insertion-one" name="units_insertion_status" value="on" checked />
+                              <label for="edit-rate-units-insertion-one">On</label>
+                              <input type="radio" id="edit-rate-units-insertion-two" name="units_insertion_status" value="off" />
+                              <label for="edit-rate-units-insertion-two">Off</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="number-of-lines">
+                      <p>
+                        <small><strong>Volume of inserts per insertion:</strong></small>
+                      </p>
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Min:</label>
+                            <input type="text" name="line_for_ad_min" id="edit-rate-units-ad-min" class="form-control" />
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="min">Max:</label>
+                            <input type="text" name="line_for_ad_max" id="edit-rate-units-ad-max" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 col-lg-6">
+                    <div class="row mgb-3" style="display: flex; justify-content: right">
+                      <div class="col-lg-6">
+                        <p>
+                          <small><strong>Charge for:</strong></small>
+                        </p>
+                        <div class="custom-toggle-container">
+                          <div class="switch-field">
+                            <input type="radio" id="edit-rate-units-charge-one" name="units_charge_for" value="all" checked />
+                            <label for="edit-rate-units-charge-one">All</label>
+                            <input type="radio" id="edit-rate-units-charge-two" name="units_charge_for" value="free After" />
+                            <label for="edit-rate-units-charge-two">Free After</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mgb-3">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>Base cost:</strong></label>
+                          <input type="text" name="base_cost" id="edit-rate-units-base-cost" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="base-cost"><strong>Base Units:</strong></label>
+                          <input type="text" name="base_count" id="edit-rate-units-base-count" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <p>
+                          <small><strong>Additional cost:</strong></small>
+                        </p>
+                        <div class="content-between">
+                          <div class="form-group">
+                            <label for="unit-charge">Charge:</label>
+                            <input type="text" name="additional_cost" id="edit-rate-units-additional-cost" class="form-control" />
+                          </div>
+                          <span><strong>For</strong></span>
+                          <div class="form-group">
+                            <label for="extra-unit">Extra Unit:</label>
+                            <input type="text" name="additional_count" id="edit-rate-units-additional-count" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center mgt-5">
+                <a class="text-link" type="button" data-toggle="collapse" data-target="#unitsAdvOptions" aria-expanded="false" aria-controls="unitsAdvOptions">Advanced Options <i class="fa fa-solid fa-chevron-down"></i></a>
+              </div>
+              <div class="collapse" id="unitsAdvOptions">
+                <div class="w50 center-block text-center">
+                  <hr />
+                  <p>Download the template below and input your data. Then upload the template to import the data into this system.</p>
+                </div>
+
+                <div class="content-even mgt-5">
+                  <button class="btn btn-dl-template mgb-0">Download Template <i class="fa fa-solid fa-arrow-down"></i></button>
+                  <button class="btn btn-secondary">Upload Template <i class="fa fa-solid fa-arrow-up"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <div id="inches" class="measurment-container hide">
+              <div class="w50 center-block">
+                <div class="text-center">
+                  <h3 class="mgb-0">Inches</h3>
+                  <hr class="mgt-0" />
+                </div>
+                <form method="post" id="edit-rate-inches-computation-form">
+                  <div class="form-group mgb-3">
+                    <label for="col-inch-cost"><strong>Default Cost Per Column Inch:</strong></label>
+                    <input type="text" name="additional_cost" id="edit-rate-inches-additional-cost" class="form-control" />
+                  </div>
+
+                  <div class="content-between mgb-3">
+                    <div>
+                      <p class="mgb-0"><strong>Modular Override Rates:</strong></p>
+                    </div>
+                    <div class="custom-toggle-container">
+                      <div class="switch-field">
+                        <input type="radio" id="edit-rate-inches-one" name="inches_charge_for" value="yes" checked />
+                        <label for="edit-rate-inches-one">Yes</label>
+                        <input type="radio" id="edit-rate-inches-two" name="inches_charge_for" value="no" />
+                        <label for="edit-rate-inches-two">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mgb-3">
+                    <label for="prod-type">Product Type:</label>
+                    <select name="additional_count" id="edit-rate-inches-additional-count" class="form-control">
+                      <option value="lines">Lines</option>
+                      <option value="words">Words</option>
+                      <option value="units">Units</option>
+                      <option value="digital">Digital</option>
+                      <option value="inches">Inches</option>
+                    </select>
+                  </div>
+                </form>
+                <div class="table-container">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Price</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Full Page</td>
+                        <td>5x11</td>
+                        <td><input type="text" name="" id="" class="form-control" /></td>
+                        <td><button class="btn btn-gray">Reset</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="content-end">
+                  <button class="btn btn-secondary">Save Prices</button>
+                </div>
+              </div>
+
+              <div class="text-center mgt-5">
+                <a class="text-link" type="button" data-toggle="collapse" data-target="#inchesAdvOptions" aria-expanded="false" aria-controls="inchesAdvOptions">Advanced Options <i class="fa fa-solid fa-chevron-down"></i></a>
+              </div>
+              <div class="collapse" id="inchesAdvOptions">
+                <div class="w50 center-block text-center">
+                  <hr />
+                  <p>Download the template below and input your data. Then upload the template to import the data into this system.</p>
+                </div>
+
+                <div class="content-even mgt-5">
+                  <button class="btn btn-dl-template mgb-0">Download Template <i class="fa fa-solid fa-arrow-down"></i></button>
+                  <button class="btn btn-secondary">Upload Template <i class="fa fa-solid fa-arrow-up"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <div id="digital" class="measurment-container hide">
+              <form method="post" id="edit-rate-digital-computation-form">
+                <div class="custom-toggle-container text-center mgb-3">
+                  <p class="mgb-0"><strong>Select Impressions</strong></p>
+                  <div class="switch-field center-block">
+                    <input type="radio" id="edit-flat-rate-radio" name="rate-switch" value="flat-rate" checked />
+                    <label for="edit-flat-rate-radio">Flat rate</label>
+                    <input type="radio" id="edit-cpm-radio" name="rate-switch" value="CPM" />
+                    <label for="edit-cpm-radio">CPM</label>
+                  </div>
+                </div>
+
+                <div id="flat-rate" class="w50 center-block">
+                  <div class="text-center">
+                    <h3 class="mgb-0">Digital</h3>
+                    <hr class="mgt-0" />
+                  </div>
+
+                  <p class="mgb-0"><strong>Default Flat Rate Pricing:</strong></p>
+                  <div class="content-even mgb-3">
+                    <input type="text" name="base_cost" id="edit-rate-digital-base-cost" class="form-control w50" placeholder="$" />
+                    <span class="px-1"><strong>For</strong></span>
+                    <div class="form-group content-center mgb-0">
+                      <input type="text" name="base_count" id="edit-rate-digital-base-count" class="w50 form-control" />
+                      <select name="" id="" class="w50 form-control">
+                        <option value="days">Days</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="content-between">
+                    <p class="mgb-0"><strong>Modular Override Rates:</strong></p>
+                    <div class="custom-toggle-container">
+                      <div class="switch-field center-block">
+                        <input type="radio" id="edit-digital-flat-radio-one" name="digital_flat_charge_for" value="yes" checked />
+                        <label for="edit-digital-flat-radio-one">Yes</label>
+                        <input type="radio" id="edit-digital-flat-radio-two" name="digital_flat_charge_for" value="no" />
+                        <label for="edit-digital-flat-radio-two">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="CPM" class="center-block hide">
+                  <div class="w50 center-block">
+                    <div class="text-center">
+                      <h3 class="mgb-0">Digital</h3>
+                      <hr class="mgt-0" />
+                    </div>
+
+                    <div class="form-group mgb-3">
+                      <label for="col-inch-cost"><strong>Default Cost Per Column Inch:</strong></label>
+                      <input type="text" name="additional_cost" id="edit-rate-digital-additional-cost" class="form-control" />
+                    </div>
+
+                    <div class="content-between mgb-3">
+                      <div>
+                        <p class="mgb-0"><strong>Modular Override Rates:</strong></p>
+                      </div>
+                      <div class="custom-toggle-container">
+                        <div class="switch-field">
+                          <input type="radio" id="edit-digital-cpm-radio-one" name="digital_cpm_charge_fors" value="yes" onclick="manuallyDisplayHideSectionEditPage()" />
+                          <label for="edit-digital-cpm-radio-one">Yes</label>
+                          <input type="radio" id="edit-digital-cpm-radio-two" name="digital_cpm_charge_fors" value="no" onclick="manuallyDisplayHideSectionEditPage()" />
+                          <label for="edit-digital-cpm-radio-two">No</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group mgb-3">
+                      <label for="prod-type">Product Type:</label>
+                      <select name="additional_count" id="edit-rate-digital-additional-count" class="form-control">
+                        <option value="lines">Lines</option>
+                        <option value="words">Words</option>
+                        <option value="units">Units</option>
+                        <option value="digital">Digital</option>
+                        <option value="inches">Inches</option>
+                      </select>
+                    </div>
+                    <div class="table-container" id="edit-manual-overrider-section">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Price</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Full Page</td>
+                            <td>5x11</td>
+                            <td><input type="text" name="" id="" class="form-control" /></td>
+                            <td><button class="btn btn-gray">Reset</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="content-end">
+                      <button class="btn btn-secondary">Save Prices</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center mgt-5">
+                <a class="text-link" type="button" data-toggle="collapse" data-target="#digitalAdvOptions" aria-expanded="false" aria-controls="digitalAdvOptions">Advanced Options <i class="fa fa-solid fa-chevron-down"></i></a>
+              </div>
+              <div class="collapse" id="digitalAdvOptions">
+                <div class="w50 center-block text-center">
+                  <hr />
+                  <p>Download the template below and input your data. Then upload the template to import the data into this system.</p>
+                </div>
+
+                <div class="content-even mgt-5">
+                  <button class="btn btn-dl-template mgb-0">Download Template <i class="fa fa-solid fa-arrow-down"></i></button>
+                  <button class="btn btn-secondary">Upload Template <i class="fa fa-solid fa-arrow-up"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-container content-even mgt-5">
+            <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+            <button class="btn btn-secondary" onclick="saveRate('{{rategroup.id}}')">Save Rate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let radioOneEdit = document.getElementById('edit-digital-cpm-radio-one');
+    let radioTwoEdit = document.getElementById('edit-digital-cpm-radio-two');
+    let manualHideSection = document.getElementById('edit-manual-overrider-section');
+    if (radioTwoEdit.checked) {
+      manualHideSection.style = '';
+      manualHideSection.style.display = 'none';
+    } else {
+      manualHideSection.style = '';
+      manualHideSection.style.display = 'block';
+    }
+  });
+  function manuallyDisplayHideSectionEditPage() {
+    let radioOneEdit = document.getElementById('edit-digital-cpm-radio-one');
+    let radioTwoEdit = document.getElementById('edit-digital-cpm-radio-two');
+    let manualHideSection = document.getElementById('edit-manual-overrider-section');
+
+    if (radioOneEdit.checked) {
+      manualHideSection.style = '';
+      manualHideSection.style.display = 'block';
+      radioTwoEdit.checked = false;
+    } else {
+      manualHideSection.style = '';
+      manualHideSection.style.display = 'none';
+    }
+  }
+  function saveRate(id) {
+    var parent = document.querySelector('.edit-rate-container');
+    let form = $('#edit-rate-info-form');
+    var formData = new FormData(form[0]);
+    let data = {};
+
+    for (const [key, value] of formData) {
+      data[key] = value;
+    }
+
+    var selectElement = parent.querySelector('#edit_rate_extra_lstBox1');
+    var values = [id];
+
+    for (var i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].selected) {
+        values.push(selectElement.options[i].value);
+      }
+    }
+    data['extra_groups'] = JSON.stringify(values);
+
+    form = $(`#edit-rate-dates-form`);
+    formData = new FormData(form[0]);
+
+    for (const [key, value] of formData) {
+      data[key] = value;
+    }
+
+    form = $(`#edit-rate-${data['measurement_type']}-computation-form`);
+    formData = new FormData(form[0]);
+
+    for (const [key, value] of formData) {
+      data[key] = value;
+    }
+
+    if (data['pricing'] == 'standard') {
+      data['pricing'] = true;
+    } else {
+      data['pricing'] = false;
+    }
+    if (data['override_privileges'] == 'yes') {
+      data['override_privileges'] = true;
+    } else {
+      data['override_privileges'] = false;
+    }
+    if (data['assigned_groups'] == 'yes') {
+      data['assigned_groups'] = true;
+    } else {
+      data['assigned_groups'] = false;
+    }
+    if (data[`${data['measurement_type']}_insertion_status`] == 'on') {
+      data['insertion_min'] = 0;
+      data['insertion_max'] = 999999;
+    }
+    if (data[`${data['measurement_type']}_ad_status`] == 'on') {
+      data['line_for_ad_min'] = 0;
+      data['line_for_ad_max'] = 999999;
+    }
+    if (data[`${data['measurement_type']}_charge_for`] == 'all') {
+      data['charge_for'] = true;
+    } else {
+      data['charge_for'] = false;
+    }
+    if (data['measurement_type'] != 'lines') data['insertion_count'] = 0;
+    if (data['measurement_type'] == 'digital' || data['measurement_type'] == 'inches') {
+      data['insertion_min'] = 0;
+      data['insertion_max'] = 999999;
+      data['line_for_ad_min'] = 0;
+      data['line_for_ad_max'] = 999999;
+      if (data['measurement_type'] == 'digital') {
+        if (data['rate-switch'] == 'flat-rate') {
+          if (data[`digital_flat_charge_for`] == 'yes') {
+            data['charge_for'] = true;
+          } else {
+            data['charge_for'] = false;
+          }
+          data['additional_cost'] = data['base_cost'];
+          data['additional_count'] = data['base_count'];
+        } else {
+          if (data[`digital_cpm_charge_for`] == 'yes') {
+            data['charge_for'] = true;
+          } else {
+            data['charge_for'] = false;
+          }
+          data['insertion_min'] = 1;
+        }
+      } else {
+        if (data[`inches_charge_for`] == 'yes') {
+          data['charge_for'] = true;
+        } else {
+          data['charge_for'] = false;
+        }
+      }
+      data['base_cost'] = 0;
+      data['base_count'] = 0;
+    }
+    data['id'] = parent.getAttribute('data-index');
+    var hrefUrl = `{% url 'adminPricingEditRateGroup' groupId=999 %}`;
+    var hrefUrl = hrefUrl.replace('999', id);
+    fetch(`${id}/save-rate`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(res => {
+        if (res.success) {
+          window.location.href = hrefUrl;
+        } else {
+          $.toastr.error('Save Failed');
+        }
+      })
+      .catch(err => {
+        $.toastr.error('Save Failed');
+      });
+  }
+  document.getElementById('edit-assigned_groups-one').addEventListener('change', function (event) {
+    var parent = document.querySelector('.edit-rate-container');
+    if (event.target.checked) {
+      parent.querySelector('#edit_select_extra_group').style.display = 'block';
+    }
+  });
+  document.getElementById('edit-assigned_groups-two').addEventListener('change', function (event) {
+    var parent = document.querySelector('.edit-rate-container');
+    if (event.target.checked) {
+      parent.querySelector('#edit_select_extra_group').style.display = 'none';
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    var parent = document.querySelector('.edit-rate-container');
+    var measurementSelect = parent.querySelector('#measurementSelect');
+    var sections = parent.querySelectorAll('#section3 .content .measurment-container');
+
+    measurementSelect.addEventListener('change', function () {
+      // Hide all sections
+      sections.forEach(function (section) {
+        section.classList.add('hide');
+      });
+
+      // Show the selected section
+      var selectedValue = measurementSelect.value;
+      var selectedSection = parent.querySelector(`#${selectedValue}`);
+      if (selectedSection) {
+        selectedSection.classList.remove('hide');
+      }
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var parent = document.querySelector('.edit-rate-container');
+    var flatRateRadio = parent.querySelector('#edit-flat-rate-radio');
+    var cpmRadio = parent.querySelector('#edit-cpm-radio');
+    var flatRateDiv = parent.querySelector('#flat-rate');
+    var cpmDiv = parent.querySelector('#CPM');
+
+    function toggleVisibility() {
+      if (flatRateRadio.checked) {
+        flatRateDiv.classList.remove('hide');
+        cpmDiv.classList.add('hide');
+      } else if (cpmRadio.checked) {
+        flatRateDiv.classList.add('hide');
+        cpmDiv.classList.remove('hide');
+      }
+    }
+
+    flatRateRadio.addEventListener('change', toggleVisibility);
+    cpmRadio.addEventListener('change', toggleVisibility);
+
+    // Initial check to set the correct visibility on page load
+    toggleVisibility();
+  });
+</script>

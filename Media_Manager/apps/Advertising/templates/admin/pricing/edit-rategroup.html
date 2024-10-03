@@ -1,0 +1,50 @@
+{% extends 'templates/base_gamma.html' %} {% block content %}
+
+<div class="landing-container container mt-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">{{rategroup.name}}</h3>
+  </div>
+
+  <div class="admin-tab-container">
+    <a href="{% url 'admin' %}">Admin Home</a>-> Pricing ->{{rategroup.name}}
+
+    <!-- Step Form -->
+    <div class="step-form-container">
+      <div class="content">
+        <!--content inner-->
+        <div class="content__inner">
+          <div class="">
+            <!--multisteps-form-->
+            <div class="multisteps-form">
+              <!--progress bar-->
+              <div class="row justify-content-center progress-btns-container">
+                <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                  <div class="multisteps-form__progress">
+                    <button class="multisteps-form__progress-btn js-active" type="button">Group Overview</button>
+                    <button class="multisteps-form__progress-btn" type="button">Print Rates</button>
+                    <button class="multisteps-form__progress-btn" type="button">Digital Rates</button>
+                  </div>
+                </div>
+              </div>
+              <!--form panels-->
+              <div class="row">
+                <div class="col-12 m-auto">
+                  <div class="multisteps-form__form">
+                    <!--single form panel-->
+                    {% include 'templates/partials/stepform/admin/pricing/_group-overview.html'%}
+                    <!--single form panel-->
+                    {% include 'templates/partials/stepform/admin/pricing/_print-rate.html'%}
+                    <!--single form panel-->
+                    {% include 'templates/partials/stepform/admin/financial/_fiscal.html'%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

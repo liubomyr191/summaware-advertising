@@ -1,0 +1,16 @@
+<svg width="174" height="88" viewBox="0 0 174 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 43" clip-path="url(#clip0_1828_162)">
+<path id="Ellipse 6" d="M127 76C127 71.5351 126.03 67.1138 124.145 62.9888C122.261 58.8637 119.499 55.1156 116.017 51.9584C112.534 48.8012 108.4 46.2968 103.851 44.5881C99.3009 42.8794 94.4246 42 89.5 42C84.5754 42 79.6991 42.8794 75.1494 44.5881C70.5997 46.2968 66.4657 48.8012 62.9835 51.9584C59.5013 55.1156 56.7391 58.8637 54.8545 62.9888C52.97 67.1138 52 71.5351 52 76L89.5 76H127Z" fill="#FDB813"/>
+<line id="Line 48" x1="20" y1="75" x2="159" y2="75" stroke="black" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 49" x1="34.372" y1="50.657" x2="47.657" y2="58.628" stroke="#FDB813" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 52" x1="136.335" y1="58.7437" x2="149.626" y2="50.6649" stroke="#FDB813" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 50" x1="55.4133" y1="29.0509" x2="66.3703" y2="40.8272" stroke="#FDB813" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 53" x1="126.119" y1="29.4092" x2="115.409" y2="42.0982" stroke="#FDB813" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 51" x1="91.0011" y1="19.9989" x2="91.0173" y2="35.3841" stroke="#FDB813" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_1828_162">
+<rect width="174" height="88" fill="white"/>
+</clipPath>
+</defs>
+</svg>

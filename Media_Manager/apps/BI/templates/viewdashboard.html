@@ -1,0 +1,152 @@
+		{% extends "templates/base.html" %}
+		{% load static %}
+		{% block page-header %}{% if dashboard.name %}{{dashboard.name}}{% else %}Error{% endif %}{% endblock %}
+
+      	{% block breadcrumb %}
+        <li class="active"><a href="{{url}}/bi">BI</a></li>
+        <li class="active"><a href="{{url}}/bi/{{section}}">{{section}}</a></li>
+        <li class="active">View Dashboard</li>
+     	{% endblock %}
+     	{% block content %}
+     	<div style="margin-bottom:10px; margin-top:10px;">
+       		<a href="/bi/{{section}}/"><button>Back</button></a>
+      	</div>
+      	<span id="dashboard_id" dashboard_id="{{dashboard.dashboard_id}}" style="display:none;"></span>
+		<div id="message">{{ message }}</div>
+		{% for row_key, row in charts.layout.items %}
+		<div class="row">
+		{% for cell_key, cell in row.items %}
+		<div class="col-md-{{cell.width}}">
+			<div class="box box-primary data" chart_id={{cell.id}}>
+				<div class="box-header with-border">
+					<h3 class="box-title">Loading..</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						<div class="btn-group">
+							<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i></button>
+							<ul class="dropdown-menu pull-right" role="menu">
+								<li><a class="reset_chart" dashboard_id={{dashboard.dashboard_id}} chart_id={{cell.id}}>Reset to Default</a></li>
+								<li><a href="/bi/ajax/export?dashboard_id={{dashboard.dashboard_id}}&chart_id={{cell.id}}" target="_blank">Export</a></li>
+								{% if chart_access_level == 'edit' %}
+								<li class="divider"></li>
+								<li><a href="/bi/chart/{{cell.id}}">Edit</a></li>
+								{% endif %}
+							</ul>
+						</div>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="table-scroll">
+						<div class="table-wrap">
+							<div class="loader"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+		</div>
+		{% endfor %}
+		<div class="menu_container">
+		</div>
+
+		<div class="drilldown" style="display:none">
+			<form method="post" id="" action="">
+				<div id="drilldown_header"><span id="drilldown_title"></span> / Drill into a Field<div class="pull-right" id="close">&#10005;</div></div>
+				<div id="drilldown_search"><input id="drilldown_search_input" type="text" placeholder="Type to search for fields" onkeyup="search()" /></div>
+				<div id="drilldown_body">
+					<!--
+					<div id="drilldown_popular">
+						<div>Popular drilldown options</div>
+						<div></div>
+					</div>
+					-->
+					<div id="drilldown_list">
+						<dl id="drilldown_dl">
+
+						</dl>
+					</div>
+				</div>
+			</form>
+		</div>
+
+    {% endblock %}
+    {% block endjs %}
+	<!-- d3 -->
+	<script src="{% static "d3/d3.min.js" %}"></script>
+	<!-- d3pie -->
+	<script src="{% static "d3pie/d3pie.min.js" %}"></script>
+	<script src="{% static "dist/js/pages/viewdashboard.js" %}?cache_breaker=0.0.19"></script>
+	{% endblock %}
+
+	{% block settings-sidebar %}
+	<div class="box">
+		<div class="box-header">
+			<h3 class="page-header ">Filters</h3>
+			<div class="box-tools pull-right btn">
+				<div class="btn-group">
+					<button type="button" class="btn-box-tool btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="outline-offset: 0px; outline: -webkit-focus-ring-color 0px;"><i class="fa fa-gear"></i></button>
+					<ul class="dropdown-menu pull-right" role="menu">
+						<li> <a class="reset_dashboard" dashboard_id={{dashboard.dashboard_id}}>Reset to Default</a></li>
+						{% if dash_access_level == 'edit' %}
+						<li class="divider"></li>
+						<li><a href="/bi/dashboard/{{dashboard.dashboard_id}}">Edit</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<form method="post">{% csrf_token %}
+			<div class="box-body table-responsive pad">
+				<div class="col-lg-3 col-lg-offset-3">
+					<div class="input-group">
+						<input type="submit" class="form-control" value="Update All" name="update" />
+					</div>
+				</div>
+			</div>
+			<div style="text-align:center">
+				<input type="checkbox" id="reload_on_toggle" style="vertical-align: top;margin-right:5px;" checked />Reload on filter toggle
+			</div>
+			{% for row_key2, row2 in filters.layout.items %}
+
+			<div class="box-body table-responsive pad">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h4 class="box-title">{{row2.title}}</h4>
+						<label class="switch">
+							<input filter_key="{{row_key2}}" type="checkbox"{% if row2.status == 'on' %} checked{% endif %} class="filter_toggle">
+							<span class="slider round"></span>
+						</label>
+					</div>
+				</div>
+				<div class="box-body">
+					<div style="max-height: 400px; overflow-y: auto;">
+						{% for cell_key2, cell2 in row2.options.items %}
+							{% if row2.type == 'checkbox' %}
+						<input class="filter_checkbox" type="checkbox" name="values[{{row_key2}}]" value="{{cell2.title}}"{% if cell2.checked == 'true' %} checked{% endif %}{% if row2.status != 'on' %} disabled{% endif %}>{{cell2.title}}<br>
+							{% elif row2.type == 'date' %}
+						{{cell2.title}}
+						<input class="filter_checkbox" type="date" name="{% if cell2.title == 'Start_Date' %}run_date_start{% else %}run_date_end{% endif %}" value="{% if cell2.title == 'Start_Date' %}{% if cell2.checked == '' or cell2.checked == 'false' %}{{yesterdays_date}}{% else %}{{cell2.checked}}{% endif %}{% else %}{% if cell2.checked == '' or cell2.checked == 'false' %}{{todays_date}}{% else %}{{cell2.checked}}{% endif %}{% endif %}"{% if cell2.checked == 'true' %} checked{% endif %}{% if row2.status != 'on' %} disabled{% endif %}><br>
+							{% endif %}
+						{% endfor %}
+						<br>
+					</div>
+					<div class="mx-auto">
+						<button type="submit" name="update" value="{{row_key2}}"{% if row2.status != 'on' %} disabled{% endif %}>Update</button>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+			<div class="box-body table-responsive pad">
+				<div class="col-lg-3 col-lg-offset-3">
+					<div class="input-group">
+						<input type="submit" class="form-control" value="Update All" name="update" />
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	{% endblock %}

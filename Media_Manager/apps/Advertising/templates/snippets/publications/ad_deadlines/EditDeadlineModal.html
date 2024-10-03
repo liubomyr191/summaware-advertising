@@ -1,0 +1,54 @@
+<section id="edit_deadline_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Deadline</h4>
+            </div>
+            <div class="modal-body">
+                <div id="edit_deadline_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="edit_publication_day">Publication Day</label>
+                                <select name="edit_publication_day" id="edit_publication_day" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_time">Time</label>
+                                <input type="time" class="form-control" id="edit_time" name="edit_time" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_ad_type">Ad Type</label>
+                                <select class="form-control" id="edit_ad_type" name="edit_ad_type">
+                                    <option value="">Select ad type...</option>
+                                    {% for ad_type in ad_types %}
+                                    <option value="{{ ad_type.id }}" >{{ ad_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_priority">Priority Level</label>
+                                <select name="edit_priority" id="edit_priority" class="form-control">
+                                    <option value="">Select a priority level ...</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_days_prior">Days Prior</label>
+                                <input type="number" class="form-control" id="edit_days_prior" name="edit_days_prior" placeholder="Enter days prior..." required />
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-md btn-primary" value="submit" id="edit_deadlines_submit">Save</button>
+                </div>             
+            </div>
+        </div>
+    </div>
+</section>

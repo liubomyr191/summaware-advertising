@@ -1,0 +1,251 @@
+<header class="main-header">
+  {% load static %}
+  <!-- Logo -->
+  <a href="{{url}}/" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><img src="{% static "dist/img/icon.ico" %}" width="50" height="50" /></span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg" style="width: 200px; height: 50px; background-size: 136px"></span>
+  </a>
+
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="{{url}}/" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+
+    <!-- Navbar Right Menu -->
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <!-- Messages: style can be found in dropdown.less-->
+        <li class="dropdown messages-menu">
+          <!-- Menu toggle button -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-success">4</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 4 messages</li>
+            <li>
+              <!-- inner menu: contains the messages -->
+              <ul class="menu">
+                <li>
+                  <!-- start message -->
+                  <a href="#">
+                    <div class="pull-left">
+                      <!-- User Image -->
+                      <img src="" class="img-circle" alt="" />
+                    </div>
+                    <!-- Message title and timestamp -->
+                    <h4>
+                      Support Team
+                      <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                    </h4>
+                    <!-- The message -->
+                    <p>Why not buy a new awesome theme?</p>
+                  </a>
+                </li>
+                <!-- end message -->
+              </ul>
+              <!-- /.menu -->
+            </li>
+            <li class="footer"><a href="#">See All Messages</a></li>
+          </ul>
+        </li>
+        <!-- /.messages-menu -->
+
+        <!-- Notifications Menu -->
+        <li class="dropdown notifications-menu">
+          <!-- Menu toggle button -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-warning">10</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 10 notifications</li>
+            <li>
+              <!-- Inner Menu: contains the notifications -->
+              <ul class="menu">
+                <li>
+                  <!-- start notification -->
+                  <a href="#"> <i class="fa fa-users text-aqua"></i> 5 new members joined today </a>
+                </li>
+                <!-- end notification -->
+              </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+          </ul>
+        </li>
+        <!-- Tasks Menu -->
+        <li class="dropdown tasks-menu">
+          <!-- Menu Toggle Button -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-flag-o"></i>
+            <span class="label label-danger">9</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 9 tasks</li>
+            <li>
+              <!-- Inner menu: contains the tasks -->
+              <ul class="menu">
+                <li>
+                  <!-- Task item -->
+                  <a href="#">
+                    <!-- Task title and progress text -->
+                    <h3>
+                      Design some buttons
+                      <small class="pull-right">20%</small>
+                    </h3>
+                    <!-- The progress bar -->
+                    <div class="progress xs">
+                      <!-- Change the css width attribute to simulate progress -->
+                      <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <span class="sr-only">20% Complete</span>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <!-- end task item -->
+              </ul>
+            </li>
+            <li class="footer">
+              <a href="#">View all tasks</a>
+            </li>
+          </ul>
+        </li>
+        <!-- User Account Menu -->
+        <li class="dropdown user user-menu">
+          <!-- Menu Toggle Button -->
+          <a href="#" class="dropdown-toggle" data-toggle="control-sidebar">
+            <!-- hidden-xs hides the username on small devices so only the image appears. -->
+            <span>{{user}}</span>
+          </a>
+        </li>
+        <!-- Control Sidebar Toggle Button -->
+        <li>
+          <a href="#" id="settings-sidebar" data-toggle="settings-sidebar"><i class="fa fa-gears"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar Menu -->
+    <ul id="sidebar" class="advertise-sidebar" data-widget="tree">
+      {% if user.is_superuser %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/admin"><i class="fa fa-id-card"></i> <span class="advertise-sidebar-li-span">Dashboard</span></a>
+      </li>
+      {% endif %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/"><i class="fa fa-file"></i> <span class="advertise-sidebar-li-span">Content</span></a>
+        <ul data-widget="tree">
+          <li>
+            <a href="{{url}}/advertising"><span>Ad Campaigns</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/advertisers"><span>Advertisers</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Publications</span></a>
+          </li>
+        </ul>
+      </li>
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/"><i class="fa fa-briefcase"></i> <span class="advertise-sidebar-li-span">Business Setup</span></a>
+        <ul>
+          <li>
+            <a href="{{url}}/advertising/gl-codes/"><span>GL Codes</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/classifieds/ad-types/"><span>Ad Type</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/locations/"><span>Locations</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Ad Rate</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Invoice</span></a>
+          </li>
+        </ul>
+      </li>
+      {% if "BI.accounting_access" in menu %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/advertising"><i class="fa fa-plus"></i> <span class="advertise-sidebar-li-span">Create</span></a>
+        <ul>
+          <li>
+            <a href="{{url}}/advertising/new-advertiser/"><span>New Advertiser</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/classifieds/new/"><span>New Campaign</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/salesperson/new/"><span>New Sales Rep</span></a>
+          </li>
+          <li>
+            <a href="{{url}}/advertising/publication/new/"><span>New Publication</span></a>
+          </li>
+          <li>
+            <a href="#"><span>New Rate</span></a>
+          </li>
+        </ul>
+      </li>
+      {% endif %} {% if "BI.advertising_access" in menu %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/advertising"><i class="fa fa-file-text-o"></i> <span class="advertise-sidebar-li-span">Product</span></a>
+        <ul>
+          <li>
+            <a href="#"><span>Rate Cards</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Publish Days</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Product Info</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Publications</span></a>
+          </li>
+        </ul>
+      </li>
+      {% endif %} {% if "BI.bi_access" in menu %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/bi"><i class="fa fa-sliders"></i> <span class="advertise-sidebar-li-span">Settings</span></a>
+        <ul>
+          <li>
+            <a href="#"><i class="fa fa-paint-brush"> </i><span>Appearance</span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-wrench"></i> <span>Tools</span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-plug"></i> <span>Plugins</span></a>
+          </li>
+          <li>
+            <a href="#"><span>Custom Fields</span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <li class="advertise-sidebar-li">
+        <a class="adiversite-sidebar-link" href="{{url}}/advertising/adadmin"><i class="fa fa-gear"></i> <span class="advertise-sidebar-li-span">Admin</span></a>
+      </li>
+      {% if "BI.circulation_access" in menu %}
+      <li class="advertise-sidebar-li">
+        <a style="cursor: cursor" href="{{url}}/circulation"><i class="fa fa-undo"></i> <span class="advertise-sidebar-li-span">Return To</span> <img class="advertise-sidebar-li-span" src="{% static "dist/img/summaware-icon-500.png" %}" width="20" /></a>
+      </li>
+      {% endif %}
+    </ul>
+    <!-- /.search form -->
+  </section>
+  <!-- /.sidebar -->
+</aside>

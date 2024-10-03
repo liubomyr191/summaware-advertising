@@ -1,0 +1,119 @@
+/* Modal */
+
+.my-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999 !important; /* Sit on top */
+  padding-top: 50px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto !important; /* Enable scroll if needed */
+  // background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+
+  /* The Close Button */
+  .close {
+    color: $black;
+    right: 6.5%;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    opacity: 1;
+    z-index: 1;
+    &:hover,
+    &:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    min-height: 800px;
+    position: relative;
+
+    .heading-container {
+      hr {
+        border: 1px solid $primary;
+      }
+    }
+
+    /* The Close Button */
+    .close {
+      color: $black;
+      right: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      right: 20px;
+      opacity: 1;
+      &:hover,
+      &:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+    &.edit-ad,
+    &.edit-campaign-info,
+    &.create-rate-card {
+      width: 80%;
+      min-height: 800px;
+      .heading-container {
+        text-align: center;
+      }
+
+      .edit-fields {
+        label {
+          font-size: 12px;
+        }
+      }
+
+      .adjustments-container {
+        span {
+          font-size: 12px;
+          a {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      .btn-container {
+        text-align: center;
+        .btn {
+          width: 250px;
+        }
+      }
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      background-image: url('../images/bottom-org-border.png');
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 96px;
+      bottom: 0;
+      left: 0;
+      background-position: center;
+      background-size: cover;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+  }
+}
+
+.modal-button {
+  border: none !important;
+  background: none;
+}

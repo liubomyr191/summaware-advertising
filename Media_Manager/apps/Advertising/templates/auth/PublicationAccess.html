@@ -1,0 +1,64 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/admin/PublicationAccess.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+		<div id="message">{{ message }}</div>
+
+		<h1>Publication Access</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-hover table-striped table-condensed" id="user_table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr data-id="{{ user.id }}">
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group" id="publication_list">
+                {% for publication in publications %}
+                <div class="list-group-item">
+                    <input class="form-check-input" type="checkbox" name="publication-{{ publication.id }}" id="publication-{{ publication.id }}" disabled>
+                    <label class="form-check-label" for="publication-{{ publication.id }}">{{ publication.name }}</label>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        
+        {% endif %}
+	</div>
+</div>
+{% endblock %}

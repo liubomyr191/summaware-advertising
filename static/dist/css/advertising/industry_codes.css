@@ -1,0 +1,210 @@
+:root {
+    --text-color: #1f1b19;
+    --btn-color: #21215f;
+
+}
+
+input[type=text],
+textarea[name='description'] {
+    box-shadow: var(--box-shadow);
+}
+
+.btn {
+    border: none;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--text-color);
+}
+
+hr {
+    height: 2px;
+    background-color: var(--btn-color);
+
+}
+
+.row {
+    box-shadow: var(--box-shadow);
+}
+
+.right {
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.column {
+    flex: 50%;
+    border: 1px solid lightgrey;
+    width: 50%;
+    overflow: auto;
+    float: left;
+    max-height: 75vh;
+}
+
+.column-header {
+    background-color: #e9e9ef;
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.column-header input[type="text"] {
+    display: none;
+    margin: 10px auto;
+    width: 50%;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.title-search {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: #e9e9ef;
+}
+
+.column-title {
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+h1.column-title {
+    text-align: center;
+}
+
+.column-body {
+    display: flex;
+    height: 100%;
+    background-color: #f3f3f3;
+    /* overflow: scroll; */
+}
+
+.search-options {
+    margin: 0 10px;
+    justify-content: space-around;
+}
+
+.search-options i {
+    margin: 0 10px;
+    font-size: 25px;
+    cursor: pointer;
+    color: var(--btn-color);
+
+    /* TODO - below are the styles for the search icon when the search input is shown */
+    /* background-color: #c1c1c6;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px grey; */
+}
+
+#industry_codes_table {
+    width: 100%;
+    table-layout: fixed;
+    height: 100%;
+    border-spacing: 0;
+}
+
+#industry_codes_table thead th {
+    background-color: #fce0d2;
+    padding: 10px;
+    color: var(--text-color);
+    font-size: 15px;
+    text-align: center;
+}
+
+#industry_codes_table tbody {
+    overflow: scroll;
+    height: 100%;
+}
+
+#industry_codes_table tr {
+    padding: 5px 0;
+    border-bottom: 2px solid var(--btn-color);
+}
+
+#industry_codes_table td {
+    font-size: 15px;
+    text-align: center;
+    /* font-weight: bold; */
+}
+
+#industry_codes_table tr:hover {
+    background-color: #e9e9ef;
+    /* cursor: pointer; */
+}
+
+#create_new_btn {
+    background-color: var(--btn-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-icon,
+.delete-icon {
+    font-size: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.fa-pencil:hover {
+    color: #f26722;
+}
+
+.fa-trash:hover {
+    color: red;
+}
+
+.form-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#new_code_form,
+#edit_code_form {
+    display: grid;
+}
+
+.form-content {
+    width: 80%;
+}
+
+.form-content hr {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+    margin-bottom: 2em;
+}
+
+.form-footer {
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+.form-footer .submit-btn {
+    background-color: var(--btn-color);
+    color: white;
+}
+
+.form-footer .cancel-btn {
+    background-color: #ca0f0f;
+    color: white;
+}

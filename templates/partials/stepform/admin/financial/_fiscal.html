@@ -1,0 +1,115 @@
+{% include 'templates/partials/modal/admin/financial/_edit-fiscal-year.html'%} {% include 'templates/partials/modal/admin/financial/_new-fiscal-year.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Fiscal years &amp; Accounting Periods</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="btn-search-container">
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <div class="filter-container">
+              <button class="btn btn-secondary" onclick="document.getElementById('newFiscalYear').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> New Fiscal Year</button>
+              <div class="filters d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 search-container">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+
+      <div class="billing-terms-list-container">
+        <div class="table-container mt-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in fiscalyears %}
+              <tr>
+                <td>{{data.id}}</td>
+                <td><a href="{% url 'adminFinancialFiscal' data.id %}" target="_blank">{{ data.name }}</a></td>
+                <td>{{data.start_date}}</td>
+                <td>{{data.end_date}}</td>
+                <td>
+                  <div class="fiscal-switch-container">
+                    <div class="switch-field">
+                      <input type="radio" id="{{data.id}}-fiscal-radio-one" name="{{data.id}}-fiscal-switch-one" value="active" {{data.active | yesno:"checked, unchecked"}} />
+                      <label for="{{data.id}}-fiscal-radio-one">Active</label>
+                      <input type="radio" id="{{data.id}}-fiscal-radio-two" name="{{data.id}}-fiscal-switch-one" value="inactive" {{data.active | yesno:"unchecked, checked"}} />
+                      <label for="{{data.id}}-fiscal-radio-two">Inactive</label>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pe-5" onclick="editFiscalYear(`{{ data.id }}`)"><i class="fa fa-solid fa-pencil"></i></span>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function editFiscalYear(id) {
+      document.getElementById('editFiscalYear').style.cssText = 'display: block; opacity: 1; visibility: visible;';
+      let data = {'id': id}
+      fetch("financial/fiscalyear-detail", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // parse the JSON from the response
+      })
+      .then((data) => {
+          var fiscalyear = JSON.parse(data['fiscalyear']);
+          fiscalyear = fiscalyear[0].fields;
+          console.log(fiscalyear);
+          localStorage.setItem('edit-fiscalyear-id', data['id']);
+          localStorage.setItem('edit-fiscalyear-active', fiscalyear.active);
+          localStorage.setItem('edit-fiscalyear-status', fiscalyear.status);
+          document.getElementById('edit-fiscalyear-name').value = fiscalyear.name;
+          document.getElementById('edit-fiscalyear-start-date').value = fiscalyear.start_date;
+          document.getElementById('edit-fiscalyear-end-date').value = fiscalyear.end_date;
+          document.getElementById('edit-fiscalyear-active').textContent = fiscalyear.active ? "Close Year" : "Open Year";
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+  </script>
+</div>

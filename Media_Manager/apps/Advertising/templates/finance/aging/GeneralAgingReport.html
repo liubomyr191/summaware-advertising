@@ -1,0 +1,89 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>General Aging Report</h2>
+            <br />
+			<table class="table table-hover table-striped table-condensed" id="invoice_table">
+				<thead>
+					<tr>
+                        <th>Invoice #</th>
+						<th>Account</th>
+                        <th>Due Date</th>
+                        <th>Days Overdue</th>
+						<th>Amount</th>
+						<th>Memo</th>
+                        <th>< 30 Days</th>
+                        <th>31 - 60 Days</th>
+                        <th>61 - 90 Days</th>
+                        <th>90+ Days</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for invoice in overdueInvoices %}
+						<tr data-id="{{ invoice.id }}">
+                            <td>{{ invoice.id }}</td>
+							<td>{{ invoice.account }}</td>
+							<td>{{ invoice.bill_end }}</td>
+                            <td>{{ invoice.days_overdue }}</td>
+							<td>$ {{ invoice.amount }}</td>
+							{% if invoice.memo is not None %}
+								<td>{{ invoice.memo }}</td>
+							{% else %}
+								<td></td>
+							{% endif %}
+
+                            {% if invoice.days_overdue < 30 %}
+                            <td>$ {{ invoice.amount }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            {% endif %}
+
+                            {% if invoice.days_overdue < 60 and invoice.days_overdue > 30 %}
+                            <td></td>
+                            <td>$ {{ invoice.amount }}</td>
+                            <td></td>
+                            <td></td>
+                            {% endif %}
+
+                            {% if invoice.days_overdue < 90 and invoice.days_overdue > 60 %}
+                            <td></td>
+                            <td></td>
+                            <td>$ {{ invoice.amount }}</td>
+                            <td></td>
+                            {% endif %}
+
+                            {% if invoice.days_overdue > 90 %}
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>$ {{ invoice.amount }}</td>
+                            {% endif %}
+							
+						</tr>
+					{% empty %}
+					<tr>
+						<td colspan="9">No Overdue Invoices</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

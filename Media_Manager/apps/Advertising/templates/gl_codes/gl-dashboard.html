@@ -1,0 +1,64 @@
+{% extends 'templates/base_gamma.html' %} {% block content %}
+<div class="page-heading-container">
+  <h1>GL Codes</h1>
+  <hr />
+</div>
+
+<section class="campaigns-list-container container">
+  <div class="row add-filter-search">
+    <div class="col-md-6">
+      <!-- Add New GL Code Button -->
+
+      <div class="btn-container gl-code">
+        <button class="btn btn-secondary"><i class="fa fa-solid fa-plus"></i>&nbsp;Create GL Code</button>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end">
+      <div class="form-group has-search">
+        <input type="text" class="form-control" placeholder="Search..." />
+        <span class="fa fa-search form-control-feedback"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- End campaigns-list-container -->
+
+  <!-- Ads Table List -->
+  <div class="table-container mt-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Code</th>
+          <th scope="col">Description</th>
+          <th scope="col">Publication</th>
+          <th scope="col">Type</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if glcodes %} {% for glcode in glcodes%}
+        <tr>
+          <td>{{ glcode.id}}</td>
+          <td>{{ glcode.code}}</td>
+          <td>{{ glcode.description}}</td>
+          <td>{{ glcode.publisher.name}}</td>
+          <td>{{ glcode.type}}</td>
+          <td>
+            <span onclick="openEditModal('{{ glcode.id }}')"><i class="fa fa-solid fa-pencil"></i></span>
+          </td>
+        </tr>
+        {% endfor %} {% else %}
+        <div class="col-md-12">
+          <p>No Codes available</p>
+        </div>
+        {% endif %}
+      </tbody>
+    </table>
+    <div class="end-of-list-heading-container text-center py-5">
+      <span>You've reached the end!</span>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

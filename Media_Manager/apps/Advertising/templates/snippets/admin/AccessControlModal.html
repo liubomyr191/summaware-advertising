@@ -1,0 +1,25 @@
+<section id="access_control_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Access Menu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'view_user_company_access' %}">Company Access</a></li>
+                            <li class="list-group-item"><a href="{% url 'view_publication_access' %}">Publication Access</a></li>  
+                            <li class="list-group-item"><a href="{% url 'view_user_account_access' %}">Account Access</a></li>                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</section>

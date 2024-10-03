@@ -1,0 +1,191 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/rates/AdRate.js" %}"></script>
+<script src="{% static "dist/js/advertising/rates/AdRateCalculator.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h2>Create a New Advertising Rate</h2>
+        {% if form.errors %}
+        {{ form.errors }}
+        {% endif %}
+        <form method="post" id="new_rate_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="3" placeholder="Enter Description..." required></textarea>
+                        <!-- <input type="text" class="form-control" id="description" name="description" placeholder="Enter Description..." required> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_type">Unit Type</label>
+                        <select class="form-control" id="unit_type" name="unit_type" required>
+                            <option value="">Select Unit Type...</option>
+                            <option value="word">Word</option>
+                            <option value="line">Line</option>
+                            <option value="column">Column</option>
+                            <option value="inch">Inch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_price>">Price Per Unit</label>
+                        <input type="number" step=0.001 class="form-control " id="unit_price" name="unit_price" placeholder="Enter Price..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tax_category">Tax Category</label>
+                        <select class="form-control" id="tax_category" name="tax_category" required>
+                            <option value="">Select Tax Category...</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pricing">Pricing</label>
+                        <select class="form-control" id="pricing" name="pricing" required>
+                            <option value="">Select Pricing...</option>
+                            <option value="standard">Standard</option>
+                            <option value="cumulative">Cumulative</option>
+                            <option value="tiered">Tiered</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="publication">Publication</label>
+                        <select class="form-control" id="publication" name="publication" required multiple>
+                            {% for publication in publications %}
+                            <option value="{{ publication.id }}">{{ publication.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ad_type">Rate Type</label>
+                        <select class="form-control" id="ad_type" name="ad_type" required>
+                            <option value="">Select Rate Type...</option>
+                            {% for type in ad_types %}
+                            <option value="{{ type.id }}">{{ type.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button id="gl-code-btn-modal" class="form-control btn btn-primary gl-code-modal">Select GL Codes</button>
+                        <div class="modal fade" id="gl-code-modal" tabindex="-1" role="dialog" aria-labelledby="gl-code-modal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="">Select GL Codes</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="publication-gl-codes-select"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Enter Start Date..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" placeholder="Enter End Date...">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select class="form-control" id="location" name="location" required>
+                            <option value="">Select Location...</option>
+                            <option value="static">Static</option>
+                            <option value="prem_insideCover">Inside Cover (Premium)</option>
+                            <option value="prem_backCover">Back Cover (Premium)</option>
+                            <option value="prem_center">Center (Premium)</option>
+                        </select>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" name="locked" id="locked">
+                        <label class="form-check-label" for="locked">Locked</label>
+                    </div>
+                    <div class="form-group" id="account" style="display: none;">
+                        <label for="account">Account</label>
+                        <select class="form-control" name="account">
+                            <option value="">Select Account...</option>
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">{{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="adRateCalculator">
+                        <h3>Ad Rate Calculator</h3>
+                        <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+                        <ul id="errors"></ul>
+                        <div id="subtotal">
+                            <div>$ <span id="pricePerUnit"></span> per <span id="unitType"></span></div>
+                            <div>Location: <span id="finalLocation"></span></div>
+                        </div>
+                        <div class="form-group" id="standardRateTotal">
+                            <label>Rate: $</label>
+                            <span name="standard_rate" id="standardRate"></span>
+                            <input type="hidden" name="rate_price" id="rate_price">
+                        </div>
+                        <div class="form-group" id="customRateTotal">
+                            <div id="minPriceTotal">
+                                <label>Minimum Price: $</label>
+                                <span name="minimum_price" id="minPrice"></span>
+                            </div>
+                            <div class="form-group" id="maxPriceTotal">
+                                <label>Maximum Price: $</label>
+                                <span name="maximum_price" id="maxPrice"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="rate-submit-btn" class="btn btn-default">Create Rate</button>
+        </form>
+        
+        <script>
+            var lockedCheckbox = document.getElementById('locked');
+            var accountDropdown = document.getElementById('account');
+
+            lockedCheckbox.addEventListener('click', (e) => {
+                let checked = e.target.checked;
+                if (checked) {
+                    accountDropdown.style.display = "block";
+                } else {
+                    accountDropdown.style.display = "none";
+                }
+            })
+
+        </script>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

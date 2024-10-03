@@ -1,0 +1,67 @@
+{% include 'templates/partials/modal/admin/pricing/_new-rategroup.html'%} {% include 'templates/partials/modal/admin/pricing/_edit-rate.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Rates</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="btn-search-container mgt-5">
+    <div class="save-container">
+      <button class="btn btn-secondary-light">Save Changes</button>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="filter-container">
+          <button class="btn btn-secondary mb-1" onclick="document.getElementById('newRateGroup').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> New Rate Group</button>
+          <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-6 col-md-12 search-container">
+        <div class="form-group has-search">
+          <input type="text" class="form-control" placeholder="Search..." />
+          <span class="fa fa-search form-control-feedback"></span>
+        </div>
+      </div> -->
+    </div>
+    <hr />
+  </div>
+
+  <div class="table-container mt-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID #</th>
+          <th scope="col">Group Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Publication(s)</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rategroup in rategroups %}
+        <tr>
+          <td>{{rategroup.id}}</td>
+          <td><a href="#">{{rategroup.name}}</a></td>
+          <td>{{rategroup.description}}</td>
+          <td><a href="#">See Assigned</a></td>
+          <td>
+            <div class="rates-switch-container">
+              <div class="switch-field">
+                <input type="radio" id="{{rategroup.id}}-rate-radio-one" name="{{rategroup.id}}-rate-switch-one" value="active" {{rategroup.active|yesno:"checked, unchecked"}} />
+                <label for="{{rategroup.id}}-rate-radio-one">Active</label>
+                <input type="radio" id="{{rategroup.id}}-rate-radio-two" name="{{rategroup.id}}-rate-switch-one" value="inactive" {{rategroup.active|yesno:"unchecked, checked"}} />
+                <label for="{{rategroup.id}}-rate-radio-two">Inactive</label>
+              </div>
+            </div>
+          </td>
+          <td>
+            <a href="{% url 'adminPricingEditRateGroup' groupId=rategroup.id %}"><i class="fa fa-solid fa-envelope-open"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

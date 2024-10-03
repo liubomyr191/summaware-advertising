@@ -1,0 +1,40 @@
+<div id="editSectionModal" class="modal my-modal">
+  <div class="modal-content">
+    <span class="close" onclick="document.getElementById('editAdjustmentModal').style.display='none'">&times;</span>
+
+    <div class="content-container">
+      <div class="heading-container text-center mb-3">
+        <h3 class="heading">New Section</h3>
+        <hr class="w-50 m-auto" />
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="section-name">Section Name:</label>
+        <input type="text" name="section-name" id="" class="form-control" />
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="page-count">Page Count:</label>
+        <input type="text" name="page-count" id="" class="form-control" />
+      </div>
+
+      <div class="form-group mb-4">
+        <div class="row">
+          <div class="col-6">
+            <label for="start">Start Page:</label>
+            <input type="text" name="start" id="" class="form-control" />
+          </div>
+          <div class="col-6">
+            <label for="end">End Page:</label>
+            <input type="text" name="end" id="" class="form-control" />
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-container d-flex justify-content-around">
+        <button class="btn btn-danger">Delete Section</button>
+        <button class="btn btn-secondary">Apply Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

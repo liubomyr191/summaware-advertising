@@ -1,0 +1,79 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% load custom_filters %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/gl_codes/GLCodes.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/gl_codes/list_gl_codes.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div id="page_content">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+
+                {% include 'snippets/gl_codes/CreateGLCodeModal.html' %}
+                <div id="page_header">
+                    <h2>GL Codes</h2>
+                </div>
+                <div id="page_body">
+                    <div id="btn_search_header">
+                        <button data-toggle="modal" data-target="#create_gl_code_modal">
+                            <i class="fa fa-plus"></i> Create GL Code
+                        </button>
+                        <input type="text" style="padding-left: 15px;" id="search-glcode" placeholder="Search ..."/>
+                    </div>
+                    <table id="gl_code_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>P&L Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gl_code_table_tbody">
+                            {% for code in gl_codes %}
+                                <tr>
+                                    <td>{{ code.id }}</td>
+                                    <td>{{ code.code }}</td>
+                                    <td>{{ code.description }}</td>
+                                    <td>{{ code.pl_type }}</td>
+                                    <td data-code-id="{{ code.id }}">
+                                        <a href="#" class="edit-btn"><i class="fa fa-pencil" ></i></a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No GL codes found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+    {% include 'snippets/gl_codes/EditGLCodeModal.html' %}
+<script>
+    const companyId = "{{ company_id }}";
+</script>
+{% endblock %}

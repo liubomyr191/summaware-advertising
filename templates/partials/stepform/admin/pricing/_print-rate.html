@@ -1,0 +1,213 @@
+<div class="include">{% include 'templates/partials/modal/admin/pricing/_new-Rate-1-General-info.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-1-General-info-1.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-2-Dates.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-1.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Words.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Units.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Units-1.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Inches.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Inches-1.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Digital.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-3-Computation-Digital-1.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate-4-Final.html'%} {% include 'templates/partials/modal/admin/pricing/_new-Rate.html'%} {% include 'templates/partials/modal/admin/pricing/_edit-rate.html'%}</div>
+
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+    <div class="heading-arrows-container d-flex justify-content-between">
+      <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+      <h3 class="multisteps-form__title text-center">Print Rates</h3>
+      <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+    </div>  
+    <div class="multisteps-form__content">
+      <div class="">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <button class="btn btn-secondary-light pull-right">Save Changes</button>
+            </div>
+        </div>
+  
+        <div class="btn-search-container">
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="filter-container">
+                <button class="btn btn-secondary" onclick="document.getElementById('newRate').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> New Rate</button>
+                <div class="filters d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+  
+        <div class="billing-terms-list-container">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Rate Name</th>
+                  <th scope="col">Unit Type</th>
+                  <th scope="col">Pricing</th>
+                  <th scope="col">GL Code</th>
+                  <th scope="col">Tax Category</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for rate in rates %}
+                <tr>
+                    <td>{{rate.id}}</td>
+                    <td>{{rate.name}}</td>
+                    <td>{{rate.measurement_type}}</td>
+                    <td>{{rate.pricing|yesno:"STANDARD,CUSTOMARY"}}</td>
+                    <td>{{rate.default_gl_code}}</td>
+                    <td>{{rate.tax_category}}</td>
+                    <td>{{rate.start_date}}</td>
+                    <td>{{rate.end_date}}</td>
+                    <td>
+                      <div class="switch-field">
+                        <input type="radio" id="{{rate.id}}-product-radio-one" name="{{rate.id}}-product-switch-one" value="active" {% if rate.active %} checked {% endif %}/>
+                        <label for="{{rate.id}}-product-radio-one">Active</label>
+                        <input type="radio" id="{{rate.id}}-product-radio-two" name="{{rate.id}}-product-switch-one" value="inactive" />
+                        <label for="{{rate.id}}-product-radio-two">Inactive</label>
+                      </div>
+                    </td>
+                    <td>
+                        <span class="pe-5" onclick="editRate('{{rategroup.id}}','{{rate.id}}')"><i class="fa fa-solid fa-pencil"></i></span>
+                        <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="end-of-list-heading-container text-center py-5">
+              <span>You've reached the end!</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="save-container d-flex justify-content-end mt-5">
+          <button class="btn btn-secondary-light">Save Changes</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function editRate(groupId, id) {
+        document.getElementById('editRate').style.cssText = 'display: block; opacity: 1; visibility: visible;';
+        let data = {'id': id}
+        fetch(`${groupId}/edit-rate`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // parse the JSON from the response
+      })
+      .then((data) => {
+          var rate = JSON.parse(data['rate']);
+          rate = rate[0].fields;
+          localStorage.setItem('edit-rate-id', data['id']);
+          localStorage.setItem('edit-rate-active', rate.active);
+          localStorage.setItem('edit-rate-status', rate.status);
+          var parent = document.querySelector('.edit-rate-container');
+          const computations = parent.querySelectorAll('.measurment-container');
+          computations.forEach(computation => {
+            computation.classList.add('hide');
+          });
+          var selectedSection = parent.querySelector(`#${rate.measurement_type}`);
+          if (selectedSection) {
+            selectedSection.classList.remove('hide');
+          }
+          parent.setAttribute('data-index', id);
+          console.log(rate);
+          document.getElementById('edit-rate-name').value = rate.name;
+          document.querySelector('.edit-rate-type').value = rate.measurement_type;
+          document.getElementById('edit-rate-adtype').value = rate.ad_type;
+          document.getElementById('edit-rate-pricing-one').checked = rate.pricing;
+          document.getElementById('edit-rate-pricing-two').checked = !rate.pricing;
+          document.getElementById('edit-rate-tax-category').value = rate.tax_category;
+          document.getElementById('edit-rate-override-privileges-one').checked = rate.override_privileges;
+          document.getElementById('edit-rate-override-privileges-two').checked = !rate.override_privileges;
+          document.getElementById('edit-rate-gl-code').value = rate.default_gl_code;
+          document.querySelector('.edit-rate-assigned-groups-one').checked = rate.assigned_groups;
+          document.querySelector('.edit-rate-assigned-groups-two').checked = !rate.assigned_groups;
+          document.getElementById('edit-rate-start-date').value = data['start_date'];
+          document.getElementById('edit-rate-end-date').value = data['end_date'];
+          document.getElementById('edit-assigned_groups-one').checked = rate.assigned_groups;
+          document.getElementById('edit-assigned_groups-two').checked = !rate.assigned_groups;
+          if(rate.assigned_groups) document.getElementById('edit_select_extra_group').style.display='block';
+          else document.getElementById('edit_select_extra_group').style.display='none';
+          var selectElement = document.getElementById("edit_rate_extra_lstBox1");
+          var options = selectElement.options;
+          for (var i = 0; i < options.length; i++) {
+            for(var j = 0; j < data['assigned_groups'].length; j++){
+              if (options[i].value == data['assigned_groups'][j]['id']) {
+                  options[i].selected = true;
+                  break;
+              }
+            }
+          }
+          if(rate.measurement_type == 'lines' || rate.measurement_type == 'words' || rate.measurement_type == 'units') {
+            if(rate.measurement_type == 'lines') document.getElementById(`edit-rate-${rate.measurement_type}-insertions`).value = rate.insertion_count;
+            if(rate.insertion_min == '0' && rate.insertion_max == '999999') {
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-one`).checked = true;
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-two`).checked = false;
+            } else {
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-one`).checked = false;
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-two`).checked = true;
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-min`).value = rate.insertion_min;
+              document.getElementById(`edit-rate-${rate.measurement_type}-insertion-max`).value = rate.insertion_max;
+            }
+            if(rate.measurement_type != 'units') {
+              if(rate.line_for_ad_min == '0' && rate.line_for_ad_max == '999999') {
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-one`).checked = true;
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-two`).checked = false;
+              } else {
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-one`).checked = false;
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-two`).checked = true;
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-min`).value = rate.line_for_ad_min;
+                document.getElementById(`edit-rate-${rate.measurement_type}-ad-max`).value = rate.line_for_ad_max;
+              }
+            } else {
+              document.getElementById(`edit-rate-${rate.measurement_type}-ad-min`).value = rate.line_for_ad_min;
+              document.getElementById(`edit-rate-${rate.measurement_type}-ad-max`).value = rate.line_for_ad_max;
+            }
+            document.getElementById(`edit-rate-${rate.measurement_type}-charge-one`).checked = rate.charge_for;
+            document.getElementById(`edit-rate-${rate.measurement_type}-charge-two`).checked = !rate.charge_for;
+            document.getElementById(`edit-rate-${rate.measurement_type}-base-cost`).value = rate.base_cost;
+            document.getElementById(`edit-rate-${rate.measurement_type}-base-count`).value = rate.base_count;
+            document.getElementById(`edit-rate-${rate.measurement_type}-additional-cost`).value = rate.additional_cost;
+            document.getElementById(`edit-rate-${rate.measurement_type}-additional-count`).value = rate.additional_count;
+          } else if(rate.measurement_type == 'digital') {
+            if(rate.insertion_min == 1) {
+              document.getElementById(`edit-rate-digital-additional-cost`).value = rate.additional_cost;
+              document.getElementById(`edit-rate-digital-additional-count`).value = rate.additional_count;
+              document.getElementById('edit-digital-cpm-radio-one').checked = rate.charge_for;
+              document.getElementById('edit-digital-cpm-radio-two').checked = !rate.charge_for;
+              document.getElementById('edit-flat-rate-radio').checked = false;
+              document.getElementById('edit-cpm-radio').checked = true;
+              
+              parent.querySelector('#flat-rate').classList.add('hide');
+              parent.querySelector('#CPM').classList.remove('hide');
+            } else {
+              document.getElementById(`edit-rate-digital-base-cost`).value = rate.additional_cost;
+              document.getElementById(`edit-rate-digital-base-count`).value = rate.additional_count;
+              document.getElementById('edit-digital-flat-radio-one').checked = rate.charge_for;
+              document.getElementById('edit-digital-flat-radio-two').checked = !rate.charge_for;
+              document.getElementById('edit-flat-rate-radio').checked = true;
+              document.getElementById('edit-cpm-radio').checked = false;
+              parent.querySelector('#flat-rate').classList.remove('hide');
+              parent.querySelector('#CPM').classList.add('hide');
+            }
+          } else {
+            document.getElementById(`edit-rate-inches-additional-cost`).value = rate.additional_cost;
+            document.getElementById(`edit-rate-inches-additional-count`).value = rate.additional_count;
+            document.getElementById('edit-rate-inches-one').checked = rate.charge_for;
+            document.getElementById('edit-rate-inches-two').checked = !rate.charge_for;
+          }
+          // document.getElementById('adminrate-active').textContent = rate.active == true ? 'Deactivate' : 'Active';
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+      }
+    </script>
+  </div>

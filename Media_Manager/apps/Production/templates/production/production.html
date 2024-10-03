@@ -1,0 +1,109 @@
+    {% extends "templates/base.html" %}
+
+    {% block page-header %}<i class="fa fa-id-card"></i> Production{% endblock %}
+
+    {% block breadcrumb %}
+    <li class="active">Production</li>
+    {% endblock %}
+
+	{% block content %}
+	<style>
+		#header_text {
+			font-weight: bold;
+			font-size: 48px;
+			color: #21215f;
+			border-bottom: 3px solid #f26722;
+			width: fit-content;
+    		margin: auto;
+		}
+
+		.summaware_icon {
+			display: inline-grid;
+		    font-size: 18px;
+		    background-image: url(../static/dist/img/summaware-icon-500.png);
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    background-size: contain;
+		    width: 30px;
+		    height: 30px;
+		    vertical-align: bottom;
+		    margin-left: 20px;
+		}
+
+		.coming_soon_font {
+			font-size: 22px;
+    		font-weight: 500;
+		}
+
+		.submit_button {
+			background-color: #21215f;
+			color: white;
+			border-radius: 5px;
+			padding: 5px;
+		}
+
+		.icon {
+			color: #1DA1F2;
+		}
+
+		#coming_soon_image {
+			width: 440px;
+			height: 350px;
+			background: darkgray;
+			border-radius: 10px;
+			margin: 5px;
+		}
+	</style>
+	<form>
+	    <div id="content container" id="coming_soon">
+			<div class="row">
+				<div class="col-md-6" style="background-color: rgba(255,255,255,0.8);z-index: 5;padding: 15px;border-radius: 5px;margin-top: 25px; margin-left:25%;">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-12">
+									<h1 id="header_text">Coming Soon!</h1>
+								</div>
+							</div>
+							<div class="row" style="color:#21215f; margin: 15px 30px 30px 30px;">
+								<div class="col-md-12">
+									<div class="coming_soon_font">A new tool from <span class="summaware_icon"></span></div>
+								</div>
+							</div>
+							<div class="row" style="margin:15px 30px 30px 30px; text-align:center;">
+								<div class="col-md-12">
+									<div class="coming_soon_font">A new and streamline way to create, manage, and book your advertisments!</div>
+								</div>
+							</div>
+							<div class="row" style="margin:30px 30px 0px 30px;">
+								<div class="col-md-12">
+									<div class="coming_soon_font">Notify Me!</div>
+								</div>
+							</div>
+							<div class="row" style="margin-left:30px">
+								<div class="col-md-12">
+									<input type="email" placeholder="Enter Email Address" style="width:200px;" />
+									<button type="submit" class="submit_button">Submit</button>
+								</div>
+							</div>
+							<div class="row" style="margin:15px 15px 0px 30px;">
+								<div class="col-md-12">
+									<span class="coming_soon_font">Follow us: </span>
+									<a href=""><i class="fa fa-twitter fa-2x icon"></i></a>
+									<!--<a href=""><i class="fa fa-indeed"></i></a>-->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div id="coming_soon_image" style="text-align:center; padding-top:35%;">
+									<span class="coming_soon_font" style="color:white;">Video coming soon!</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	{% endblock %}

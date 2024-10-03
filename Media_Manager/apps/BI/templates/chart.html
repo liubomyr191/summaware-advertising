@@ -1,0 +1,365 @@
+{% extends "templates/base.html" %}
+{% load static %}
+{% block page-header %}Chart Editor{% endblock %}
+{% block breadcrumb %}
+<li class="active"><a href="{{url}}/bi">BI</a></li>
+<li class="active">Edit Chart</li>
+{% endblock %}
+{% block content %}
+{% if access == "deny" %}
+<div id="message">{{ message }}</div>
+{% else %}
+<style>
+	.panel-title {
+		position: relative;
+	}
+
+	.panel-title::after {
+		content: "\f107";
+		color: #333;
+		top: -2px;
+		right: 0px;
+		position: absolute;
+		font-family: "FontAwesome"
+	}
+
+	.panel-title[aria-expanded="true"]::after {
+		content: "\f106";
+	}
+</style>
+
+<div class="col-md-12">
+	<div class="box">
+		<div class="box-header">
+			<h2 class="page-header" id="dashboard_id" dashboard_id="{{chart.dashboard_id}}">{% if chart.title %}{{chart.title}}{% else %}New Chart{% endif %}</h2>
+			<div class="box-tools pull-right btn">
+				<button type="button" class="btn-box-tool btn" style="outline-offset: 0px; outline: -webkit-focus-ring-color 0px;"><i class="fa fa-gear"></i></button>
+			</div>
+		</div>
+		<div class="box-body">
+			<div id="message">{{ message }}</div>
+			<div class="col-md-12">
+				<div class="row table-scroll">
+					<div class="col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-target="#queryParsing">Query Parsing</h4>
+							</div>
+							<div id="queryParsing" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<div>Select: {% for key0, row0 in parser.select.items %}key[{{key0}}]: <ul>{% for r0 in row0 %}<li>{{r0}}</li>{% endfor %}</ul><br>{% endfor %}</div><br><br>
+									<div>From: {% for key1, row1 in parser.from.items %}key[{{key1}}]: <ul>{% for r1 in row1 %}<li>{{r1}}</li>{% endfor %}</ul><br>{% endfor %}</div><br><br>
+									<div>Order By: {% for key2, row2 in parser.order_by.items %}key[{{key2}}]: <ul>{% for r2 in row2 %}<li>{{r2}}</li>{% endfor %}</ul><br>{% endfor %}</div><br><br>
+									<div>Group By: {% for key3, row3 in parser.group_by.items %}key[{{key3}}]: <ul>{% for r3 in row3 %}<li>{{r3}}</li>{% endfor %}</ul><br>{% endfor %}</div><br><br>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-target="#chartProperties">Properties</h4>
+							</div>
+							<div id="chartProperties" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form method="POST">{% csrf_token %}
+										<fieldset class="module aligned">
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartName">Name</label>
+													<input type="text" class="form-control" id="chartName" placeholder="Chart Name" value="{{ chart.title }}" name="chartName" />
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartStatus">Status</label>
+													<input type="text" class="form-control" id="chartStatus" placeholder="Chart Status" value="{{ chart.status }}" name="chartStatus" />
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartSource">Source</label>
+													<select class="form-control" name="chartSource">
+														{% for source in source_list %}
+														<option{% if chart.status == '1' %} selected="selected"{% endif %} value="0">{{source}}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+										</fieldset>
+										<button type="submit" class="btn btn-primary" name="submit" value="chartProperties">{% if id != '-1' %}Update{% else %}Create{% endif %}</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						{% if id != '-1' %}
+						<br />
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-target="#chartQuery">Drilldowns</h4>
+							</div>
+							<div id="chartQuery" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form method="POST">{% csrf_token %}
+										<fieldset class="module aligned">
+											<div class="form-row">
+												<div class="form-group">
+													<label for="dashboardDrilldowns">Drilldowns Enabled</label>
+													<input type="checkbox" {% if chart.drilldown_status == 1 %}checked="checked"{% endif %} class="form-check-input" id="dashboardDrilldowns" />
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="drilldownOptions">Drilldowns Options</label>
+													<div class="related-widget-wrapper">
+														<div class="selector">
+															<div class="selector-available">
+																<h2>Available drilldowns<span class="help help-tooltip help-icon" title="The available drilldowns that can be added to this chart"></span></h2>
+																<p class="selector-filter">
+																	<label for="drilldowns_filter_input"><span class="help-tooltip search-label-icon" title="Type into this box to filter the drilldowns available"></span></label>
+																	<input type="text" placeholder="filter" id="drilldowns_filter_input" />
+																</p>
+																<select name="available_drilldowns" data-field-name="drilldowns" data-is-stacked="0" multiple class="filtered" id="drilldowns_available" style="height:227px">
+																	{% for ad in available_drilldowns %}
+																	<option>{{ad}}</option>
+																	{% endfor %}
+																</select>
+																<a title="Click to choose all drilldowns available." href="#" id="drilldowns_add_all" class="selector-chooseall">Choose all</a>
+															</div>
+															<ul class="selector-chooser">
+																<li><a href="#" class="selector-add active" id="drilldowns_add_link" title="Choose"></a></li>
+																<li><a href="#" class="selector-remove" id="drilldowns_remove_link" title="Remove"></a></li>
+															</ul>
+															<div class="selector-chosen">
+																<h2>Chosen drilldowns<span class="help help-tooltip help-icon" title="This is the list of chosen drilldowns. You may remove some by selecting them in the box below and clicking the Remove arrow between the two boxes."></span></h2>
+																<select id="drilldowns_chosen" multiple="multiple" size="0" name="drilldowns_chosen" class="filtered" style="height:267.594px;">
+																	{% for key, sd in set_drilldowns.items %}
+																	<option value="key">{{sd}}</option>
+																	{% endfor %}
+																</select>
+																<a title="Click to remove all chosen drilldowns at once." href="#" id="drilldowns_remove_all_link" class="selector-clearall active">Remove all</a>
+															</div>
+														</div>
+													</div>
+													<div class="help">Specific permissions for this user. Hold down "Control", or "Command" on a Mac, to select more than one.</div>
+												</div>
+											</div>
+										</fieldset>
+										<button type="submit" name="submit" class="btn btn-primary" value="chartQuery">Update</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-target="#chartPermissions">Query</h4>
+							</div>
+							<div id="chartPermissions" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form method="POST">{% csrf_token %}
+										<fieldset class="module aligned">
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartType">Query Type</label>
+													<select class="form-control" id="chartType">
+														<option>MySQL</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartType">Type</label>
+													<select class="form-control" id="chartType" name="chartType">
+														<option{% if chart.chart_type == 'table' %} selected="selected"{% endif %} value="0">Table</option>
+														<option{% if chart.chart_type == 'chart' %} selected="selected"{% endif %} value="1">Chart</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartType">Source table</label>
+													<select class="form-control" id="chartType">
+														{% for table in tables %}
+														<option value="" {% if chart.table_name == table %}selected="true"{% endif %}>{{table}}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartType">Query</label>
+													<table class="table table-bordered table-responsive" width="100%" id="qbColumns">
+														<thead>
+															<tr>
+																<th style="width:20%" colspan="2" style="border-right:1px solid #ddd">Identifiers</th>
+																<th colspan="100">Columns</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																{% for selectKey, selectRow in selects.select_group0.items %}
+																<td>{{selectRow.value}}</td>
+																{% endfor %}
+
+																{% for parserKey, parserRow in parser.select.items %}
+																{% for pr in parserRow %}
+																{% if pr and pr.strip and parserKey == 0 %}
+																<td>{{pr}}</td>
+																{% endif %}
+																{% endfor %}
+																{% endfor %}
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<br>
+												<div>
+													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Add Identifier</button>
+													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Add Column</button>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartOperations">Operations</label>
+													<select class="form-control" id="chartOperations">
+														<option>None</option>
+														<option>Group</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartOrder">Order By</label>
+													<select class="form-control" id="chartOrder">
+														<option>None</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartLimit">Limit</label>
+													<input type="text" class="form-control" id="chartLimit" placeholder="Rows per Page" value="10" name="chartLimit" />
+												</div>
+											</div>
+										</fieldset>
+										<button type="submit" name="submit" class="btn btn-primary" value="chartAccess">Update</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title" data-toggle="collapse" data-target="#chartPermissions">Permissions</h4>
+							</div>
+							<div id="chartPermissions" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<form method="POST">{% csrf_token %}
+										<fieldset class="module aligned">
+											<div class="form-row">
+												<div class="form-group">
+													<label for="chartAccess">Access Group</label>
+													<select multiple class="form-control" name="chartAccess">
+														<option value="0" selected="true">Admin</option>
+														<option value="1">Champions</option>
+													</select>
+												</div>
+											</div>
+										</fieldset>
+										<button type="submit" name="submit" class="btn btn-primary" value="chartAccess">Update</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title" id="exampleModalLongTitle" style="float:left">Add table column</h1>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<fieldset class="module aligned">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbColumnName">Column Alias</label>
+								<input type="text" class="form-control" id="qbColumnName" placeholder="New column Name" value="" name="chartName" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbAction">Action</label>
+								<select class="form-control" id="qbAction" name="qbBackgrqbActionoundHighlight">
+									<option value="0">Select</option>
+									<option value="1">Sum</option>
+									<option value="1">Operation</option>
+									<option value="1">Custom</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbSelectFrom">Field</label>
+								<select class="form-control" id="qbSelectFrom" name="qbSelectFrom">
+									{% for column in columns %}
+									<option value="">{{column}}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbRound">Filter/Where</label>
+								<select class="form-control" id="qbWhere" name="qbWhere">
+									<option value="0">None</option>
+									<option value="0">Column operation</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbRound">Round Column</label>
+								<input type="text" class="form-control" id="qbRound" placeholder="Round column value to" value="2" name="qbRound" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="qbCommas">Modifier</label>
+								<select class="form-control" id="qbCommas" name="qbCommas">
+									<option value="0">Prepend $</option>
+									<option value="1">Append %</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-check form-check-inline">
+								<label class="form-check-inline" for="qbBackgroundHighlight"><input type="checkbox" class="form-check-input" id="qbBackgroundHighlight" style="vertical-align: text-bottom;"> Difference Highlight</label>
+								<label class="form-check-inline" for="qbCommas"><input type="checkbox" class="form-check-input" id="qbCommas"style="vertical-align: text-bottom;" > Commas</label>
+								<label class="form-check-inline" for="qbCommas"><input type="checkbox" class="form-check-input" id="qbCommas" style="vertical-align: text-bottom;"> Total Column</label>
+								<label class="form-check-inline" for="qbCommas"><input type="checkbox" class="form-check-input" id="qbCommas" style="vertical-align: text-bottom;"> Add Previous Year</label>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
+{% block endjs %}
+<script type="text/javascript">
+	var parserData = {{parser}};
+</script>
+<script src="{% static "dist/js/pages/chart.js" %}?t=0.02"></script>
+{% endblock %}

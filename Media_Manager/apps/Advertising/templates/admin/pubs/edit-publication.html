@@ -1,0 +1,1102 @@
+{% extends 'templates/base_gamma.html' %}{% load static %} {% block content %}
+
+<div class="container">
+  
+
+  <div class="heading-container text-center">
+    <h3 class="heading">Edit Publication</h3>
+  </div>
+  <a href="{% url 'adminGeneral' %}">Admin Home</a>
+  <div class="multistep-container mgb-3">
+    <div class="c-card">
+      <div class="progress-icons">
+        <div class="progress-dot-container">
+          <div id="progress_0" class="progress-dot progress-active">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">General Info</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_1" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Scheduling</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_2" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Rate Groups</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_3" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Ad Type</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_4" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Adjustments</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_5" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Sections</p>
+        </div>
+        <div class="progress-dot-container">
+          <div id="progress_5" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Deadlines</p>
+        </div>
+      </div>
+      <!-- End Icons -->
+      <div id="section1" class="section multistep-content mgb-3">
+        <div class="heading-container text-center">
+          <h3 class="heading">General Info</h3>
+        </div>
+
+        <div class="section-content text-center mgb-3">
+          <div class="text-center">
+            <p>Fill out the information below to begin!</p>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <form method="post" id="edit-publication-info-form">
+                <div class="form-group mgb-3 center-block text-left">
+                  <label for="">* Publication Name:</label>
+                  <input type="text" name="name" id="name" class="form-control" value="{{pub.name}}"/>
+                </div>
+
+                <div class="form-group mgb-3 center-block text-left">
+                  <label for="">Address Line 1:</label>
+                  <input type="text" name="address" id="" class="form-control" value="{{pub.address}}"/>
+                  <a href="#">Add another address line</a>
+                </div>
+
+                <div class="row mgb-3 center-block">
+                  <div class="col-md-12 col-lg-6 pl-0">
+                    <div class="form-group text-left">
+                      <label for="city">City:</label>
+                      <input type="text" name="city" id="city" class="form-control" value="{{pub.city}}" />
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6 pr-0">
+                    <div class="form-group text-left">
+                        <label for="state">State:</label>
+                        <select name="state" id="state" class="form-control">
+                            {% for state in all_states %}
+                            <option value="{{state.id}}" {% if state.id == pub.state %}selected{% endif %}>
+                                {{state.name}} - {{state.abbreviation}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mgb-3 center-block">
+                  <div class="col-md-12 col-lg-6 pl-0">
+                    <div class="form-group mgb-3 text-left">
+                      <label for="city">Zip Code:</label>
+                      <input type="text" name="zip_code" id="zip-code" class="form-control" value="{{pub.zip_code}}"/>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6 pl-0">
+                    <div class="form-group mgb-3 text-left">
+                      <label for="city">Country:</label>
+                      <input type="text" name="country" id="country" class="form-control" value="{{pub.country}}" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group text-left">
+                  <label for="parent_id">Parent Publication (optional):</label>
+                  <select name="parent_id" id="parent_id" class="form-control">
+                      {% for publication in publications %}
+                      <option value="{{publication.id}}" {% if publication.id == pub.parent_id %}selected{% endif %}>
+                          {{publication.name}}
+                      </option>
+                      {% endfor %}
+                  </select>
+              </div>              
+
+                <!-- <div class="btn-container content-even">
+                  <button class="btn btn-secondary">Save Changes</button>
+                </div> -->
+              </form>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <div class="gl-code-builder">
+                <span class="d-block mb-2">Available Codes:</span>
+                <div id="div1" class="available-codes mb-5" ondrop="drop(event)" ondragover="allowDrop(event)">
+                  <button class="btn-custom btn-secondary-light mgb-1" draggable="true" ondragstart="drag(event)" id="location">Location</button>
+
+                  <button class="btn-custom btn-secondary-light mgb-1" draggable="true" ondragstart="drag(event)" id="departments">Departments</button>
+
+                  <button class="btn-custom btn-secondary-light mgb-1" draggable="true" ondragstart="drag(event)" id="profit">Profit</button>
+
+                  <button class="btn-custom btn-secondary-light" draggable="true" ondragstart="drag(event)" id="company">Company</button>
+                </div>
+
+                <span class="d-block mb-2">Selected Codes:</span>
+                <div id="div2" class="selected-codes mb-5" ondrop="drop(event)" ondragover="allowDrop(event)">
+                  <button class="btn-custom btn-secondary-light" ondragstart="drag(event)" draggable="true" id="GL">GL</button>
+                </div>
+
+                <div class="selected-fields-container">
+                  <div class="text-container text-center mb-5">
+                    <p>
+                      Select how many characters you want for each<br />
+                      selected code!
+                    </p>
+                  </div>
+
+                  <div class="active-fields">
+                    <div class="form-group">
+                      <div id="inputContainer" class="row justify-content-md-center">
+                        <div class="col-lg-4">
+                          <label for="GL">GL</label>
+                          <select name="GL" id="GL" class="form-control"></select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section2" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Scheduling</h3>
+        </div>
+
+        <div class="section-content center-block">
+          <form method="post" id="edit-publication-scheduling-form">
+            <div class="text-center mgb-3">
+              <p>Calendar Type:</p>
+              <div class="toggle-switch-container">
+                <div class="switch-field center-block">
+                  <input type="radio" id="calendar-radio-one" name="calendar_type" value="repeat" {% if pub.calendar_type == 'repeat' %} checked {% endif %}/>
+                  <label for="calendar-radio-one">Repeat</label>
+                  <input type="radio" id="calendar-radio-two" name="calendar_type" value="non-repeating"  {% if pub.calendar_type == 'non-repeating' %} checked {% endif %}/>
+                  <label for="calendar-radio-two">Non-repeating</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="repeating-calendar active">
+              <div class="row mgb-3">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Name:</label>
+                    <input type="text" name="" id="" class="form-control" value="{{pub.name}}"/>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <label for="">Product Type:</label>
+                  <select name="product_name" id="product_name" class="form-control">
+                    {% for product in products %}
+                        <option value="{{ product.product_mag }}" {% if pub.product_name == product.product_mag %}selected{% endif %}>
+                            {{ product.product_mag }}
+                        </option>
+                    {% endfor %}
+                </select>
+              </div>
+              </div>
+
+              <div class="row mgb-3">
+                <div class="col-md-12 col-lg-6">
+                  <div>
+                    <label for="gl-override">GL Override (optional)</label>
+                  </div>
+                  <div class="toggle-switch-container">
+                    <div class="switch-field">
+                      <input type="radio" id="0001-override-radio-one" name="gl_override" value="Yes" {% if pub.gl_override == 'Yes' %} checked {% endif %} />
+                      <label for="0001-override-radio-one">Yes</label>
+                      <input type="radio" id="0001-override-radio-two" name="gl_override" value="No" {% if pub.gl_override == 'No' %} checked {% endif %} />
+                      <label for="0001-override-radio-two">No</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <label for="">GL Code:</label>
+                  <select name="gl_code" id="" class="form-control">
+                    {% for gl_code in gl_codes %}
+                    <option value="{{gl_code.id}}" {% if pub.gl_code_id == gl_code.id %} selected {% endif %}>{{gl_code.code}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mgb-3">
+                <div class="col-md-12 col-lg-6">
+                  <label for="">Select your schedule:</label>
+                  <div class="schedule-select-buttons">
+                    <button type="button" class="schedule-select-btn" data-value="1">Daily</button>
+                    <button type="button" class="schedule-select-btn" data-value="2">Weekly</button>
+                    <button type="button" class="schedule-select-btn" data-value="3">Monthly</button>
+                    <button type="button" class="schedule-select-btn" data-value="4">Yearly</button>
+                  </div>
+                  <input type="hidden" name="schedule_type" id="schedule_type" value="{{pub.schedule_type}}">
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <label for="">Frequency:</label>
+                  <form action="" class="content-center">
+                    <div class="form-group">
+                      <label for="">Repeat Every</label>
+                      <input type="number" name="repeat"  value='{{pub.repeat}}' id="" class="form-control w50" />
+                      <label for="">week(s)</label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="dow-container mgb-3 text-center">
+                <label for="">Select your Day(s) of week:</label>
+                <div class="dow-picker">
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow1" value="1">
+                    <label for="dow1">Sun</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow2" value="2">
+                    <label for="dow2">Mon</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow3" value="3">
+                    <label for="dow3">Tues</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow4" value="4">
+                    <label for="dow4">Wed</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow5" value="5">
+                    <label for="dow5">Thur</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow6" value="6">
+                    <label for="dow6">Fri</label>
+                  </div>
+                  <div class="dow-picker-option">
+                    <input type="checkbox" id="dow7" value="7">
+                    <label for="dow7">Sat</label>
+                  </div>
+                </div>
+                <input type="hidden" name="run_days" id="run_days" value='["6","7"]'>
+              </div>
+              <div class="row mgb-3">
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Start Date:</label>
+                    <input type="date" name="start_date" id="" class="form-control" value="{{start_date}}"/>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="">End Date (optional):</label>
+                    <input type="date" name="end_date" id="" class="form-control" value="{{end_date}}"/>
+                  </div>
+                </div> 
+              </div>
+
+              <!-- <div class="calendar-container mgb-3">
+                <div class="calendar">
+                  <div class="header">
+                    <button id="prevBtn">&lt;</button>
+                    <h1 id="monthYear"></h1>
+                    <button id="nextBtn">&gt;</button>
+                  </div>
+                  <div class="days">
+                    <div class="day">Sun</div>
+                    <div class="day">Mon</div>
+                    <div class="day">Tue</div>
+                    <div class="day">Wed</div>
+                    <div class="day">Thu</div>
+                    <div class="day">Fri</div>
+                    <div class="day">Sat</div>
+                  </div>
+                  <div class="dates" id="dates">
+                    <div class="date" data-day="1">1</div>
+                    <div class="date" data-day="2">2</div>
+                    <div class="date" data-day="3">3</div>
+                    <div class="date" data-day="4">4</div>
+                    <div class="date" data-day="5">5</div>
+                    <div class="date" data-day="6">6</div>
+                  </div>
+                </div>
+
+                Modal for Event Details 
+                <div class="modal event show-modal hide-modal" id="eventModal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="eventDate"></h2>
+                    <textarea class="area" id="eventDescription"></textarea>
+                    <button id="saveEventBtn">Save</button>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            
+          </form>
+
+          <div class="non-repeating hide">
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <div class="non-repeating-container">
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="">Name:</label>
+                      <input type="text" name="product_name" id="" class="form-control" value="{{pub.name}}"/>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <label for="">Product Type:</label>
+                    <select name="product_name" id="product_name" class="form-control">
+                      {% for product in products %}
+                          <option value="{{ product.product_mag }}" {% if pub.product_name == product.product_mag %}selected{% endif %}>
+                              {{ product.product_mag }}
+                          </option>
+                      {% endfor %}
+                  </select>
+                </div>
+                </div>
+
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div>
+                      <label for="gl-override">GL Override (optional)</label>
+                    </div>
+                    <div class="toggle-switch-container">
+                      <div class="switch-field">
+                        <input type="radio" id="non-repeat-gl-override-radio-one" name="gl_override" value="Yes" checked />
+                        <label for="non-repeat-gl-override-radio-one">Yes</label>
+                        <input type="radio" id="non-repeat-gl-override-radio-two" name="gl_override" value="No" />
+                        <label for="non-repeat-gl-override-radio-two">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <label for="">GL Code:</label>
+                    <select name="gl_code" id="" class="form-control">
+                      {% for gl_code in gl_codes %}
+                      <option value="{{gl_code.id}}">{{gl_code.code}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="">Publish Date:</label>
+                      <input type="date" name="start_date" id="" class="form-control" />
+                    </div>
+                  </div>
+                  {% comment %} <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="">End Date (optional):</label>
+                      <input type="date" name="end_date" id="" class="form-control" />
+                    </div>
+                  </div> {% endcomment %}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <button class="start-schedule-button">
+                <i class="fa fa-solid fa-plus"></i>
+                <p>Start another schedule</p>
+              </button>
+            </div>
+          </div>
+        </div>
+          
+        </div>
+        <div class="btn-container content-even mgt-5">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section3" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Rate Groups</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="text-center mgb-3">
+            <p>
+              Select which rate groups you'd like to be<br />
+              assign to this publication
+            </p>
+          </div>
+
+           {% include "components/item_select.html" with item_type="rate groups" available_items=unsigned_rategroups selected_items=assigned_rategroups id="edit-pub-rategroup" %}
+
+          
+        </div>
+
+        <div class="link-container text-center mgb-3">
+          <a href="#">Advanced Ad Type Assignment</a>
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section4" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Ad Type</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="text-center mgb-3">
+            <p>
+              Select from the available Ad Types you<br />
+              would like associated with this Publication
+            </p>
+          </div>
+
+          {% include "components/item_select.html" with item_type="ad types" available_items=unsigned_adminadtypes selected_items=assigned_adminadtypes id="edit-pub-adtype" %}
+
+          
+
+        </div>
+
+        <div class="link-container text-center mgb-3">
+          <a href="#">Advanced Ad Type Assignment</a>
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section5" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Adjustments</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="text-center mgb-3">
+            <p>Choose which Adjustments that are<br />assigned to this Publication</p>
+          </div>
+
+          {% include "components/item_select.html" with item_type="adjustments" available_items=unsigned_adminadjustments selected_items=assigned_adminadjustments id="edit-pub-adjustment" %}
+
+        </div>
+
+        <div class="link-container text-center mgb-3">
+          <a href="#">Advanced Ad Type Assignment</a>
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section6" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Sections</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="text-center mgb-3">
+            <p>Select the sections you would like to be<br />available to use with this Publication</p>
+          </div>
+
+          {% include "components/item_select.html" with item_type="sections" available_items=unsigned_sections selected_items=assigned_sections id="edit-pub-section" %}
+        </div>
+
+        <div class="link-container text-center mgb-3">
+          <a href="#">Advanced Ad Type Assignment</a>
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section7" class="section multistep-content mgb-3 hide">
+        <div class="section-content">
+        <div class="repeat-deadlines-container active">
+          <div class="text-center mgb-3">
+            <p>Set your deadlines for each day you've selected</p>
+          </div>
+
+          <div class="deadline-schedule-btns schedule-select-buttons text-center"></div>
+
+          <div class="deadline-search content-end">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <span class="fa fa-search form-control-feedback" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="deadline-options">
+            <div class="list-group">
+              <div class="list-group-item content-between">
+                <div class="title">
+                  <p><strong>Press</strong></p>
+                </div>
+
+                <div class="on-off-switch">
+                  <div class="switch-field">
+                    <input type="radio" id="press-onoff-radio-one" name="press-onoff_type" value="on" checked />
+                    <label for="press-onoff-radio-one">On</label>
+                    <input type="radio" id="press-onoff-radio-two" name="press-onoff_type" value="off" />
+                    <label for="press-onoff-radio-two">Off</label>
+                  </div>
+                </div>
+
+                <div class="due-by d-flex align-center content-end">
+                  <span>Due by:</span>
+                  <div class="content-even align-center w75">
+                    <div class="w25 d-flex">
+                      <select name="day_of_week" id="day_of_week" class="form-control">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>                    </div>
+                    <div class="w50 d-flex">
+                      <select name="hour" id="hour" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option</option>
+                    </select>
+                      <span class="px-05 d-flex align-center">:</span>
+                      <select name="minute" id="minute" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                        <option value="33">33</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="49">49</option>
+                        <option value="50">50</option>
+                        <option value="51">51</option>
+                        <option value="52">52</option>
+                        <option value="53">53</option>
+                        <option value="54">54</option>
+                        <option value="55">55</option>
+                        <option value="56">56</option>
+                        <option value="57">57</option>
+                        <option value="58">58</option>
+                        <option value="59">59</option>
+                    </select>                    </div>
+                    <div>
+                      <select name="" id="" class="form-control">
+                        <option>AM</option>
+                        <option>PM</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="list-group-item content-between">
+                <div class="title">
+                  <p><strong>Pagination</strong></p>
+                </div>
+
+                <div class="on-off-switch">
+                  <div class="switch-field">
+                    <input type="radio" id="pagination-onoff-radio-one" name="pagination-onoff_type" value="on" checked />
+                    <label for="pagination-onoff-radio-one">On</label>
+                    <input type="radio" id="pagination-onoff-radio-two" name="pagination-onoff_type" value="off" />
+                    <label for="pagination-onoff-radio-two">Off</label>
+                  </div>
+                </div>
+
+                <div class="due-by d-flex align-center content-end">
+                  <span>Due by:</span>
+                  <div class="content-even align-center w75">
+                    <div class="w25 d-flex">
+                      <select name="day_of_week" id="day_of_week" class="form-control">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>                    </div>
+                    <div class="w50 d-flex">
+                      <select name="hour" id="hour" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option</option>
+                    </select>
+                      <span class="px-05 d-flex align-center">:</span>
+                      <select name="minute" id="minute" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                        <option value="33">33</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="49">49</option>
+                        <option value="50">50</option>
+                        <option value="51">51</option>
+                        <option value="52">52</option>
+                        <option value="53">53</option>
+                        <option value="54">54</option>
+                        <option value="55">55</option>
+                        <option value="56">56</option>
+                        <option value="57">57</option>
+                        <option value="58">58</option>
+                        <option value="59">59</option>
+                    </select>                    </div>
+                    <div>
+                      <select name="" id="" class="form-control">
+                        <option>AM</option>
+                        <option>PM</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-deadlines-container hide">
+          <div class="text-center mgb-3">
+            <p>Select your product and set deadlines for each of its days</p>
+          </div>
+
+          <div class="product-specs-container mgb-3">
+            <div class="available-products">
+              <div class="products-heading">
+                <h3>Available Products</h3>
+              </div>
+              <div class="products-list"></div>
+            </div>
+            <div class="specs-container px-1">
+              <div class="text-center">
+                <h3 class="heading">Product</h3>
+              </div>
+              <div id="font-step-slider" class="custom-step-form secondary">
+                <div class="step-form-progress">
+                  <button class="arrow">
+                    <i class="fa fa-solid fa-chevron-left" aria-hidden="true"></i>
+                  </button>
+                  <div class="progress-buttons py-3">
+                    <button class="progress-btn active-step">03/23/2024</button>
+                    <button class="progress-btn">03/23/2024</button>
+                  </div>
+                  <button class="arrow">
+                    <i class="fa fa-solid fa-chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <section class="step-form-content active">
+                  <div class="deadline-search content-end">
+                    <div class="form-group has-search">
+                      <input type="text" class="form-control" placeholder="Search..." />
+                      <span class="fa fa-search form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="deadline-options">
+                    <div class="list-group">
+                      <div class="list-group-item content-between">
+                        <div class="title">
+                          <p><strong>Press</strong></p>
+                        </div>
+
+                        <div class="on-off-switch">
+                          <div class="switch-field">
+                            <input type="radio" id="product-press-onoff-radio-one" name="product-press-onoff_type" value="on" checked />
+                            <label for="product-press-onoff-radio-one">On</label>
+                            <input type="radio" id="product-press-onoff-radio-two" name="product-press-onoff_type" value="off" />
+                            <label for="product-press-onoff-radio-two">Off</label>
+                          </div>
+                        </div>
+
+                        <div class="due-by d-flex align-center content-end">
+                          <span>Due by:</span>
+                          <div class="content-even align-center w75">
+                            <div class="w25 d-flex">
+                              <input type="text" name="" id="" class="form-control" />
+                            </div>
+                            <div class="w50 d-flex">
+                              <input type="text" name="" id="" class="form-control" />
+                              <span class="px-05 d-flex align-center">:</span>
+                              <input type="text" name="" id="" class="form-control" />
+                            </div>
+                            <div>
+                              <select name="" id="" class="form-control">
+                                <option>AM</option>
+                                <option>PM</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="list-group-item content-between">
+                        <div class="title">
+                          <p><strong>Pagination</strong></p>
+                        </div>
+
+                        <div class="on-off-switch">
+                          <div class="switch-field">
+                            <input type="radio" id="product-pagination-onoff-radio-one" name="product-pagination-onoff_type" value="on" checked />
+                            <label for="product-pagination-onoff-radio-one">On</label>
+                            <input type="radio" id="product-pagination-onoff-radio-two" name="product-pagination-onoff_type" value="off" />
+                            <label for="product-pagination-onoff-radio-two">Off</label>
+                          </div>
+                        </div>
+
+                        <div class="due-by d-flex align-center content-end">
+                          <span>Due by:</span>
+                          <div class="content-even align-center w75">
+                            <div class="w25 d-flex">
+                              <input type="text" name="" id="" class="form-control" />
+                            </div>
+                            <div class="w50 d-flex">
+                              <input type="text" name="" id="" class="form-control" />
+                              <span class="px-05 d-flex align-center">:</span>
+                              <input type="text" name="" id="" class="form-control" />
+                            </div>
+                            <div>
+                              <select name="" id="" class="form-control">
+                                <option>AM</option>
+                                <option>PM</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-container content-even">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+      </div>
+
+      <div id="section8" class="section multistep-content hide">
+        <div class="section-content">
+          <div class="complete-product-container text-center">
+            <h3 class="heading">Edit Publication Finished!</h3>
+            <div class="big-check mx-auto my-5">
+              <i class="fa fa-solid fa-check"></i>
+            </div>
+            <div class="btn-container content-even">
+              <button class="btn btn-danger" onclick="savePublication(1, '{{pub.id}}', '{{pub.active}}', '{{pub.status}}')">{{pub.active|yesno:"Deativate,Active"}}</button>
+              <a href="{% url 'adminGeneral' %}" class="btn btn-gray" onclick="savePublication(2, '{{pub.id}}', '{{pub.active}}', '{{pub.status}}')">Archive</a>
+              <button class="btn btn-secondary" onclick="savePublication(3, '{{pub.id}}', '{{pub.active}}', '{{pub.status}}')">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function savePublication(index, id, active, status) {
+      let form = $('#edit-publication-info-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+
+      form = $('#edit-publication-scheduling-form');
+      formData = new FormData(form[0]);
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      if(active == 'False') data['active'] = false;
+      else data['active'] = true;
+      data['status'] = status;
+      if(index == 1) {
+        data['active'] = !data['active'];
+      } else if(index == 2) {
+        data['status'] = 2;
+      }
+      var selectElement = document.getElementById('edit-pub-rategroup-lstBox2');
+      var values = [];
+      
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['rategroup_id'] = JSON.stringify(values);
+      
+      var selectElement = document.getElementById('edit-pub-adtype-lstBox2');
+      var values = [];
+      
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['adtype_id'] = JSON.stringify(values);
+      
+      var selectElement = document.getElementById('edit-pub-adjustment-lstBox2');
+      var values = [];
+      
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['adjustment_id'] = JSON.stringify(values);
+      
+      var selectElement = document.getElementById('edit-pub-section-lstBox2');
+      var values = [];
+      
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['section_id'] = JSON.stringify(values);
+      var hrefUrl = `{% url 'adminGeneral' %}`
+      fetch(`${id}/save`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(res => {
+        if(res.success) {
+          $.toastr.success("Publication saved successfully!");
+          window.location.href = hrefUrl;
+        } else {
+          $.toastr.error("Saving Publication Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving Publication Failed");
+      })
+    }
+    function initializeScheduleButtons() {
+      const buttons = document.querySelectorAll('.schedule-select-btn');
+      const scheduleTypeInput = document.getElementById('schedule_type');
+  
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class and reset styles for all buttons
+          buttons.forEach(btn => {
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+          });
+  
+          // Add active style to the clicked button
+          button.style.backgroundColor = '#f26722';
+          button.style.color = 'white';
+  
+          // Update the hidden input value
+          scheduleTypeInput.value = button.getAttribute('data-value');
+        });
+      });
+  
+      // Initialize the active button based on the initial value
+      const initialScheduleType = scheduleTypeInput.value;
+      if (initialScheduleType) {
+        const initialButton = Array.from(buttons).find(button => button.getAttribute('data-value') === initialScheduleType);
+        if (initialButton) {
+          initialButton.style.backgroundColor = '#f26722';
+          initialButton.style.color = 'white';
+        }
+      }
+    }
+  
+    // Call the function to initialize the buttons
+    
+    initializeScheduleButtons();
+    function initializeDayOfWeekPicker() {
+      const checkboxes = document.querySelectorAll('.dow-picker-option input[type="checkbox"]');
+      const runDaysInput = document.getElementById('run_days');
+  
+      function updateRunDaysInput() {
+        const selectedDays = Array.from(checkboxes)
+          .filter(checkbox => checkbox.checked)
+          .map(checkbox => checkbox.value);
+        runDaysInput.value = JSON.stringify(selectedDays);
+      }
+  
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateRunDaysInput);
+      });
+  
+      // Initialize checkboxes based on the initial value
+      let initialRunDays = [];
+      try {
+        initialRunDays = JSON.parse(runDaysInput.value) || [];
+      } catch (e) {
+        // Handle JSON parsing error
+        console.error('Error parsing JSON:', e);
+      }
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = initialRunDays.includes(checkbox.value);
+      });
+    }
+  
+    // Call the function to initialize the checkboxes
+    initializeDayOfWeekPicker();
+
+  </script>
+</div>
+
+<script src="{% static "admin/js/item-select.js" %}"></script>
+
+
+{% endblock %}

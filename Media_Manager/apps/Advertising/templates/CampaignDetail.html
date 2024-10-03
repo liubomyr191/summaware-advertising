@@ -1,0 +1,584 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/CamapaignDetail.js" %}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div class="detail-back-image">
+    <img src="{% static "svg/detail_back_img.svg" %}">
+</div>
+
+<div id="detail-content">
+    <div class="content text-center">
+        <h1 style="margin-top: 60px; margin-bottom: 0">Campaign Dashboard</h1>
+
+        <hr class="detail-title-hr">
+
+        <div style="display: flex">
+            <a class="back-link" href="{% url 'create_classified_ad' %}"><- <span>Back to Ad Campaign</span></a>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-card col-md-12">
+                <div class="detail-card-back-image">
+                    <img src="{% static 'svg/detail_card_img.svg' %}">
+                </div>
+
+                <div class="detail-card-title text-center">
+                    <
+                    <span>Campaign Details</span>
+                    >
+                </div>
+
+                <div class="detail-category text-center">
+                    <div class="detail-category-active">Campaign Details</div>
+
+                    <div>Insertions</div>
+
+                    <div>History/Logs</div>
+                </div>
+
+                <div class="detail-info">
+                    <div class="row detail-info-order text-left">
+                        <div class="col-md-6">
+                            <div class="detail-option-list">
+                                <button class="btn btn-edit" data-target="#editCampaign" data-toggle="modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+                                      <path d="M6.68706 2.00307L9.63142 4.75355L3.23786 10.7261L0.61272 10.9968C0.261291 11.0331 -0.0356291 10.7555 0.00346968 10.4272L0.29556 7.97325L6.68706 2.00307ZM11.4525 1.59358L10.07 0.302129C9.63878 -0.10071 8.93938 -0.10071 8.50814 0.302129L7.20753 1.51709L10.1519 4.26757L11.4525 3.0526C11.8837 2.64955 11.8837 1.99641 11.4525 1.59358Z" fill="white"/>
+                                    </svg>
+                                    Edit Campaign Detail
+                                </button>
+
+                                <button class="btn btn-cancel">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+                                      <path d="M6.42324 0C2.8758 0 0 2.68628 0 6C0 9.31372 2.8758 12 6.42324 12C9.97068 12 12.8465 9.31369 12.8465 6C12.8465 2.68631 9.9707 0 6.42324 0ZM9.79305 2.85223C11.4882 4.43565 11.6061 6.8558 10.3286 8.55312L3.68999 2.352C5.50829 1.1579 8.09887 1.2697 9.79305 2.85223ZM3.05342 9.14777C1.35831 7.56435 1.24041 5.1442 2.51788 3.44688L9.15648 9.648C7.33821 10.8421 4.7476 10.7303 3.05342 9.14777Z" fill="white"/>
+                                    </svg>
+                                    Cancel
+                                </button>
+
+                                <button class="btn btn-duplicate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                      <path d="M3.15337 2.48249C0.149493 4.40256 -0.372059 7.99947 1.62702 10.7284C3.62609 13.4573 7.40421 14.3059 10.4081 12.3858C11.2982 11.8213 12.0284 11.0637 12.5362 10.1777C13.0439 9.29179 13.3141 8.30403 13.3234 7.29915L11.1853 7.43797C11.142 8.67737 10.5124 9.89567 9.34621 10.6411C7.40253 11.8835 4.68776 11.365 3.394 9.59892C2.10025 7.83284 2.56605 5.28132 4.50973 4.03892C5.67006 3.29725 7.10384 3.18858 8.35226 3.59422L7.88888 5.1102L12.2289 3.95165L9.40765 0.100377L8.93125 1.68122C7.96643 1.39505 6.94438 1.31848 5.94306 1.45734C4.94173 1.59621 3.98758 1.94684 3.15337 2.48249Z" fill="white"/>
+                                    </svg>
+                                    Duplicate
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="detail-info-label">Campaign Name:</div>
+                                    <div class="detail-info-value-large">{{campaign.campaign_name}}</div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="detail-info-label">Start Date:</div>
+                                    <div class="detail-info-value-medium">{{campaign.start_date}}</div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="detail-info-label">End Date:</div>
+                                    <div class="detail-info-value-medium">{{campaign.end_date}}</div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 44px">
+                                <div class="detail-info-label">Brief Description:</div>
+                                <div class="detail-info-value-small">
+                                    {{campaign.brief}}
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 44px">
+                                <div class="col-md-7">
+                                    <div class="detail-info-label">Advertiser:</div>
+                                    <div class="detail-info-value-small">{{campaign.advertiser_name}}</div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="detail-info-label">Account*:</div>
+                                    <div class="detail-info-value-small">{{campaign.advertiser_id}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 44px">
+                                <div class="col-md-7">
+                                    <div class="detail-info-label">Sales Contact:</div>
+                                    <div class="detail-info-value-small">{{campaign.sales_contact}}</div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="detail-info-label">Contact ID #:</div>
+                                    <div class="detail-info-value-small">{{campaign.contact_id}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="detail-info-rate">
+                                <div class="detail-info-rate-title">
+                                    Rates
+                                </div>
+
+                                <div class="detail-info-rate-label">
+                                    <div>PUBLICATION</div>
+                                    <div>RATE</div>
+                                </div>
+
+                                <div class="detail-info-rate-value">
+                                    <div>Statesville Record & Landmark</div>
+                                    <div>rate40</div>
+                                </div>
+                            </div>
+
+                            <div class="detail-info-color">
+                                <div class="detail-info-rate-title">
+                                    Color
+                                </div>
+
+                                <div class="detail-no-color">No Colors Selected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-spec">
+                    {% for demo in campaign_detail %}
+                    <div class="c-m-panel">
+                        <div class="btn secondary c-section" data-toggle="collapse" data-target="#sum-demo-{{forloop.counter0}}"
+                             onclick="collapseEditSpec(this)">
+                            {{demo.campaignName}}
+                            <svg class="c-svg-active" xmlns="http://www.w3.org/2000/svg" width="24" height="14"
+                                 viewBox="0 0 24 14" fill="none">
+                                <path d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97919 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z"
+                                      fill="#666666"/>
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14"
+                                 fill="none">
+                                <path d="M13.0607 0.93934C12.4749 0.353553 11.5251 0.353553 10.9393 0.93934L1.3934 10.4853C0.807611 11.0711 0.807611 12.0208 1.3934 12.6066C1.97919 13.1924 2.92893 13.1924 3.51472 12.6066L12 4.12132L20.4853 12.6066C21.0711 13.1924 22.0208 13.1924 22.6066 12.6066C23.1924 12.0208 23.1924 11.0711 22.6066 10.4853L13.0607 0.93934ZM13.5 3V2L10.5 2V3L13.5 3Z"
+                                      fill="#666666"/>
+                            </svg>
+                        </div>
+
+                        <div id="sum-demo-{{forloop.counter0}}" class="collapse secondary p-2 c-ad-spec">
+                            <div id="sum-spec-item-{{forloop.counter0}}">
+                                {% for pub in demo.pubArray%}
+                                <div id="sum-ad-spec-item-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="c-ad-spec-item">
+                                    <div class="c-ad-spec-label">Select Your Publication:</div>
+
+                                    <div class="select-publication">
+                                        <span id="sum-select-pub-{{forloop.parentloop.counter0}}-{{forloop.counter0}}">{{pub.pubName}}</span>
+
+                                        <h4 class="black">$<span id="sum-pub-price-{{forloop.parentloop.counter0}}-{{forloop.counter0}}">{{pub.pubPrice}}</span></h4>
+                                    </div>
+
+                                    <hr class="black">
+
+                                    <div id="sum-edit-ad-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="edit-ad">
+                                        {% for ad in pub.adArray %}
+                                        <div id="sum-edit-ad-item-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="edit-ad-item">
+                                            <div class="edit-ad-item-title">
+                                                <span id="sum-ad-name-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}">{{ad.adName}}</span>
+
+                                                <h6>Insertions:</h6>
+
+                                                <h6 id="sum-ad-count-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" style="margin-left: 5px">{{ad.adCount}}</h6>
+
+                                                <h4 class="black">$<span id="sum-ad-unit-price-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}">{{ad.adPrice}}</span></h4>
+                                            </div>
+
+                                            <div id="sum-ad-content-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" style="display: none">
+                                                <div class="value-items">
+                                                    <div class="value-items-half">
+                                                        <div class="ad-type">
+                                                            <div class="ad-type-label">Ad Type:</div>
+
+                                                            <div id="sum-ad-type-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="ad-type-value">{{ad.adType}}</div>
+                                                        </div>
+
+                                                        <div class="ad-date">
+                                                            <div class="ad-type-label">Dates:</div>
+
+                                                            <div class="ad-type-value">9/12/2023,</div>
+                                                            <div class="ad-type-value">9/17/2023,</div>
+                                                            <div class="ad-type-value">10/13/2023,</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="value-items-half">
+                                                        <div class="ad-type">
+                                                            <div class="ad-type-label">Size:</div>
+
+                                                            <div id="sum-ad-size-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="ad-type-value">{{ad.adSize}}</div>
+                                                        </div>
+
+                                                        <div class="ad-date">
+                                                            <div class="ad-type-label">Rates:</div>
+
+                                                            <div id="sum-ad-rate-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="ad-type-value">{{ad.adRate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="c-calendar">See Calendar</div>
+
+                                                <div class="adjustment-label">Adjustments:</div>
+
+                                                <div id="sum-adjustment-item-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="adjustment-value">
+                                                    {% for adj in ad.adjArray %}
+                                                    <div id="sum-ad-adj-item-{{forloop.parentloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.parentloop.counter0}}-{{forloop.parentloop.counter0}}-{{forloop.counter0}}" class="flex-row sel-adjustment">
+                                                        <h5 id="sum-ad-adj-code" class="black">{{adj.adjName}}</h5>
+                                                        <h5 id="sum-ad-adj-amount" class="black">{{adj.adjAmount}}</h5>
+                                                        <input id="sum-ad-adj-id" type="hidden" value="`{{adj.id}}`">
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <div class="c-ad-value-description">
+                                                    <div class="adjustment-label">Description:</div>
+
+                                                    <div id="sum-ad-brief-0-0-0" class="ad-type-value">
+                                                        {{ad.adBrief}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapse-icon" onclick="collapseEditSpecItem(this, `{{forloop.parentloop.parentloop.counter0}}`, `{{forloop.parentloop.counter0}}`, `{{forloop.counter0}}`, 1)">
+                                                <svg class="c-svg-active" xmlns="http://www.w3.org/2000/svg"
+                                                     width="16" height="9" viewBox="0 0 16 9" fill="none">
+                                                    <path d="M7.29289 8.70711C7.68342 9.09763 8.31658 9.09763 8.70711 8.70711L15.0711 2.34315C15.4616 1.95262 15.4616 1.31946 15.0711 0.928932C14.6805 0.538408 14.0474 0.538408 13.6569 0.928932L8 6.58579L2.34315 0.928932C1.95262 0.538408 1.31946 0.538408 0.928932 0.928932C0.538408 1.31946 0.538408 1.95262 0.928932 2.34315L7.29289 8.70711ZM7 6V8H9V6H7Z"
+                                                          fill="#F26722"/>
+                                                </svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"
+                                                     viewBox="0 0 16 9" fill="none">
+                                                    <path d="M8.70711 0.292893C8.31658 -0.097631 7.68342 -0.097631 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 3V1H7V3H9Z"
+                                                          fill="#F26722"/>
+                                                </svg>
+                                            </div>
+
+                                            <div id="ad-edit-item-` + {{forloop.parentloop.parentloop.counter0}} + `-` + {{forloop.parentloop.counter0}} + `-` + {{forloop.counter0}} +`"
+                                                class="ad-edit-item"
+                                                onclick="editAdItem(`{{forloop.parentloop.parentloop.counter0}}`, `{{forloop.parentloop.counter0}}`, `{{forloop.counter0}}`)"
+                                                data-target="#edit-ad" data-toggle="modal"
+                                            >
+                                                <img src="/static/svg/pencil.svg" alt="pencil">
+                                            </div>
+
+                                            <div id="ad-delete-item-` + {{forloop.parentloop.parentloop.counter0}} + `-` + {{forloop.parentloop.counter0}} + `-` + {{forloop.counter0}} +`"
+                                                class="ad-delete-item"
+                                                onclick="deleteAdItem(` + {{forloop.parentloop.parentloop.counter0}} + `, ` + {{forloop.parentloop.counter0}} + `, ` + {{forloop.counter0}} + `)"
+                                            >
+                                                <img src="/static/svg/trash.svg" alt="trash">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <hr class="black mt-1" style="color: #666">
+
+                            <div class="price-label" style="margin-top: 6px">
+                                <h5>Print Ad Subtotal:</h5>
+
+                                <h5 class="c-mr-50">$<span id="sum-print-ad-price-0" >{{demo.subAdPrice}}</span></h5>
+                            </div>
+
+                            <div class="price-label">
+                                <h5>Adjustment Total:</h5>
+
+                                <h5 class="c-mr-50">$<span id="sum-print-adj-price-0">{{demo.subAdjPrice}}</span></h5>
+                            </div>
+
+                            <div class="price-label">
+                                <h4>Print Ad(s) Total:</h4>
+
+                                <h4 class="c-mr-50">$<span id="sum-print-total-price-0">{{demo.subTotalPrice}}</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-left" style="margin: 40px 66px 30px 37px">
+                    <div class="flex-row">
+                        <div class="campaign-item-label">Subtotal:</div>
+                        <div class="campaign-item-value small-value mr-2">
+                            $<span id="sum-print-total">{{campaign.total_sub}}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="campaign-item-label">Total Adjustments:</div>
+                        <div class="campaign-item-value small-value mr-2">
+                            $<span id="sum-adj-total">{{campaign.total_adjustment}}</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="flex-row mt-4">
+                        <div class="campaign-item-label big-campaign-label">Campaign Total:</div>
+                        <div class="campaign-item-value big-campaign-label mr-2">
+                            $<span id="sum-campaign-total">{{campaign.total_campaign}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editCampaign" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <div class="modal-title">
+                    <span>Edit Campaign Info</span>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="m-2">
+                    <form class="text-left campaign-form" action="#">
+                        <div class="form-group">
+                            <label for="campaign-name">*Campaign Name:</label>
+
+                            <input type="text" id="campaign-name" class="form-control shadow"
+                                   placeholder="Campaign Example Name" name="orderName">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sales-contact">*Sales Contact:</label>
+
+                                        <select class="form-control shadow" id="sales-contact" style="border-radius: 4px">
+                                            <option>Select a Salesperson</option>
+                                            {% for salesPerson in salesPersonQuery %}
+                                            <option value="{{ salesPerson.id }}">
+                                                {{ salesPerson.first_name }} {{ salesPerson.last_name}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="start-date">*Start Date:</label>
+
+                                        <input type="date" id="start-date" class="sel-date"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="end-date">End Date(optional):</label>
+
+                                        <input type="date" id="end-date" class="sel-date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="brief">Brief Description(optional)</label>
+
+                            <textarea class="form-control shadow" rows="5" id="brief"
+                                      style="resize: none; border-radius: 4px;"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="flex-row">
+                    <button class="btn btn-primary bg-primary campaign-cancel" data-dismiss="modal" style="width: 40%;">
+                        Cancel
+                    </button>
+
+                    <button class="btn btn-primary bg-primary campaign-edit" onclick="EditCampaign()"
+                            style="width: 40%;">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade create-ad" id="edit-ad" role="dialog" style="overflow: hidden auto">
+    <div class="modal-dialog">
+        <!-- Modal header-->
+        <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <h3 class="modal-title">
+                New Ad
+                <hr>
+            </h3>
+
+            <div class="value-area">
+                <div class="ad-value-row">
+                    <div class="ad-value-item">
+                        <div>Ad Name:</div>
+                        <input id="ad-name" type="text" placeholder="Enter name here...">
+                    </div>
+
+                    <div class="ad-value-item">
+                        <div>Ad Type:</div>
+                        <select id="ad-type">
+                            {% for item in adTypes %}
+                            <option value="{{item.name}}">{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="ad-value-row">
+                    <div class="ad-value-item">
+                        <div>Ad Sizes:</div>
+                        <select id="ad-size">
+                            {% for item in adSizes %}
+                            <option value="{{item.size}}">{{item.size}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="ad-value-item">
+                        <div>Available Rates:</div>
+                        <select id="ad-rate">
+                            {% for item in rating %}
+                            <option value="{{item.id}}">{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="ad-textarea-row">
+                    <div>Brief Description:</div>
+                    <textarea id="ad-brief"></textarea>
+                </div>
+
+                <div class="ad-adjustment-calender">
+                    <div class="ad-adjustment">
+                        <div class="ad-adjustment-label">
+                            <div>Adjustments:</div>
+
+                            <span>+</span>
+
+                            <div data-target="#add-adjustment" data-toggle="modal">Add Adjustment(s)</div>
+                        </div>
+
+                        <div id="adjustment-value" class="ad-adjustment-value">
+
+                        </div>
+                    </div>
+
+                    <div class="ad-calender">
+                        <span>Select Ad Dates: </span>
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+                <div class="create-btn">
+                    <button onclick="createAdItem()" data-dismiss="modal">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-adjustment" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal header-->
+        <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <h3 class="modal-title">
+                Adjustments
+                <hr>
+            </h3>
+
+            <div class="adjustment-row scrollbar">
+                {% for item in adjustments %}
+                <div class="adjustment-item" onclick="adjustment_select(this, {{item.id}})">
+                    <div class="adj-item-title">
+                        <div id="adjustment-code-{{item.id}}">{{item.code}}</div>
+                        <span id="adjustment-amount-{{item.id}}">${{item.amount}}</span>
+                    </div>
+
+                    <div class="adj-item-value">
+                        <span class="item-value-label">Description:</span>
+                        <span class="item-value-value">{{item.description}}</span>
+                    </div>
+
+                    <div class="adj-item-value">
+                        <div>
+                            <span class="item-value-label">Apply Level:</span>
+                            <span class="item-value-value">{{item.apply_level}}</span>
+                        </div>
+
+                        <div>
+                            <span class="item-value-label">Section:</span>
+                            <span class="item-value-value">{{item.section_id}}</span>
+                        </div>
+                    </div>
+
+                    <div class="adj-item-value">
+                        <div>
+                            <span class="item-value-label">Value:</span>
+                            <span class="item-value-value">{{item.amount}}</span>
+                        </div>
+
+                        <div>
+                            <span class="item-value-label">Value:</span>
+                            <span class="item-value-value">Credit(+)</span>
+                        </div>
+                    </div>
+
+                    <div id="adjustment-select-{{item.id}}" class="adjustment-select">
+                        Selected
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <hr style="color: #666; height: 1px">
+
+            <div class="option-button">
+                <button onclick="addAdjustment()" data-dismiss="modal">Add Adjustment</button>
+            </div>
+
+            <div class="modal-footer-img">
+                <img src="{% static "svg/Ellipse 9 (1).svg" %}" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let ratingList = JSON.parse(`{{ ratingList }}`);
+</script>
+
+{% endblock %}

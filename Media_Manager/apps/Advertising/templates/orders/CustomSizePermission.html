@@ -1,0 +1,62 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/orders/CustomSizePermission.js" %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h2>Custom Size Permission</h2>
+            <br />
+            <input type="text" id="user_search" placeholder="Search for a user ..." style="float:right" />
+
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in userList %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td data-user-id="{{ user.id }}">
+                                {% if user.id in permissionList %}
+                                    <input type="checkbox" class="user-checkbox" checked/>
+                                {% else %}
+                                    <input type="checkbox" class="user-checkbox" />
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

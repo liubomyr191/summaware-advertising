@@ -1,0 +1,99 @@
+<div id="newMeasurement" class="modal my-modal">
+  <div class="custom-modal-content w-75 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('newMeasurement').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mgb-3">
+      <h3 class="heading">New Measurement</h3>
+      <hr />
+    </div>
+
+    <div class="form-group mgb-3">
+      <label for="measurement-name">Measurement Name:</label>
+      <input type="text" name="" id="measurement-name" class="form-control" />
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="fold-orientation">Fold Orientation:</label>
+          <input type="text" name="" id="fold-orientation" class="form-control" />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6">
+        <label for="size">Size:</label>
+        <div class="d-flex content-center align-center">
+          <input type="text" name="" id="height" class="form-control" />
+          <span class="px-1"><strong>X</strong></span>
+          <input type="text" name="" id="width" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="cpi">Columns Per Inch (optional):</label>
+          <input type="text" name="" id="cpi" class="form-control" />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="cw">Columns Width (optional):</label>
+          <input type="text" name="" id="cw" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="page-width">Page Width (optional):</label>
+          <input type="text" name="" id="page-width" class="form-control" />
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="page-height">Page Height (optional):</label>
+          <input type="text" name="" id="page-height" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="page-border">Page Border (optional):</label>
+          <select type="text" name="" id="page-border" class="form-control"></select>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="gutter-size">Gutter Size (optional):</label>
+          <input type="text" name="" id="gutter-size" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    {% include "components/item_select.html" with item_type="publications" available_items=publications %}
+
+    <div class="content-center mgb-3">
+      <span class="mgr-1">Include This Measurement in Self-Service Portal?</span>
+      <div class="measurement-sserve-toggle-container">
+        <div class="switch-field">
+          <input type="radio" id="0001-measurement-sserve-new-radio-one" name="0001-measurement-sserve-new-switch-one" value="active" checked />
+          <label for="0001-measurement-sserve-new-radio-one">Active</label>
+          <input type="radio" id="0001-measurement-sserve-new-radio-two" name="0001-measurement-sserve-new-switch-one" value="inactive" />
+          <label for="0001-measurement-sserve-new-radio-two">Inactive</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary">Create</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/companies/UserCompanyAccess.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="search_inputs">
+                        <select id="companySelect">
+                            <option value="">Select a company...</option>
+                            {% for company in companyList %}
+                                <option value="{{ company.id }}">{{ company.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="user_search" placeholder="Search for a user..." style="float: right;"/>
+                    </div>
+                </div>
+            </div><br />
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-striped table-condensed" id="user_company_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Has Access?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in userList %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.first_name }}</td>
+                                    <td>{{ user.last_name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td data-user-id="{{ user.id }}">
+                                        <input type="checkbox" class="user-checkbox"/>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>       
+
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

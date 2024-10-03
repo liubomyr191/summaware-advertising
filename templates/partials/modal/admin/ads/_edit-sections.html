@@ -1,0 +1,40 @@
+<div id="editSections" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editSections').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">Edit Sections</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="form-container d-flex justify-content-center">
+      <div class="form-group w50 center-block">
+        <label for="" class="">Name:</label>
+        <input type="text" class="form-control" name="" id="" />
+      </div>
+    </div>
+
+    <div class="form-container d-flex justify-content-center mb-3">
+      <div class="form-group w50 center-block">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="" class="">Code:</label>
+            <input type="text" class="form-control" name="" id="" />
+          </div>
+          <div class="col-md-6">
+            <label for="" class="">Sub-Section to (optional):</label>
+            <select name="" id="" class="form-control"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include "components/item_select.html" with item_type="publications" available_items=publications %}
+
+    <div class="btn-container text-center mt-5">
+      <button class="btn btn-danger">Deactivate</button>
+      <button class="btn btn-gray">Archive</button>
+      <button class="btn btn-secondary">Save Changes</button>
+    </div>
+  </div>
+</div>

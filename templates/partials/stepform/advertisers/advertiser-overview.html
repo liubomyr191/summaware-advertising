@@ -1,0 +1,87 @@
+<div class="multisteps-form__panel p-4 rounded js-active" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Advertiser Overview</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="btn-container">
+          <button class="btn btn-secondary"><i class="fa fa-eyedropper" style="font-size: 10px"></i> <a href="{{url}}/advertising/edit_new_advertiser?advertiserId={{newAccount.id}}">Edit Info</a> </button>
+        </div>
+
+        <h3 class="advertiser-name">{{newAccount.name}}</h3>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="status">Status:</label>
+              <p id="main_status_content" class="mb-2 walmart-content">{% if newAccount.status == 0 %} Active {% else %} InActive {% endif %}</p>
+            </div>
+
+            <div class="form-group">
+              <label for="status">Address:</label>
+              <p>
+                <strong>{{newAccount.address}}</strong>
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label for="status">Website</label>
+              <div><a href="{{ newAccount.website }}">{{ newAccount.website }}</a></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="status">Account Type:</label>
+              <p><strong>{{ newAccount.account_type.name }}</strong></p>
+            </div>
+
+            <div class="form-group">
+              <label for="status"><i class="fa fa-solid fa-phone"></i> Phone:</label>
+              <p><strong>{{ newAccount.phone }}</strong></p>
+            </div>
+
+            <div class="form-group">
+              <label for="status">Email:</label>
+              <div>
+                <a href="">{{ newAccount.email }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="heading-container text-center">
+          <h3 class="heading mgb-0">Contacts</h3>
+          <hr class="mgt-0" />
+        </div>
+
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <th scope="col">ID#</th>
+              <th scope="col">Contact Name</th>
+              <th scope="col">Title</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+            </thead>
+            <tbody>
+              {% for contact in contacts %}
+              <tr>
+                  <td>{{ contact.id }}</td>
+                  <td>{{ contact.full_name }}</td>
+                  <td>Sales Rep</td> 
+                  <td>{{ contact.phone_number }}</td>
+                  <td>{{ contact.email }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

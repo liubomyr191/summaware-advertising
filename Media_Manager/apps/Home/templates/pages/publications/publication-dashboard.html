@@ -1,0 +1,55 @@
+{% extends 'base_beta.html' %} {% block content %} {% include 'templates/partials/modal/_edit-ad-info.html'%} {% include 'templates/partials/modal/_create-ad-type.html'%}
+<div class="page-heading-container container">
+  <h1>Times Leader - Print Edition</h1>
+</div>
+
+<!-- Step Form Container -->
+<div class="link-container container mb-3">
+  <a href="{% url 'index' %}">Back to Advertising Homepage</a>
+</div>
+<div class="container">
+  <!-- Step Form -->
+  <div class="step-form-container">
+    <div class="content">
+      <!--content inner-->
+      <div class="content__inner">
+        <div class="container">
+          <!--multisteps-form-->
+          <div class="multisteps-form">
+            <!--progress bar-->
+            <div class="row justify-content-center progress-btns-container mt-5">
+              <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                <div class="multisteps-form__progress">
+                  <button class="multisteps-form__progress-btn js-active" type="button">Details</button>
+                  <button class="multisteps-form__progress-btn" type="button">Rate Cards</button>
+                  <button class="multisteps-form__progress-btn" type="button">Ad Type</button>
+                  <button class="multisteps-form__progress-btn" type="button">Adjustments</button>
+                  <button class="multisteps-form__progress-btn" type="button">Sections</button>
+                </div>
+              </div>
+            </div>
+            <!--form panels-->
+            <div class="row">
+              <div class="col-12 m-auto">
+                <div class="multisteps-form__form">
+                  <!--single form panel-->
+                  {% include 'templates/partials/stepform/publications/_details.html'%}
+                  <!--single form panel-->
+                  {% include 'templates/partials/stepform/publications/_rate-cards.html'%}
+                  <!--single form panel-->
+                  {% include 'templates/partials/stepform/publications/_ad-type.html'%}
+                  <!--single form panel-->
+                  {% include 'templates/partials/stepform/publications/_adjustments.html'%}
+                  <!--single form panel-->
+                  {% include 'templates/partials/stepform/publications/_sections.html'%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

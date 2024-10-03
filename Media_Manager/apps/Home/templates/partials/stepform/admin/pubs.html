@@ -1,0 +1,65 @@
+{% include 'templates/partials/modal/admin/_new-pub.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Pubs</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="content-container container">
+      <div class="save-container d-flex justify-content-end mb-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="edit-info-container">
+        <div class="filter-container d-flex">
+          <button class="btn btn-secondary mb-1" onclick="document.getElementById('addPublication').style.display='block'"><i class="fa fa-solid fa-plus"></i> New Pub</button>
+          <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+        </div>
+
+        <hr />
+      </div>
+
+      <div class="pubs-list-container">
+        <div class="table-container mt-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID #</th>
+                <th scope="col">Pub Name</th>
+                <th scope="col">Account</th>
+                <th scope="col">Run Days</th>
+                <th scope="col">No. of Sections</th>
+                <th scope="col">Status</th>
+                <th scope="col">Added By</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0001</td>
+                <td>Times Leader Print Edition</td>
+                <td>Times Leader</td>
+                <td>Mon, Tues, Wed</td>
+                <td>3</td>
+                <td>Active</td>
+                <td>Kyle Jernigan</td>
+                <td>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="end-of-list-heading-container text-center py-5">
+            <span>You've reached the end!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

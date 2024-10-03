@@ -1,0 +1,30 @@
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Scheduling</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div>
+      <div class="section-content">
+        <div class="text-center mgb-3">
+          <p>
+            Select from the available Ad Types you<br />
+            would like associated with this Publication
+          </p>
+        </div>
+
+        {% include "components/item_select.html" with item_type="ad types" available_items=adtypes id="pub-adtype" %}
+      </div>
+
+      <div class="link-container text-center mgb-3">
+        <a href="#">Advanced Ad Type Assignment</a>
+      </div>
+
+      <div class="btn-container content-even">
+        <button class="btn btn-secondary">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

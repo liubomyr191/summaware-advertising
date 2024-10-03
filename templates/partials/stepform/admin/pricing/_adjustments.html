@@ -1,0 +1,175 @@
+{% include 'templates/partials/modal/admin/pricing/_new-adjustments.html'%} {% include 'templates/partials/modal/admin/pricing/_edit-adjustment.html'%}
+<div class="multisteps-form__panel p-4 rounded js-active" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Adjustments</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="btn-search-container mt-5 mgt-5">
+    <div class="save-container"></div>
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="filter-container">
+          <button class="btn btn-secondary mb-1" onclick="document.getElementById('newAdjustment').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> New Adjustment</button>
+          <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 search-container">
+        <div class="form-group has-search">
+          <input type="text" class="form-control" placeholder="Search..." />
+          <span class="fa fa-search form-control-feedback"></span>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </div>
+
+  <div class="table-container mt-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID #</th>
+          <th scope="col">Name</th>
+          <th scope="col">Code</th>
+          <th scope="col">Value</th>
+          <th scope="col">Credit/Debit</th>
+          <th scope="col">Apply Level</th>
+          <th scope="col">Section</th>
+          <th scope="col">GL Codes</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for adjustment in adjustments %}
+        <tr>
+          <td>{{adjustment.id}}</td>
+          <td>{{adjustment.name}}</td>
+          <td>{{adjustment.code}}</td>
+          {% if adjustment.value_type == 'percentage' %}
+          <td>{{ adjustment.value }}%</td>
+          {% else %}
+          <td>${{ adjustment.value }}</td>
+          {% endif %}
+          <td>{{adjustment.type}}</td>
+          <td>{{adjustment.apply_level}}</td>
+          <td>All</td>
+          <td><a href="#">See List</a></td>
+          <td>
+            <div class="adjustments-switch-container">
+              <div class="switch-field">
+                <input type="radio" id="{{adjustment.id}}-adjustment-radio-one" name="{{adjustment.id}}-adjustment-switch-one" value="active" {{adjustment.active|yesno:"checked, unchecked"}} />
+                <label for="{{adjustment.id}}-adjustment-radio-one">Active</label>
+                <input type="radio" id="{{adjustment.id}}-adjustment-radio-two" name="{{adjustment.id}}-adjustment-switch-one" value="inactive"  {{adjustment.active|yesno:"unchecked, checked"}} />
+                <label for="{{adjustment.id}}-adjustment-radio-two">Inactive</label>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="mgr-1" onclick="editAdjustment(`{{ adjustment.id }}`)"><i class="fa fa-solid fa-pencil"></i></span>
+            <span><i class="fa fa-solid fa-envelope-open"></i></span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    function editAdjustment(id) {
+      document.getElementById('editAdjustment').style.cssText = 'display: block; opacity: 1; visibility: visible;'
+      var selectElement = document.getElementById('edit-adjustment-lstBox1');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      var selectElement = document.getElementById('edit-adjustment-lstBox2');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      let data = {'id': id}
+      fetch("pricing/adjustment-detail", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // parse the JSON from the response
+      })
+      .then((data) => {
+          var adjustment = JSON.parse(data['adjustment']);
+          adjustment = adjustment[0].fields;
+          var assigned_publications = data['assigned_publications'];
+          var unsigned_publications = data['unsigned_publications'];
+          localStorage.setItem('edit-adjustment-id', data['id']);
+          localStorage.setItem('edit-adjustment-active', adjustment.active);
+          localStorage.setItem('edit-adjustment-status', adjustment.status);
+          document.getElementById('edit-adjustment-name').value = adjustment.name;
+          document.getElementById('edit-adjustment-code').value = adjustment.code;
+          document.getElementById('edit-adjustment-apply-level').value = adjustment.apply_level;
+          document.getElementById('edit-adjustment-section').value = adjustment.section;
+          document.getElementById('edit-adjustment-value-type').value = adjustment.value_type;
+          document.getElementById('edit-adjustment-type').value = adjustment.type;
+          document.getElementById('edit-adjustment-value').value = adjustment.value;
+          document.getElementById('edit-adjustment-prompt-for-value').checked = adjustment.prompt_for_value;
+          document.getElementById('edit-adjustment-gl-code').value = adjustment.gl_code;
+          document.getElementById('adminadjustment-active').textContent = adjustment.active == true ? 'Deactivate' : 'Active';
+          console.log(assigned_publications);
+          var select = document.getElementById("edit-adjustment-lstBox1");
+          unsigned_publications.forEach(function(item) {
+            var option = new Option(item.name, item.id);
+            select.add(option);
+          });
+          var select = document.getElementById("edit-adjustment-lstBox2");
+          assigned_publications.forEach(function(item) {
+            var option = new Option(item.name, item.id);
+            select.add(option);
+          });
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all radio buttons with name ending in '-adjustment-switch-one'
+      const radioButtons = document.querySelectorAll('input[name$="-adjustment-switch-one"]');
+      
+      // Add change event listener to each radio button
+      radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function(event) {
+          handleRadioChange(event);
+        });
+      });
+
+      // Function to handle the change event
+      function handleRadioChange(event) {
+        const selectedValue = event.target.value;
+        const adjustmentId = event.target.name.split('-')[0]; // Extract the adjustment ID from the name attribute
+        let data = {};
+        data['id'] = adjustmentId;
+        data['active'] = selectedValue == 'active' ? true : false;
+        data['status_only'] = true;
+        fetch("pricing/edit-adjustment", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Accept": "application/json",
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        }).then((response) => {
+          console.log('Acitvate changed');
+        })
+        // You can perform any other actions here, such as sending an AJAX request to update the server
+      }
+    });
+  </script>
+</div>

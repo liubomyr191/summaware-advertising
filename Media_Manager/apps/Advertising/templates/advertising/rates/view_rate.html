@@ -1,0 +1,66 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            {% if perms.advertising.can_edit_rate %}
+                <a href="{% url 'edit_rate' rate.id %}">
+                    <button class="btn btn-default btn-md"><i class="fa fa-pencil"></i> Edit Rate</button>
+                </a>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Name: {{ rate.name }}</h2>
+                    <p>Description: {{ rate.description }}</p>
+                    <p>Unit Type: {{ rate.unit_type }}</p>
+                    <p>Unit Price: ${{ rate.unit_price }}</p>
+                    <!-- <p>GL Code: {{ rate.gl_code.code }} - {{ rate.gl_code.description }}</p> -->
+                    <p>Tax Category: {{ rate.tax_category|title }}</p>
+                    <p>Rate Type: {{ rate.ad_type.name }}</p>
+                    <p>Start Date: {{ rate.start_date }}</p>
+                    <p>End Date: {{ rate.end_date }}</p>
+                    <p>Location: {{ rate.location|title }}</p>
+                    <p>Pricing: {{ rate.pricing|title }}</p><br />
+                    
+                    
+                </div>
+                <div class="col-md-6">
+                    <h3>GL Codes</h3>
+                    {% for code in gl_codes %}
+                        <p>{{ code.publication.name }}: {{ code.gl_code.code }} - {{ code.gl_code.description }}</p>
+                    {% endfor %}
+                    <br />
+                    <h3>Publications</h3>
+                    <ul>
+                    {% for ratePub in ratePublications %}
+                        <li>{{ ratePub.publication.name }}</li>
+                    {% endfor %}
+                    </ul><br />
+                    <p>Active: {{ rate.active }}</p>
+                    <p>Hidden: {{ rate.hidden }}</p>
+                    {% if rate.locked %}
+                        <p>Locked: {{ rate.locked }}</p>
+                        <p>Account: {{ rate.account.name }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "templates/sections/header.html" %}
+  </head>
+  <body class="hold-transition login-page">
+    <div class="login-box">
+      <div class="login-logo">
+          <a href="{{url}}/login"><b>MIDTC</b> Admin</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+          <p class="login-box-msg">
+          {% if message == '' or message is None %}
+            Please enter your email to recieve a confirmation email
+          {% else %}
+            {{message}}
+          {% endif %}
+          </p>
+
+          <form action="{{url}}/forgot/" method="post">
+            {% csrf_token %}
+            <div class="form-group has-feedback">
+              <input type="text" name="email" class="form-control" placeholder="Email">
+              <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="row">
+              <div class="col-xs-8"></div>
+              <!-- /.col -->
+              <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </body>
+    <footer>
+      {% include "templates/sections/javascript.html" %}
+    </footer>
+  </body>
+</html>

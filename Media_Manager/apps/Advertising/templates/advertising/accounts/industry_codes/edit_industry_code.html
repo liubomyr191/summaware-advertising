@@ -1,0 +1,40 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+            <h2>Edit Industry Code</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="code">Code</label>
+                            <input type="text" class="form-control" name="code" value="{{ industry_code.code }}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" name="description" value="{{ industry_code.description }}" />
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" class="form-check" name="active" {% if industry_code.active %}checked{% endif %}/>
+                            <label for="active">Active</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

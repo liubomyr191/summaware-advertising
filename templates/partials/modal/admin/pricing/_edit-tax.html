@@ -1,0 +1,146 @@
+<div id="editTax" class="modal my-modal">
+  <div class="custom-modal-content">
+    <form method="post" id="edit-tax-form">
+      <span class="close" onclick="document.getElementById('editTax').style.display='none'">&times;</span>
+
+      <div class="heading-container text-center mgb-3">
+        <h3 class="heading">Edit Tax Setup</h3>
+        <hr class="w-50 m-auto" />
+      </div>
+
+      <div class="text-container text-center mgb-3">
+        <p>Fill out the information below then click create to<br />add your new Tax option</p>
+      </div>
+
+      <div class="form-group mgb-3">
+        <label for="tax-name">Name:</label>
+        <input type="text" name="name" id="edit-tax-name" class="form-control" />
+      </div>
+
+      <div class="row mgb-3">
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="start-date">Start Date:</label>
+            <input type="date" name="start_date" id="edit-tax-start-date" class="form-control" />
+          </div>
+        </div>
+
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="end-date">End Date (optional):</label>
+            <input type="date" name="end_date" id="edit-tax-end-date" class="form-control" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mgb-3">
+        <div class="col-md-12 col-lg-6">
+          <label for="tax-format">Format:</label>
+          <div class="tax-format-switch-container">
+            <div class="switch-field">
+              <input type="radio" id="0001-edit-tax-format-radio-one" name="format" value="flat-rate" />
+              <label for="0001-edit-tax-format-radio-one">Flat Rate</label>
+              <input type="radio" id="0001-edit-tax-format-radio-two" name="format" value="dynamic" />
+              <label for="0001-edit-tax-format-radio-two">Dynamic</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-lg-6">
+          <label for="assigned-gl">Assigned GL:</label>
+          <div class="assigned-gl-switch-container">
+            <div class="switch-field">
+              <input type="radio" id="0001-edit-assigned-gl-radio-one" name="assigned_gl" value="default" />
+              <label for="0001-edit-assigned-gl-radio-one">Default</label>
+              <input type="radio" id="0001-edit-assigned-gl-radio-two" name="assigned_gl" value="override" />
+              <label for="0001-edit-assigned-gl-radio-two">Override</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mgb-3">
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="text" name="amount" id="edit-tax-amount" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="gl-code">GL Code:</label>
+            <select name="gl_code" id="edit-tax-gl-code" class="form-control">
+              {% for glcode in glcodes %}
+                <option value="{{glcode.id}}">{{glcode.code}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mgb-3">
+        <label for="tax-description">Description (optional):</label>
+        <textarea name="description" id="edit-tax-description" class="form-control"></textarea>
+      </div>
+
+      <div class="content-center mgb-3">
+        <div class="tax-status-switch-container">
+          <label for="tax-status">Status:</label>
+          <div class="switch-field">
+            <input type="radio" id="0001-edit-tax-status-radio-one" name="status" value="active" />
+            <label for="0001-edit-tax-status-radio-one">Active</label>
+            <input type="radio" id="0001-edit-tax-status-radio-two" name="status" value="inactive" />
+            <label for="0001-edit-tax-status-radio-two">Inactive</label>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="document.getElementById('editTax').style.display='none'">Discard Changes</button>
+      <button class="btn btn-gray" onclick="saveTax(event, 1)">Archive</button>
+      <button class="btn btn-secondary" onclick="saveTax(event, 2)">Save Changes</button>
+    </div>
+  </div>
+  
+  <script>
+    function saveTax(e, index) {
+      e.preventDefault();
+      let form = $('#edit-tax-form');
+      var formData = new FormData(form[0]);
+      var data = {};
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      if(data['status'] == 'active') {
+        data['active'] = true;
+      } else {
+        data['active'] = false;
+      }
+      data['status'] = localStorage.getItem('edit-tax-status');
+      if(index == 1) {
+        data['status'] = 2;
+      }
+      data['id'] = localStorage.getItem('edit-tax-id');
+      console.log(data);
+      fetch("pricing/edit-tax", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          window.location.href = `{% url 'adminPricing' %}`
+        } else {
+          $.toastr.error("Saving Tax Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving Tax Failed");
+      })
+    }
+  </script>
+</div>

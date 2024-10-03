@@ -1,0 +1,73 @@
+        {% extends "templates/base.html" %}
+        {% block page-header %}<i class="fa fa-line-chart"></i> Business Intelligence{% if logo_url != '' %}<img src="{{logo_url}}" style="height:50px;width:75px;margin-left:10  px;"></img>{% endif %}
+        {% endblock %}
+    
+        {% block breadcrumb %}
+        <li class="active">BI</li>
+        {% endblock %}
+        {% block content %}
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+            <style>
+                .custom_table {
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    margin: auto;
+                    border: 0;
+                }
+
+                .custom_table td {
+                    padding: 35px;
+                    text-align: center;
+                    border: 0;
+                }
+
+                .icon {
+                    display: block;
+                    margin-bottom: 15px;
+                    text-align: center;
+                    color: #f26722;
+                }
+
+                .section_button {
+                    background-color: white;
+                    color: #21215f;
+                    padding: 15px 90px 15px 90px;
+                    border: 1px solid lightgray;
+                    border-radius: 4px;
+                    -webkit-box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+                    box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.75);
+                    z-index: 1px;
+                }
+
+                .section_text { 
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+            </style>
+            <div id="content">
+                <div class="col-md-12">
+                    <section>
+                        <table class="custom_table">
+                            <tr>
+                                <td><button type="button" class="section_button"><a href="/bi/accounting"><i class="fa fa-calculator icon fa-5x"></i><span class="section_text">Accounting</span></a></button></td>
+                                <td><button type="button" class="section_button"><a href="/bi/advertising"><i class="fa fa-bullhorn icon fa-5x"></i><span class="section_text">Advertising</span></a></button></td>
+                                <td><button type="button" class="section_button"><a href="/bi/circulation"><i class="fa fa-circle-o-notch icon fa-5x"></i><span class="section_text">Circulation</span></a></button></td>
+                            </tr>
+                            <tr>
+                                <td><button type="button" class="section_button"><a href="/bi/editorial"><i class="fa fa-pencil icon fa-5x"></i><span class="section_text">Editorial</span></a></button></td>
+                                <td><button type="button" class="section_button"><a href="/bi/production"><i class="fa fa-id-card icon fa-5x"></i><span class="section_text">Production</span></a></button></td>
+                                <td><button type="button" class="section_button"><a href="/bi/admin"><i class="fa fa-shield icon fa-5x"></i><span class="section_text">Admin</span></a></button></td>
+                            </tr>
+                        </table>
+                    </section>
+                </div>
+            </div>
+            {% endif %}
+        {% endblock %}
+
+      {% block settings-sidebar %}
+        
+      {% endblock %}

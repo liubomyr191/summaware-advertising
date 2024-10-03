@@ -1,0 +1,63 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "admin/css/adtype.css" %}">
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifieds/ClassifiedAdTypes.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content" style="padding: 20px 60px 40px !important">
+    <div class="content text-center col-md-12 c-ad-content">
+        <div class="col-md-10">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+                <span class="good-morning">All Classified Ad Types</span>
+                <br />
+
+                {% include 'snippets/classifieds/ad_types/CreateAdTypeModal.html' %}
+                <br /><br />
+                <div class="advertising-table">
+                <table class="w-full general-table" id="classified_ad_types_table">
+                    <thead>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Edit</th>
+                    </thead>
+                    <tbody>
+                        {% for type in adTypes %}
+                            <tr>
+                                <td>{{ type.id }}</td>
+                                <td>{{ type.name }}</td>
+                                <td>{{ type.code }}</td>
+                                <td>
+                                    <button class="btn btn-default btn-xs" data-id="{{ type.id }}">
+                                        <i class="fa fa-pencil edit-btn"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% empty %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% include 'snippets/classifieds/ad_types/EditAdTypeModal.html' %}
+{% endblock %}

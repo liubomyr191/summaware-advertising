@@ -1,0 +1,105 @@
+<style>
+    a.custom {
+      color: #000000 !important;
+    }
+  </style>
+  <div id="editInfo" class="modal my-modal">
+    <div class="custom-modal-content">
+      <span class="close" onclick="document.getElementById('editInfo').style.display='none'">&times;</span>
+  
+      <div class="heading-container text-center mb-5">
+        <h3 class="heading">Edit Info</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <hr style="margin: 0px" />
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-4">
+                <form method="post" id="edit-rategroup-form">
+                    <div class="form-container">
+                        <div class="form-group w-50 m-auto mb-5">
+                        <label for="">Rate Group Name:</label>
+                        <input type="text" name="name" id="" class="form-control" value="{{rategroup.name}}"/>
+                        </div>
+                        <div class="form-group w-50 m-auto mb-5">
+                        <label for="">Description:</label>
+                        <textarea class="form-control" name="description" id="" cols="30" rows="9" >{{rategroup.description}}</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-12">{% include "components/item_select.html" with item_type="publications" available_items=unsigned_publications selected_items=assigned_publications id="edit-rategroup" %}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="btn-container text-center">
+              <button class="btn btn-danger" onclick="saveChanges(1, '{{rategroup.id}}', '{{rategroup.active}}', '{{rategroup.status}}')">{{rategroup.active|yesno:"Deactivate, Active"}}</button>
+              <button class="btn btn-gray" onclick="saveChanges(2, '{{rategroup.id}}', '{{rategroup.active}}', '{{rategroup.status}}')">Archive</button>
+              <button class="btn btn-secondary" onclick="saveChanges(3, '{{rategroup.id}}', '{{rategroup.active}}', '{{rategroup.status}}')">Save Changes</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+    <script>
+        function saveChanges(index, id, active, status) {
+            let form = $('#edit-rategroup-form');
+            var formData = new FormData(form[0]);
+            let data = {};
+            for (const [key, value] of formData) {
+                data[key] = value;
+            }
+            if(active == 'False') data['active'] = false;
+            else data['active'] = true;
+            data['status'] = status;
+            if(index == 1) {
+                data['active'] = !data['active'];
+            } else if(index == 2) {
+                data['status'] = 2;
+            }
+            
+            var selectElement = document.getElementById('edit-rategroup-lstBox2');
+            var values = [];
+            
+            for (var i = 0; i < selectElement.options.length; i++) {
+                values.push(selectElement.options[i].value);
+            }
+            data['assigned_publications'] = JSON.stringify(values);
+            var hrefUrl = `{% url 'adminPricingEditRateGroup' groupId=999 %}`
+            var hrefUrl = hrefUrl.replace('999', id);
+            fetch(`${id}/save`, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Accept": "application/json",
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(res => {
+                if(res.success) {
+                    window.location.href = hrefUrl;
+                } else {
+                    $.toastr.error("Saving Publication Failed");
+                }
+            }).catch((error) => {
+                $.toastr.error("Saving Publication Failed");
+            })
+        }
+    </script>
+  </div>
+  

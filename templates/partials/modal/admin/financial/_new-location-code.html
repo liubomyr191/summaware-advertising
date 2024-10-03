@@ -1,0 +1,64 @@
+<div id="newLocationCode" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('newLocationCode').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">New Location Code</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form id="create-location-code-form">
+      <div class="form-container">
+        <div class="form-group w-50 m-auto mb-5">
+          <label for="">Location:</label>
+          <input type="text" name="location" id="" class="form-control" />
+        </div>
+        <div class="form-group w-50 m-auto mb-5">
+          <label for="">Description:</label>
+          <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-group w-50 m-auto mb-5">
+          <label for="">PC:</label>
+          <input type="text" name="pc" id="" class="form-control" />
+        </div>
+      </div>
+    </form>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="document.getElementById('newLocationCode').style.display='none'">Discard Changes</button>
+      <button class="btn btn-secondary" onclick="createLocationCodeRequest()">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function createLocationCodeRequest() {
+      let form = document.getElementById('create-location-code-form');
+      var formData = new FormData(form);
+      var data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      fetch("/advertising/adadmin/financial/create-location-codes/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          localStorage.setItem('statusChanged', 'true');
+          localStorage.setItem('activeTab', 'Location');
+          window.location.href = `/advertising/adadmin/financial`;
+        } else {
+          $.toastr.error("Saving Location code Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving Location code Failed");
+      });
+    }
+  </script>
+</div>

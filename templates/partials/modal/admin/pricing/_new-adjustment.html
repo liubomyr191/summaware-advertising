@@ -1,0 +1,102 @@
+<div id="newAdjustment" class="modal my-modal">
+  <div class="custom-modal-content pb-100 m-auto">
+    <span class="close" onclick="document.getElementById('newAdjustment').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">New Adjustment</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="adjustment-name">Adjustment Name:</label>
+          <input type="text" class="form-control" id="adjustment-name" />
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="adjustment-code">Code:</label>
+          <input type="text" class="form-control" id="adjustment-code" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="apply-level">Apply Level:</label>
+          <select class="form-control" name="" id="apply-level"></select>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="adjustment-section">Section (optional):</label>
+          <select class="form-control" name="" id="adjustment-section"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="adjustment-value-type">Value Type:</label>
+          <input type="text" class="form-control" id="adjustment-value-type" />
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="adjustment-value">Value:</label>
+              <input type="text" class="form-control" id="adjustment-value" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <span> <input type="checkbox" /> Prompt For Value?</span>
+            </div>
+            <div class="checkbox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="credit-debit">Credit/Debit:</label>
+          <select class="form-control" name="" id="credit-debit"></select>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+          <label for="adjustment-gl-code">Assign GL Code (optional):</label>
+          <select class="form-control" name="" id="adjustment-gl-code"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-select-container mgb-3">
+      <div class="available-pubs">
+        <b>Available Publications:</b><br />
+        <select multiple="multiple" id="lstBox1" class="form-control">
+          <option value="times-leader-print-edition">Times Leader - Print Edition</option>
+          <option value="times-leader-e-edition">Times Leader - E Edition</option>
+        </select>
+      </div>
+      <div class="transferBtns">
+        <input type="button" id="btnRight" value="  >  " />
+        <br /><input type="button" id="btnLeft" value="  <  " />
+      </div>
+      <div class="selected-pubs">
+        <b>Selected Publications: </b><br />
+        <select multiple="multiple" id="lstBox2" class="form-control"></select>
+      </div>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary">Create Adjustment</button>
+    </div>
+  </div>
+</div>

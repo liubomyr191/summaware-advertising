@@ -1,0 +1,206 @@
+{% extends "templates/base.html" %} {% load static %} {% block css %} <link rel="stylesheet" href="{% static "admin/css/advertiser.css" %}"> {% endblock %} {% block endjs %}
+<script src='{% static "dist/js/advertising/CreateNewAdvertiser.js" %}'></script>
+{% endblock %} {% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %} {% block content %}
+<!-- <div class="advertiser-back-image"><img src="{% static "svg/advertiser_back_img.svg" %}"></div> -->
+
+<div id="advertiser-content">
+  <div>
+    <div class="advertiser-info">
+      <div class="advertiser-logo"><img alt="Advertiser Logo" src="{% static "svg/advertiser_logo.svg" %}"></div>
+
+      <div class="advertiser-title mgb-3">
+        <span>Create a New Advertiser</span>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <div class="advertiser-item">
+            <label>Account Type:</label>
+
+            <select id="account-type" class="advertiser-item-input" style="width: 60%">
+              <option disabled selected value="0">Select</option>
+              {%for accountType in accountTypes%}
+              <option value="{{accountType.id}}">{{accountType.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="advertiser-item">
+            <label>Contact Name:</label>
+            <div>
+              <input id="contact_name_first-name" type="text" class="advertiser-item-input" placeholder="First Name..." />
+
+              <input id="contact_name_last-name" type="text" class="advertiser-item-input" placeholder="Last Name..." />
+            </div>
+          </div>
+
+          <div class="advertiser-item">
+            <label>Business Name:</label>
+
+            <input id="business-name" type="text" class="advertiser-item-input" placeholder="Enter Business Name..." />
+          </div>
+
+          <div class="advertiser-item">
+            <label>Address:</label>
+
+            <input id="address" type="text" class="advertiser-item-input" placeholder="Enter Address..." />
+          </div>
+
+          <div class="advertiser-item">
+            <label>City:</label>
+
+            <input id="city" type="text" class="advertiser-item-input" placeholder="Enter City..." />
+          </div>
+
+          <div class="advertiser-item-group">
+            <div class="advertiser-item">
+              <label>State:</label>
+
+              <select id="state" class="advertiser-item-input">
+                <option disabled selected value="0">Select</option>
+                {% for state in states %}
+                    <option value="{{ state }}">{{ state }}</option>
+                {% endfor %}
+            </select>
+            </div>
+
+            <div class="advertiser-item">
+              <label>Zip Code:</label>
+
+              <input id="zip-code" type="text" class="advertiser-item-input" placeholder="Enter Zip Code..." />
+            </div>
+          </div>
+
+          <div class="advertiser-item-group">
+            <div class="advertiser-item">
+              <label> <img alt="Phone Logo" src="{% static "svg/advertiser_phone.svg" %}"> Phone Number: </label>
+
+              <input id="phone-number" type="text" class="advertiser-item-input" placeholder="(111)111-1111" />
+            </div>
+
+            <div class="advertiser-item">
+              <label> <img alt="Email Logo" src="{% static "svg/advertiser-email.svg" %}"> Email: </label>
+
+              <input id="email" type="text" class="advertiser-item-input" placeholder="JhonSmith@gmail.com" />
+            </div>
+          </div>
+
+          <div class="advertiser-item">
+            <label>Website:</label>
+
+            <input id="website" type="text" class="advertiser-item-input" />
+          </div>
+        </div>
+
+        <div class="col-md-12 col-lg-6">
+          <div class="advertiser-item-group">
+            <div class="advertiser-item market">
+              <label>Market Code:</label>
+
+              <select id="market-code" class="advertiser-item-input">
+                <option disabled selected value="0">Select</option>
+                {% for marketCode in marketCodes %}
+                <option value="{{marketCode.id}}">{{marketCode.code}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="advertiser-item sales">
+              <label>Sales Person:</label>
+
+              <select id="sales-person" class="advertiser-item-input">
+                <option disabled selected value="0">Select</option>
+                {% for salesPerson in salesPersons %}
+                <option value="{{ salesPerson.id }}">{{ salesPerson.first_name }} {{ salesPerson.last_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="advertiser-item-group">
+            <div class="advertiser-item submitter">
+              <label>Submitter/Ad Taker:</label>
+
+              <input id="submitter" type="text" class="advertiser-item-input" placeholder="Enter Submitter/Adtaker..." />
+            </div>
+
+            <div class="advertiser-item legacy">
+              <label>Legacy ID<span>(optional)</span>:</label>
+
+              <input id="legacy-id" type="text" class="advertiser-item-input" placeholder="Enter Legacy ID..." />
+            </div>
+          </div>
+
+          <div class="advertiser-billing-area">
+            <div class="advertiser-billing-title">Billing Info</div>
+          </div>
+
+          <div class="advertiser-item">
+            <label> <img alt="Email Logo" src="{% static "svg/advertiser-email.svg" %}"> Billing Email: </label>
+
+            <input id="billing-email" type="text" class="advertiser-item-input" placeholder="companyemail@gmail.com" style="width: 55% !important" />
+          </div>
+
+          <div class="advertiser-address-type">
+            <div id="address-0" class="advertiser-type-item selected-radio" onclick="changeAddress(0)">
+              <div class="radio-button"></div>
+              <label>New Address</label>
+            </div>
+
+            <div id="address-1" class="advertiser-type-item" onclick="changeAddress(1)">
+              <div class="radio-button"></div>
+              <label>Use Same Address</label>
+            </div>
+          </div>
+          <div id="advertiser_new_address" style="display: block">
+            <div class="advertiser-item mgb-3">
+              <label>Address:</label>
+
+              <input id="billing-address" type="text" class="advertiser-item-input" placeholder="Enter Address..." />
+            </div>
+
+            <div class="advertiser-item mgb-3">
+              <label>City:</label>
+
+              <input id="billing-city" type="text" class="advertiser-item-input" placeholder="Enter City..." />
+            </div>
+
+            <div class="advertiser-item-group">
+              <div class="advertiser-item state">
+                <label>State:</label>
+
+                <select id="billing-state" class="advertiser-item-input">
+                  <option disabled selected value="0">Select</option>
+                  <option value="State1">State1</option>
+                  <option value="State2">State2</option>
+                  <option value="State3">State3</option>
+                  <option value="State4">State4</option>
+                </select>
+              </div>
+
+              <div class="advertiser-item zipCode">
+                <label>Zip Code:</label>
+
+                <input id="billing-zip-code" type="text" class="advertiser-item-input" placeholder="Enter Zip Code..." />
+              </div>
+            </div>
+          </div>
+          <div id="advertiser_same_address" style="display: none">
+            <div class="advertiser-item" style="margin-bottom: 29px; margin-left: 192px"><img width="122px" height="122px" src="{% static "svg/CheckCircle.svg" %}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="advertiser-option">
+      <div class="advertiser-cancel" onclick="window.history.back();">Cancel</div>
+      <!--                <a class="btn btn-primary" href="{% url 'advertiser_dashboard' %}">-->
+      <!--                    Cancel-->
+      <!--                </a>-->
+
+      <div class="advertiser-create" onclick="createAdvertiser()">Create Account</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

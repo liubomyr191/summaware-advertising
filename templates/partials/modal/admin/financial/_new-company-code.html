@@ -1,0 +1,60 @@
+<div id="newCompanyCode" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('newCompanyCode').style.display='none'">&times;</span>
+    <form id="company-code-form">
+      <div class="heading-container text-center mb-5">
+        <h3 class="heading">New Company Code</h3>
+        <hr class="w-50 m-auto" />
+      </div>
+
+      <div class="form-container">
+        <div class="form-group w-50 m-auto mb-5">
+          <label for="">Code:</label>
+          <input type="text" name="code" id="country-code-value" class="form-control" />
+        </div>
+        <div class="form-group w-50 m-auto mb-5">
+          <label for="">Description:</label>
+          <textarea class="form-control" name="description" id="country-code-description" cols="30" rows="10"></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="document.getElementById('newCompanyCode').style.display='none'">Discard Changes</button>
+      <button class="btn btn-secondary" onclick="saveCompanyCode()">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function saveCompanyCode() {
+      let form = document.getElementById('company-code-form');
+      var formData = new FormData(form);
+      var data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+  
+      fetch("/advertising/adadmin/financial/company-codes/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          window.location.href = `/advertising/adadmin/financial`;
+        } else {
+          $.toastr.error("Saving FiscalYear Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving FiscalYear Failed");
+      })
+    }
+  </script>
+</div>
+
+

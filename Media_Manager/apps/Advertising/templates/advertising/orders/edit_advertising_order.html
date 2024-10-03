@@ -1,0 +1,180 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<!-- <script src="{% static "dist/js/advertising/idleTimeout.js" %}"></script> -->
+
+<!-- <script src="{% static "dist/js/advertising/OrderSubtotal.js" %}"></script> -->
+<script src="{% static "dist/js/advertising/orders/EditOrder.js" %}"></script>
+
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h1>Edit Order</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" id="edit_order_form">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ad_type">Ad Type</label>
+                                <select name="ad_type" id="ad_type" class="form-control">
+                                    <option value="">Select Ad Type...</option>
+                                    {% for ad_type in ad_types %}
+                                        <option value="{{ ad_type.id }}" {% if ad_type.id == order.ad_type.id %}selected{% endif %}>{{ ad_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="account">Account</label>
+                                <select name="account" id="account" class="form-control">
+                                    <option value="">Select Account...</option>
+                                    {% for account in accounts %}
+                                        <option value="{{ account.id }}" {% if account.id == order.account.id %}selected{% endif %}>{{ account.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="publication">Publication</label>
+                                <select name="publication[]" id="publication" class="form-control" required multiple>
+                                    {% for publication in publications %}
+                                        <option value="{{ publication.id }}" {% if publication.id in orderPublications %}selected{% endif %}>{{ publication.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sales_person">Sales Person</label>
+                                <select name="sales_person" id="sales_person" class="form-control">
+                                    <option value="">Select Sales Person...</option>
+                                    {% for sales_person in sales_people %}
+                                        <option value="{{ sales_person.id }}" {% if sales_person.id == order.salesperson.id %}selected{% endif %}>{{ sales_person.first_name }} {{ sales_person.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control" value="{{ order.start_date }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date">End Date</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control" value="{{ order.end_date }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bill_date">Billing Date</label>
+                                <input type="date" name="bill_date" id="bill_date" class="form-control" value="{{ order.bill_date }}" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="form-control btn btn-primary" data-toggle="modal" data-target="#edit_rates_modal">Edit Ad Rates</button>
+                                <div id="edit_rates_modal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Edit Ad Rates</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="ad_rates_selects"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <!-- <button type="submit" class="btn btn-md btn-primary" id="sales-notes-submit-btn">Save</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if perms.advertising.can_override_pricing %}
+                            <div class="form-group">
+                                <label for="override_ad_cost">Override Ad Cost</label>
+                                <input type="number" name="override_ad_cost" id="override_ad_cost" class="form-control" value="{{ order.override_ad_cost }}">
+                            </div>
+                            {% endif %}
+                            <div class="form-check">
+                                <input type="checkbox" name="tearsheets" id="tearsheets" class="form-check-input" {% if order.tearsheets %}checked{% endif %}>
+                                <label for="tearsheets">Tearsheets</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="active" id="active" class="form-check-input" {% if order.active %}checked{% endif %}>
+                                <label for="active" class="form-check-label">Active</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="locked" id="locked" class="form-check-input" {% if order.locked %}checked{% endif %}>
+                                <label for="locked" class="form-check-label">Locked</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="notes">Notes</label>
+                                <textarea name="notes" id="notes" class="form-control" rows="5">{{ order.notes }}</textarea>
+                            </div>
+                            {% if perms.advertising.can_make_ad_color %}
+                                <div class="form-group">
+                                    <input type="checkbox" id="color" name="color" {% if order.color %}checked{% endif %} />
+                                    <label for="color">In Color</label>
+                                </div>
+                                <div class="form-group" id="color_type_select" style="display:none">
+                                    <label for="color_type">Color Type</label>
+                                    <select class="form-control" name="color_type" id="color_type">
+                                        <option value="">Select Color Type...</option>
+                                        <option value="full_color" {% if order.color_type == "full_color" %}selected{% endif %}>Full Color</option>
+                                        <option value="black_and_white" {% if order.color_type == "black_and_white" %}selected{% endif %}>Black and White</option>
+                                        <option value="solid_color" {% if order.color_type == "solid_color" %}selected{% endif %}>Solid Color</option>
+                                    </select>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submit_btn">Save</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const colorCheckbox = document.querySelector('#color');
+    const colorTypeDiv = document.querySelector('#color_type_select');
+    const colorTypeInput = document.querySelector('#color_type');
+
+    colorCheckbox.addEventListener('change', e => {
+        let isChecked = colorCheckbox.checked;
+        if (isChecked) { 
+            colorTypeDiv.style.display = "block"; 
+        } else {
+            colorTypeDiv.style.display = "none";
+            let options = colorTypeInput.options;
+            for (let i = 0; i < options.length; i++) {
+                console.log(options[i])
+                options[i].selected = false;
+            }
+        }
+    })
+
+    const checkInColor = () => {
+        if ('{{ order.color }}' == 'True') {
+            colorTypeDiv.style.display = "block";
+        } else {
+            colorTypeDiv.style.display = "none";
+        }
+    }
+    checkInColor();
+</script>
+{% endblock %}

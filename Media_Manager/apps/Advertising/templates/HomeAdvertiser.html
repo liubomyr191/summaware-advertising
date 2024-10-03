@@ -1,0 +1,136 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "admin/css/homeadvertiser.css" %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<!-- 
+<div class="advertising-back-image">
+    <img src="{% static "svg/campaign_back_img.svg" %}">
+</div> -->
+
+<div class="home-content">
+    <h2>Advertiser</h2>
+</div>
+<div class="home-header">
+    <div style="display: flex;flex-direction: row;align-items: end;">
+        <button><a href="{{url}}/advertising/new-advertiser/" style="color:white">+ New Advertiser</a></button>
+        <div>
+            <label style="margin-left:20px;">Sort by:</label>
+            <select>
+                <option selected="" value="0">Recently Added</option>
+                <option value="1">Long-Standing</option>
+            </select>
+        </div>
+    </div>
+    <div style="margin-left: auto;">
+        <input type="text" placeholder="Search Advertisers..." class="home-search" style="width: 350px;"></input>
+    </div>
+</div>
+<hr  class="home-main-content"/>
+<div class="activity-sales-content">
+    <div class="sales-content-header">
+        <div class="sales-content-header-section">
+            Business Name
+        </div>
+
+        <div class="sales-content-header-section">
+            Contact
+        </div>
+
+        <div class="sales-content-header-section">
+            Account Type
+        </div>
+
+        <div class="sales-content-header-section">
+            Market Code
+        </div>
+        <div class="sales-content-header-section">
+            Submitter
+        </div>
+        <div class="sales-content-header-section">
+            Billing Contact
+        </div>
+    </div>
+
+    <div class="sales-content-body">
+        {%for account in accountList%}
+            <div class="table-row">
+                <div class="table-column">{{account.company_name_1}}</div>
+                <div class="table-column">{{account.contact_name}}</div>
+                <div class="table-column">{{account.account_type.name}}</div>
+                <div class="table-column">{{account.industry_code_id}}</div>
+                <div class="table-column">{{account.submitter}}</div>
+                <div class="table-column">{{account.billing_email}}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="fiter_button" onclick="toggleFilter()">Advanced Filters</div>
+<div class="filter_section">
+    <div style="position: relative;">
+        <h4 style="color: #21215F;margin-top:20px"><U>Advanced Filters</U></h4>
+        <img src="{% static "img/Vector.png" %}" onclick="toggleFilter()" style="float:right;position: absolute;right: 0;top: 0;cursor: pointer;">
+        <div style="margin:auto;margin-top: 10px;width: 85%;background-color: #666666;color:white;text-align: center;border-radius: 4px;padding-top:5px;padding-bottom: 5px;cursor: pointer;">Clear Selected</div>
+        <div style="margin:auto;margin-top: 10px;width: 85%;background-color: #21215F;color:white;text-align: center;border-radius: 4px;padding-top:5px;padding-bottom: 5px;cursor: pointer;">Apply</div>
+        <div class="filter_type_section">
+            <div style="margin: 5px;"><b>Account Type</b><img src="{% static "img/Arrow 142.png" %}" style="float:right;margin-top:6px"></div>
+            <hr style="margin-bottom: 20px;" />
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Grocery</label>
+            </div>
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Restaurant </label>
+            </div>
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Business</label>
+            </div>
+        </div>
+        <div class="filter_type_section">
+            <div style="margin: 5px;"><b>Submitter</b><img src="{% static "img/Arrow 142.png" %}" style="float:right;margin-top:6px"></div>
+            <hr style="margin-bottom: 20px;" />
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Kyle J</label>
+            </div>
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Charlie Chaplin </label>
+            </div>
+            <div class="fliter_checkbox">
+                <input type="checkbox" id="scales" name="scales"/>
+                <label for="scales">Buster Keaton</label>
+            </div>
+        </div>
+        <div style="margin:auto;margin-top: 50px;width: 85%;background-color: #666666;color:white;text-align: center;border-radius: 4px;padding-top:5px;padding-bottom: 5px;cursor: pointer;">Clear Selected</div>
+        <div style="margin:auto;margin-top: 10px;width: 85%;background-color: #21215F;color:white;text-align: center;border-radius: 4px;padding-top:5px;padding-bottom: 5px;cursor: pointer;">Apply</div>
+        <!-- <div class="filter_background"></div> -->
+    </div>
+</div>
+<script>
+    var toggle = true
+     function toggleFilter() {
+        var filterSection = document.querySelector('.filter_section');
+        if (toggle ==  true) {
+            filterSection.style.display = 'block';
+            toggle = false
+        }
+
+        else {
+            filterSection.style.display = 'none';
+            toggle = true
+        }
+        
+     }
+</script>
+{% endblock %}

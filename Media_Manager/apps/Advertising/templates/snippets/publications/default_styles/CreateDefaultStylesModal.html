@@ -1,0 +1,72 @@
+<button class="btn btn-primary" data-toggle="modal" data-target="#create_styles_modal">
+    <i class="fa fa-plus"></i> Add
+</button>
+
+<section id="create_styles_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Default Styles</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="create_styles">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="font">Font</label>
+                                        <select name="font" id="font" class="form-control" required>
+                                            <option value="">Select a font ...</option>
+                                            <option value="Arial">Arial</option>
+                                            <option value="Verdana">Verdana</option>
+                                            <option value="Times New Roman">Times New Roman</option>
+                                            <option value="Garamond">Garamond</option>
+                                            <option value="Georgia">Georgia</option>
+                                            <option value="Courier New">Courier New</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="font_size">Font Size</label>
+                                        <select name="font_size" id="font_size" class="form-control" required>
+                                            <option value="">Select a font size ...</option>
+                                            <option value="8">8px</option>
+                                            <option value="10">10px</option>
+                                            <option value="12">12px</option>
+                                            <option value="14">14px</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inset">Inset</label>
+                                <select name="inset" id="inset" class="form-control" required>
+                                    <option value="">Select an inset value ...</option>
+                                    <option value="2">2px</option>
+                                    <option value="4">4px</option>
+                                    <option value="6">6px</option>
+                                    <option value="8">8px</option>
+                                    <option value="10">10px</option>
+                                </select>                            
+                            </div>
+                            <div class="form-group">
+                                <label for="frame_width">Frame Width</label>
+                                <input type="number" class="form-control" id="frame_width" name="frame_width" placeholder="Enter frame width..." 
+                                        min="0" max="10" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="create_styles_submit">Add</button>
+            </div>
+        </div>
+    </div>
+</section>

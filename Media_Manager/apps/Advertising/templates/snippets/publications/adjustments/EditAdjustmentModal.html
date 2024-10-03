@@ -1,0 +1,79 @@
+<section id="edit_adjustment_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Adjustment</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit_adjustment_form">
+                    <div class="form-group">
+                        <label for="edit_adjustment_code">Code</label>
+                        <input type="text" name="edit_adjustment_code" id="edit_adjustment_code" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_description">Description</label>
+                        <textarea name="edit_adjustment_description" id="edit_adjustment_description" cols="30" rows="4" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_apply_level">Apply Level</label>
+                        <select name="edit_adjustment_apply_level" id="edit_adjustment_apply_level" class="form-control">
+                            <option value="">Select an apply level ...</option>
+                            <option value="order">Order</option>
+                            <option value="insertion">Insertion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_value_type">Value Type</label>
+                        <select name="edit_adjustment_value_type" id="edit_adjustment_value_type" class="form-control">
+                            <option value="">Select a value type ...</option>
+                            <option value="amount">Amount</option>
+                            <option value="percentage">Percentage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_amount">Amount</label>
+                        <input type="number" name="edit_adjustment_amount" id="edit_adjustment_amount" class="form-control" placeholder="Enter an amount/percentage ..." min="0" s/>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_type">Type</label>
+                        <select name="edit_adjustment_type" id="edit_adjustment_type" class="form-control">
+                            <option value="">Select a type ...</option>
+                            <option value="credit">Credit (+)</option>
+                            <option value="debit">Debit (-)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_adjustment_section">Section (optional)</label>
+                        <select name="edit_adjustment_section" id="edit_adjustment_section" class="form-control">
+                            <option value="">Select a section ...</option>
+                            {% for section in sectionList %}
+                                <option value="{{ section.id }}">{{ section.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_gross_net">Gross/Net</label>
+                        <select name="edit_gross_net" id="edit_gross_net" class="form-control">
+                            <option value="">Select ...</option>
+                            <option value="gross">Gross Total</option>
+                            <option value="net">Net Total</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="edit_adjustment_prompt_value" id="edit_adjustment_prompt_value" />
+                        <label for="edit_adjustment_prompt_value">Prompt For Value?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="edit_adjustment_active" id="edit_adjustment_active" />
+                        <label for="edit_adjustment_active">Active</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-md btn-primary" id="edit_adjustment_submit">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

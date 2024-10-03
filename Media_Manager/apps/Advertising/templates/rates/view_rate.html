@@ -1,0 +1,102 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/rates/view_rate.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+    {% else %}
+        <div id="message">{{ message }}</div>
+
+        <div id="main">
+            <div id="wrapper">
+                <div id="container">
+                    <div id="title">{{ rate.name }}</div>
+                    <div class="row">
+                        <div class="column column-left">
+                            <div class="label-group">
+                                <div class="tag">Status: </div>
+                                {% if rate.active %}
+                                <div>Active</div>
+                                {% else %}
+                                <div>Inactive</div>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <div class="column">
+                                    <div class="label-group">
+                                        <div class="tag">Price: </div>
+                                        <div>${{ rate.unit_price }}</div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="label-group">
+                                        <div class="tag">Tax Category: </div>
+                                        <div>{{ rate.tax_category|title }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Location: </div>
+                                <div>{{ rate.location|title }}</div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Hidden: </div>
+                                <div>{{ rate.hidden }}</div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Description: </div>
+                                <div>{{ rate.description }}</div>
+                            </div>
+                        </div>
+                        <div class="column column-right">
+                            <div class="label-group">
+                                <div class="tag">Date: </div>
+                                <div>{{ rate.start_date }} <i class="fa fa-arrow-right"> </i> {{ rate.end_date }}</div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Unit Type: </div>
+                                <div>{{ rate.unit_type|title }}</div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Rate Type: </div>
+                                <div>{{ rate.ad_type.name|title }}</div>
+                            </div>
+                            <div class="label-group">
+                                <div class="tag">Publications: </div>
+                                {% for row in ratePublications %}
+                                <div>
+                                    <a href="{% url 'view_publication' row.publication.id %}">
+                                        {{ row.publication.name }}
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="label-group">
+                                <a href="{% url 'edit_rate' rate.id %}">
+                                    <button class="btn">
+                                        <i class="fa fa-pencil"> </i> Edit Rate
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

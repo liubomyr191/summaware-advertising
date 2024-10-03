@@ -1,0 +1,13 @@
+.container-custom {
+  box-shadow: $shadow;
+  padding: 20px;
+  border-radius: 10px;
+  .heading-container {
+    max-width: 50%;
+    margin: 0 auto;
+
+    hr {
+      border: 1px solid $primary;
+    }
+  }
+}

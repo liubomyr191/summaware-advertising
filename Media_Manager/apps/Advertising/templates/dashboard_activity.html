@@ -1,0 +1,158 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "admin/css/advertiser.css" %}">
+{% endblock %}
+
+{% block endjs %}
+<script src='{% static "dist/js/advertising/AdvertiserDashboard.js" %}'></script>
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard mt-2">
+    <div>
+        <h1 class="text-center" style="margin-bottom: 10px"></i>&nbsp;Advertiser Dashboard</h1>
+
+        <div class="dashboard-title-line"></div>
+
+        <div class="back-advertiser text-left">
+            <a class="advertiser-btn-back"><- Back to Advertisers</a>
+        </div>
+
+        <div class=" dashboard-content">
+            <div class="advertiser-overview">
+                <div class="overview-title text-center">
+                    < Activity >
+                </div>
+
+                <div class="overview-menu mt-2">
+                    <a id="id_overview_active" href="{% url 'advertiser_dashboard' %}">Advertiser Overview</a>
+                    <a id="id_overview_activity" class="overview-active"
+                       href="{% url 'advertiser_dashboard_activity' %}">Activity</a>
+                    <a id="id_order_history" href="{% url 'advertiser_dashboard_order_history' %}">Ad Order History</a>
+                </div>
+            </div>
+
+            <div class="activity-section-one">
+                <div class="action-section-one-left">
+                    <div class="action-section-one-left-title">
+                        To Do's
+                    </div>
+
+                    <div class="action-section-one-left-content">
+
+                    </div>
+                </div>
+
+                <div class="action-section-one-right">
+                    <div class="action-section-one-left-title">
+                        Recent Activity
+                    </div>
+
+                    <div class="action-section-one-left-content">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="overview-contacts">
+                <div class="overview-contacts-title">
+                    <span>Sales</span>
+                </div>
+
+                <div class="activity-sales-display mt-4">
+                    Display Sales By:
+                </div>
+
+                <div class="activity-menu mt-2 ">
+                    <a class="activity-active" id="id_activity_time" href="{% url 'advertiser_dashboard' %}">Time</a>
+                    <a id="id_activity_product" href="{% url 'advertiser_dashboard_activity' %}">Products</a>
+                    <a id="id_activity_format" href="{% url 'advertiser_dashboard_order_history' %}">Format/Ad Type</a>
+                </div>
+            </div>
+
+            <div class="activity-sales-content">
+                <div class="sales-content-header">
+                    <div class="sales-content-header-section">
+                        <select class="form-control shadow" id="id_sales_year" style="width:30%;border-radius: 4px">
+                            <option>Year</option>
+
+                        </select>
+                    </div>
+
+                    <div class="sales-content-header-section">
+                        Print Sales
+                    </div>
+
+                    <div class="sales-content-header-section">
+                        Digital Sales
+                    </div>
+
+                    <div class="sales-content-header-section">
+                        Totals
+                    </div>
+                </div>
+
+                <div class="sales-content-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="position: relative; overflow: hidden">
+            <img src="{% static "svg/advertising_modal_img.svg" %}" class="advertising-modal-img">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-notice">
+                    Get Started With Something New!
+                </div>
+
+                <div class="modal-body advertising-modal-body" style="z-index: 1">
+                    <div class="anim-btn text-center">
+                        <a href="{% url 'create_classified_ad' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                     fill="none">
+                                    <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z"
+                                          fill="#F26722"/>
+                                </svg>
+                                New Ad Campaign
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="anim-btn text-center mt-2">
+                        <a href="{% url 'create_advertiser' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                     fill="none">
+                                    <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z"
+                                          fill="#F26722"/>
+                                </svg>
+                                New Advertiser
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="anim-btn text-center mt-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var salesperson_id = "{{ salesperson_id }}";
+
+</script>
+{% endblock %}

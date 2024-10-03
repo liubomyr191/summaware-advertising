@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "templates/sections/header.html" %}
+  </head>
+  <body class="hold-transition login-page">
+	<div id="login_logo">
+		<img src="/static/dist/img/summaware-500.png" id="login_logo_img" />
+	</div>
+    <div id="login_box">
+		<!--
+		<div class="login-logo">
+			<a href="{{url}}/login">{% if logo_url == '' %}<b>MIDTC</b> Admin</a>{% else %}<img src="{{logo_url}}" style="width:200px;height:150px;"></img>{% endif %}</a>
+		</div>
+		-->
+        <div class="login-box-body">
+          <p class="login-box-msg">
+          {% if message == '' or message is None %}
+            Sign in to start your session
+          {% else %}
+            {{message}}
+          {% endif %}
+          </p>
+
+          <form action="{{url}}/login/" method="post">
+            {% csrf_token %}
+            <div class="form-group has-feedback">
+              <input type="text" name="username" class="form-control" placeholder="Username" value="{% if username != '' or username is not None %}{{username}}{% endif %}" />
+              <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+              <input type="password" name="password" class="form-control" placeholder="Password" />
+              <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+              <div class="col-xs-8">
+                <div class="checkbox icheck">
+                  <label style="margin-left:25px;">
+                    <input type="checkbox"> Remember Me
+                  </label>
+                </div>
+              </div>
+              <!-- /.col -->
+              <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+          <a href="{{url}}/forgot/">I forgot my password</a><br>
+          <!--<a href="{{url}}/login/register" class="text-center">Register a new membership</a>-->
+        </div>
+      </div>
+    </body>
+    <footer>
+      {% include "templates/sections/javascript.html" %}
+    </footer>
+  </body>
+</html>

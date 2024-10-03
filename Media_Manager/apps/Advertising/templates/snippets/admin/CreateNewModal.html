@@ -1,0 +1,38 @@
+<section id="create_new_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Menu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'create_account' %}">Create Account</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_salesperson' %}">Create Sales Person</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_publication' %}">Create Publication</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_rate' %}">Create Ad Rate</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_order' %}">Create Ad Order</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_service_charge' %}">Create Service Charge</a></li>
+                            {% comment %} <li class="list-group-item"><a href="{% url 'create_adjustment' %}">Create Adjustment</a></li> {% endcomment %}
+                            <li class="list-group-item"><a href="{% url 'list_companies' %}">Create/Edit Companies</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{% url 'create_classified_rate' %}">Create Classified Ad Rate</a></li>
+                            <li class="list-group-item"><a href="{% url 'create_classified_ad' %}">Create Classified Ad Order</a></li>
+                            <li class="list-group-item"><a href="{% url 'view_classifieds_graphics' %}">Upload Classified Ad Graphic</a></li>
+                            <li class="list-group-item"><a href="{% url 'list_classified_ad_types' %}">Create/Edit Classified Ad Types</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</section>

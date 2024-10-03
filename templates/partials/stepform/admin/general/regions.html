@@ -1,0 +1,156 @@
+{% include 'templates/partials/modal/admin/general/_edit-region.html'%} {% include 'templates/partials/modal/admin/general/_new-region.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Regions</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="btn-search-container">
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <div class="filter-container">
+              <button class="btn btn-secondary" onclick="document.getElementById('newRegion').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> Add a Region</button>
+              <div class="filters d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 search-container">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+
+      <!-- <div class="add-region-container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="filter-container">
+              <button class="btn btn-secondary mb-1"><i class="fa fa-solid fa-plus"></i> Add A Region</button>
+              <div class="filters"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+            </div>
+          </div>
+          <div class="col-md-6 custom-search-container">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+      </div> -->
+
+      <div class="regions-list-container">
+        <div class="table-container mt-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Region Code</th>
+                <th scope="col">Region Name</th>
+                <th scope="col">Added By</th>
+                <th scope="col">Publication</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody id="region-table-body">
+              {% for region in regions %}
+              <tr>
+                <td>{{region.code}}</td>
+                <td>{{region.name}}</td>
+                <td>Kyle Jernigan</td>
+                <td>See assigned</td>
+                <td>
+                  <div class="toggle-switch-container">
+                    <div class="switch-field">
+                      <input type="radio" id="{{region.id}}-region-radio-one" name="{{region.id}}-region-switch-one" value="active" {{region.active|yesno:"checked, unchecked"}} />
+                      <label for="{{region.id}}-region-radio-one">Active</label>
+                      <input type="radio" id="{{region.id}}-region-radio-two" name="{{region.id}}-region-switch-one" value="inactive"  {{region.active|yesno:"unchecked, checked"}} />
+                      <label for="{{region.id}}-region-radio-two">Inactive</label>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="mr-1" onclick="editRegion({{region.id}})"><i class="fa fa-solid fa-pencil"></i></span>
+                  <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="end-of-list-heading-container text-center py-5">
+            <span>You've reached the end!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function editRegion(id) {
+      document.getElementById('editRegion').style.cssText = 'display: block; opacity: 1; visibility: visible;'
+      var selectElement = document.getElementById('edit-region-lstBox1');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      var selectElement = document.getElementById('edit-region-lstBox2');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      let data = {'id': id}
+      fetch("general/region-detail", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // parse the JSON from the response
+      })
+      .then((data) => {
+          var region = JSON.parse(data['region']);
+          region = region[0].fields;
+          var assigned_publications = data['assigned_publications'];
+          var unsigned_publications = data['unsigned_publications'];
+          localStorage.setItem('edit-region-id', data['id']);
+          localStorage.setItem('edit-region-active', region.active);
+          localStorage.setItem('edit-region-status', region.status);
+          document.getElementById('edit-region-name').value = region.name;
+          document.getElementById('edit-region-code').value = region.code;
+          document.getElementById('region-active').textContent = region.active == true ? 'Deactivate' : 'Active';
+          console.log(assigned_publications);
+          var select = document.getElementById("edit-region-lstBox1");
+          unsigned_publications.forEach(function(item) {
+            var option = new Option(item.name, item.id);
+            select.add(option);
+          });
+          var select = document.getElementById("edit-region-lstBox2");
+          assigned_publications.forEach(function(item) {
+            var option = new Option(item.name, item.id);
+            select.add(option);
+          });
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+  </script>
+</div>

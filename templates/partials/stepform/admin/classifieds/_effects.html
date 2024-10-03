@@ -1,0 +1,218 @@
+<div class="font-effects-container mgb-3">
+  <div class="text-effects-toggle mgb-5">
+    <button type="button" id="text-fill" class="effect-toggle active">
+      <i class="fa fa-solid fa-font"></i>
+      <hr />
+    </button>
+    <button type="button" id="text-effects" class="effect-toggle">
+      <i class="fa fa-solid fa-font"></i>
+    </button>
+  </div>
+
+  <div id="text-fill" class="effects-content active">
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group text-fill-container">
+          <div class="label-container">
+            <label for="textFill">Text Fill:</label>
+          </div>
+          <select name="text_fill" id="textFill" class="form-control">
+            <option value="gradient-fill">Gradient Fill</option>
+            <option value="solid-fill">Solid Fill</option>
+            <option value="no-fill">No Fill</option>
+          </select>
+        </div>
+
+        <div class="gradient-container">
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <div class="label-container">
+                <label for="textFill">Preset Gradients:</label>
+              </div>
+              <div class="dropdown">
+                <button type="button" id="gradientSelector" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="gradientSelector">
+                  <!-- Gradient options will be dynamically populated here -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group">
+                <div class="label-container">
+                  <label for="textFill">Type:</label>
+                </div>
+                <select name="gradient_type" id="gradientType" class="form-control">
+                  <option value="linear">Linear</option>
+                  <option value="radial">Radial</option>
+                  <option value="diagonal">Diagonal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="gradient-settings">
+            <a href="#">Custom Gradient Settings</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="outline-container">
+          <div class="form-group">
+            <div class="label-container">
+              <label for="textOutline">Text Outline:</label>
+            </div>
+            <select name="gradient_fill" id="textOuline" class="form-control">
+              <option value="gradient-fill">Gradient Fill</option>
+              <option id="solidFill" value="solid-fill">Solid Fill</option>
+              <option value="no-fill">No Fill</option>
+            </select>
+          </div>
+          <button type="button" class="color-fill"><i class="fa fa-solid fa-fill-drip"></i></button>
+        </div>
+        <div class="transparency-container">
+          <div class="form-group range-container">
+            <label for="transparency">Transparency:</label>
+            <input type="range" name="transparency" id="transparencyRange" min="1" max="100" value="0" />
+          </div>
+          <div class="percentage-container">
+            <input type="text" name="transparency_percentage" id="transparencyText" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="text-effects" class="effects-content hide">
+    <div class="row mgb-5">
+      <div class="col-md-12 col-lg-6">
+        <div class="effects-container">
+          <div class="shadow-container mgb-1">
+            <label for="">Shadow</label>
+            <div class="custom-switch-container mgb-1">
+              <div class="switch-field">
+                <input type="radio" id="shadow-radio-one" name="shadow-switch-one" value="yes" checked />
+                <label for="shadow-radio-one">Yes</label>
+                <input type="radio" id="shadow-radio-two" name="shadow-switch-one" value="no" />
+                <label for="shadow-radio-two">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="presets-container">
+            <div class="form-group">
+              <label class="preset-label">Presets:</label>
+              <input type="text" id="preset-input" class="form-control" name="presets"/>
+            </div>
+            <div class="settings-link-container">
+              <a href="#">Advanced Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="effects-container">
+          <div class="glow-container mgb-1">
+            <label for="">Glow</label>
+            <div class="custom-switch-container mgb-1">
+              <div class="switch-field">
+                <input type="radio" id="glow-radio-one" name="glow-switch-one" value="yes" checked />
+                <label for="glow-radio-one">Yes</label>
+                <input type="radio" id="glow-radio-two" name="glow-switch-one" value="no" />
+                <label for="glow-radio-two">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="presets-container">
+            <div class="form-group">
+              <label class="preset-label">Presets:</label>
+              <input type="text" id="preset-input" class="form-control" name="presets_two"/>
+            </div>
+            <div class="settings-link-container">
+              <a href="#">Advanced Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mgb-3">
+      <div class="col-md-12 col-lg-6">
+        <div class="effects-container">
+          <div class="refelction-container mgb-1">
+            <label for="">Reflection</label>
+            <div class="custom-switch-container mgb-1">
+              <div class="switch-field">
+                <input type="radio" id="reflection-radio-one" name="reflection-switch-one" value="yes" checked />
+                <label for="reflection-radio-one">Yes</label>
+                <input type="radio" id="reflection-radio-two" name="reflection-switch-one" value="no" />
+                <label for="reflection-radio-two">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="presets-container">
+            <div class="form-group">
+              <label class="form-label preset-label">Presets:</label>
+              <input type="text" id="preset-input" class="form-control" name="presets_three"/>
+            </div>
+            <div class="transparency-container">
+              <div class="form-group range-container">
+                <label for="transparency">Transparency:</label>
+                <input type="range" name="" id="transparencyRange" min="1" max="100" value="0" name="transparency_two"/>
+              </div>
+              <div class="percentage-container">
+                <input type="text" name="" id="transparencyText" name="transparency_value"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="effects-container">
+          <div class="edges-container mgb-1">
+            <label class="preset-label">Soft Edges</label>
+
+            <div class="custom-switch-container mgb-1">
+              <div class="switch-field">
+                <input type="radio" id="edges-radio-one" name="edges-switch-one" value="yes" checked />
+                <label for="edges-radio-one">Yes</label>
+                <input type="radio" id="edges-radio-two" name="edges-switch-one" value="no" />
+                <label for="edges-radio-two">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="presets-container">
+            <div class="form-group">
+              <label class="preset-label">Presets:</label>
+              <input type="text" id="preset-input" class="form-control" name="presets_four"/>
+            </div>
+            <div class="settings-link-container">
+              <a href="#">Advanced Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-6 col-lg-offset-3">
+        <div class="effects-container">
+          <div class="three-d-container mgb-1">
+            <label class="preset-label">3-D Format</label>
+
+            <div class="custom-switch-container mgb-1">
+              <div class="switch-field">
+                <input type="radio" id="3d-radio-one" name="3d-switch-one" value="yes" checked />
+                <label for="3d-radio-one">Yes</label>
+                <input type="radio" id="3d-radio-two" name="3d-switch-one" value="no" />
+                <label for="3d-radio-two">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="presets-container">
+            <div class="settings-link-container center-block">
+              <a href="#">Advanced Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+{% extends 'base_beta.html' %} {% block content %} {% include 'templates/partials/modal/_edit-ad-info.html'%}
+<div class="page-heading-container container">
+  <h1>Advertising</h1>
+</div>
+
+<div class="link-container container mb-3">
+  <a href="{% url 'index' %}">Back to Rates</a>
+</div>
+<div class="container container-custom mb-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">Edit Rate</h3>
+    <hr />
+  </div>
+
+  <div class="row">
+    <div class="col-6 col-md-6">
+      <div class="form-group mb-5">
+        <label for="" class="form-label">Name:</label>
+        <input type="text" class="form-control" name="" id="" value="Rate Name" />
+      </div>
+
+      <div class="row mb-5">
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Unit Type:</label>
+            <select name="" id="" class="form-select">
+              <option>Choose...</option>
+              <option selected>Word</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Unit Price:</label>
+            <input type="text" class="form-control" name="" id="" value="5.0" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Pricing:</label>
+            <select name="" id="" class="form-select">
+              <option>Choose...</option>
+              <option selected>Standard</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Tax Category:</label>
+            <select name="" id="" class="form-select">
+              <option>Choose...</option>
+              <option selected>None</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-5">
+        <label for="" class="form-label">Description:</label>
+        <textarea class="form-control" name="" id="" cols="30" rows="10">Brief description of the rate will go here.</textarea>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-6">
+      <div class="row mb-5">
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Status:</label>
+            <select name="" id="" class="form-select">
+              <option>Choose...</option>
+              <option selected>Active</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="" class="form-label">Hidden:</label>
+            <select name="" id="" class="form-select">
+              <option>Choose...</option>
+              <option selected>Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-5">
+        <label for="" class="form-label">Publication:</label>
+        <select name="" id="" class="form-select">
+          <option>Choose...</option>
+          <option selected>Statesville Record &amp; Landmark</option>
+        </select>
+      </div>
+
+      <div class="row mb-5">
+        <label for="" class="form-label">Start/End Date:</label>
+        <div class="col">
+          <div class="form-group">
+            <input type="date" name="" id="" class="form-control" value="02/17/2022" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <input type="date" name="" id="" class="form-control" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-5">
+        <label for="" class="form-label">Ad Type:</label>
+        <select name="" id="" class="form-select">
+          <option>Choose...</option>
+          <option selected>Liner</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-5">
+        <label for="" class="form-label">Location:</label>
+        <select name="" id="" class="form-select">
+          <option>Choose...</option>
+          <option selected>Inside Cover (Premium)</option>
+        </select>
+      </div>
+
+      <div class="btn-container text-center">
+        <button class="btn btn-danger px-5">Cancel</button>
+        <button class="btn btn-secondary px-5">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

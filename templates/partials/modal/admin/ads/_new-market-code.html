@@ -1,0 +1,86 @@
+<div id="newMarketCode" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('newMarketCode').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">New Market Code</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form method="post" id="new-marketcode-form">
+      <div class="center-block">
+        <div class="form-group">
+          <label for="market-name">Market Name:</label>
+          <input type="text" name="name" id="market-name" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="market-code">Code:</label>
+          <input type="text" name="code" id="market-code" class="form-control" />
+        </div>
+      </div>
+    </form>
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary" onclick="createMarketCode()">Create Code</button>
+    </div>
+  </div>
+  <script>
+    function createMarketCode() {
+      let form = $('#new-marketcode-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      fetch("ads/create-marketcode", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(res => {
+        if(res.success) {
+          $.toastr.success("MarketCode created successfully");
+          var tbody = document.getElementById('marketcode-table-body');
+          var lastTr = tbody.lastElementChild;
+          var lastRateId = 0
+          // Check if the lastTr is a <tr> element
+          if (lastTr.tagName === 'TR') {
+              // Get the ID of the last rate element from the last <tr> element
+              var lastRateId = lastTr.querySelector('td:first-child').textContent;
+          }
+          var newRow = `
+          <tr>
+            <td>${Number(lastRateId) + 1}</td>
+            <td>${data['name']}</td>
+            <td>${data['code']}</td>
+            <td>
+              <div class="mcode-switch-container">
+                <div class="switch-field">
+                  <input type="radio" id="${Number(lastRateId) + 1}-mcode-radio-one" name="${Number(lastRateId) + 1}-mcode-switch-one" value="active"  checked/>
+                  <label for="${Number(lastRateId) + 1}-mcode-radio-one">Active</label>
+                  <input type="radio" id="${Number(lastRateId) + 1}-mcode-radio-two" name="${Number(lastRateId) + 1}-mcode-switch-one" value="inactive"/>
+                  <label for="${Number(lastRateId) + 1}-mcode-radio-two">Inactive</label>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="pe-3 color-secondary" onclick="editMarketCode(${Number(lastRateId) + 1})"><i class="fa fa-solid fa-pencil"></i></span>
+              <span class="color-secondary"><i class="fa fa-solid fa-envelope-open"></i></span>
+            </td>
+          </tr>`
+          tbody.insertAdjacentHTML('beforeend', newRow);
+          document.getElementById('newMarketCode').style.display='none';
+        } else {
+          $.toastr.error("Creating MarketCode Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Creating MarketCode Failed");
+      })
+    }
+  </script>
+</div>

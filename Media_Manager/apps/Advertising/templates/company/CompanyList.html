@@ -1,0 +1,49 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>Company List</h2>
+            {% include 'snippets/companies/NewCompanyModal.html' %}
+			<table class="table table-hover table-striped table-condensed" id="company_table">
+				<thead>
+					<tr>
+                        <th>ID</th>
+						<th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+                    {% for company in companies %}
+                    <tr>
+                        <td>{{ company.id }}</td>
+                        <td><a href="{% url 'view_company_details' company.id %}">{{ company.name }}</a></td>
+                        <td>{{ company.email }}</td>
+                        <td>{{ company.phone }}</td>
+                        <td>{{ company.type|title }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+			</table>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

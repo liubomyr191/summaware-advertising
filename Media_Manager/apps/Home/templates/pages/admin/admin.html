@@ -1,0 +1,52 @@
+{% extends 'base_beta.html' %} {% block content %}
+
+<div class="admin-landing-container container mt-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">Admin</h3>
+    <p>
+      Select an area below to view,<br />
+      edit, and manage!
+    </p>
+  </div>
+
+  <div class="admin-blocks mt-5">
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <a class="admin-block-link" href="{% url 'adminGeneral' %}">
+          <div class="admin-block general">
+            <h3 class="title">General</h3>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a class="admin-block-link" href="{% url 'adminAds' %}">
+          <div class="admin-block ads">
+            <h3 class="title">Ads</h3>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <div class="admin-block accounts">
+          <h3 class="title">Accounts</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+      <div class="col-md-4">
+        <a class="admin-block-link" href="{% url 'adminFinancial' %}">
+          <div class="admin-block financial">
+            <h3 class="title">Financial</h3>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <div class="admin-block pricing">
+          <h3 class="title">Pricing</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

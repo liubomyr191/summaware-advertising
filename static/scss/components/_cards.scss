@@ -1,0 +1,48 @@
+.adjustment-card {
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid $black;
+  background-color: $white;
+  box-shadow: $shadow;
+  min-height: 165px;
+  padding: 10px 0 10px 10px;
+
+  .left-side {
+    width: 85%;
+  }
+
+  .right-side {
+    position: absolute;
+    width: 15%;
+    height: 100%;
+    background-color: $secondary-light;
+    top: 0;
+    right: 0;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    span {
+      color: $white;
+      text-align: center;
+    }
+  }
+
+  .title-price-container {
+    padding-right: 10px;
+    .title,
+    .price {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 19.2px;
+    }
+  }
+
+  .desc,
+  .level,
+  .section {
+    font-size: 12px;
+    line-height: 14.4px;
+  }
+}

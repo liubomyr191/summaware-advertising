@@ -1,0 +1,65 @@
+:root {
+    --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    --color-main: #f26722;
+    --color-dark-blue: #21215f;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+}
+
+#wrapper {
+    border: 1px solid lightgrey;
+    width: 80vw;
+    height: 80vh;
+    box-shadow: var(--box-shadow);
+    border-radius: 4px;
+    background-color: white;
+}
+
+#title>h2 {
+    text-align: center;
+    border-bottom: 3px solid var(--color-main);
+    padding: 1.5rem 1rem;
+    font-size: x-large;
+    font-weight: bold;
+    width: 50%;
+    margin: 0 auto 1em auto;
+}
+
+input[type="text"],
+input[type="email"],
+select.form-control {
+    box-shadow: var(--box-shadow);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select.form-control:focus {
+    box-shadow: var(--box-shadow);
+}
+
+.form-group>label {
+    font-weight: bold;
+}
+
+#page_content {
+    display: flex;
+    justify-content: center;
+}
+
+#new_company_form {
+    display: grid;
+    width: 40vw;
+}
+
+.form-content {
+    display: inline-grid;
+    margin: 0.5rem 0;
+}
+
+.form-content>label {
+    font-weight: bold;
+    font-size: 1.5rem;
+}

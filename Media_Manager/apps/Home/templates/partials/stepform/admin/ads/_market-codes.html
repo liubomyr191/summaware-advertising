@@ -1,0 +1,75 @@
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Market Codes</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="content-container container">
+      <div class="save-container d-flex justify-content-end mb-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="filter-container mb-3">
+        <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="filter-container d-flex">
+              <button class="btn btn-secondary">New Market Code</button>
+              <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex justify-content-end">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+      </div>
+
+      <div class="table-container mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Market Name</th>
+              <th scope="col">Code</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0001</td>
+              <td>Market Name</td>
+              <td>AAAA</td>
+              <td>
+                <div class="switch2">
+                  <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                  <label for="cc-toggle"></label>
+
+                  <span class="active">Active</span>
+                  <span class="deactivate">Deactivate</span>
+                </div>
+              </td>
+              <td>
+                <span class="pe-3 color-secondary"><i class="fa fa-solid fa-pencil"></i></span>
+                <span class="color-secondary"><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="end-of-list-heading-container text-center py-5">
+          <span>You've reached the end!</span>
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<section class="form-section" id="edit_code_form_section">
+    <div class="form-content">
+        <h1 class="column-title">Edit Industry Code</h1>
+        <hr>
+        <form method="post" id="edit_code_form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="code">Code</label>
+                <input type="text" class="form-control" name="editCode" placeholder="Enter Code ..."/>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="editDescription" placeholder="Enter Your Description ..." rows="5"></textarea>
+            </div>
+            <div>
+                <label for="active">Active</label>
+                <input type="checkbox" name="active" id="editActive" class="form-checkbox">
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="btn submit-btn" id="edit_code_submit">Save</button>
+                <button type="button" class="btn cancel-btn" id="cancel_btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</section>

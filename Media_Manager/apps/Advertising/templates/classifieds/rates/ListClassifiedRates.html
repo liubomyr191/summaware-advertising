@@ -1,0 +1,68 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/classifications/CreateClassification.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifications/EditClassification.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h2>Classified Rates</h2>
+            <a href="{% url 'create_classified_rate' %}">
+                <button class="btn btn-primary" id="create_rate_btn">
+                    <i class="fa fa-plus"> </i> Create
+                </button>
+            </a>
+            <br /><br />
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Unit Price</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rate in rates %}
+                    <tr>
+                        <td>{{ rate.id }}</td>
+                        <td>{{ rate.name }}</td>
+                        <td>{{ rate.description }}</td>
+                        <td>$ {{ rate.unit_price }}</td>
+                        <td>{{ rate.start_date }}</td>
+                        <td>{{ rate.end_date }}</td>
+                        <td>
+                            <a href="{% url 'classified_rate_details' rate.id %}">
+                                <button class="btn btn-xs">
+                                    <i class="fa fa-eye"> </i> View
+                                </button>
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

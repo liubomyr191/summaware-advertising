@@ -1,0 +1,70 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Publication</th>
+                        <th>Ad Type</th>
+                        <th>Unit Type</th>
+                        <th>Unit Price</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if account_rates %}
+                        {% for rate in account_rates %}
+                            <tr style="background-color:lightgreen">
+                                <td>{{ rate.id }}</td>
+                                <td><a href="{% url 'view_rate' rate.id %}">{{ rate.name }}</a></td>
+                                <td>{{ rate.description }}</td>
+                                <td>{{ rate.publication.name }}</td>
+                                <td>{{ rate.ad_type.name }}</td>
+                                <td>{{ rate.unit_type }}</td>
+                                <td>{{ rate.unit_price }}</td>
+                                <td>{{ rate.start_date }}</td>
+                                <td>{{ rate.end_date }}</td>
+                                <td>{{ rate.account.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% for rate in unlocked_rates %}
+                        <tr>
+                            <td>{{ rate.id }}</td>
+                            <td><a href="{% url 'view_rate' rate.id %}">{{ rate.name }}</a></td>
+                            <td>{{ rate.description }}</td>
+                            <td>{{ rate.publication.name }}</td>
+                            <td>{{ rate.ad_type.name }}</td>
+                            <td>{{ rate.unit_type }}</td>
+                            <td>{{ rate.unit_price }}</td>
+                            <td>{{ rate.start_date }}</td>
+                            <td>{{ rate.end_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,96 @@
+:root {
+    --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    --color-main: #f26722;
+    --color-dark-blue: #21215f;
+}
+
+#title {
+    text-align: center;
+    border-bottom: 3px solid var(--color-main);
+    padding: 1rem;
+    font-size: x-large;
+    font-weight: bold;
+    width: 50%;
+    margin: 0 auto 1em auto;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+select.form-control,
+textarea {
+    box-shadow: var(--box-shadow);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+select.form-control:focus,
+textarea:focus {
+    box-shadow: var(--box-shadow);
+}
+
+label,
+.form-group>label {
+    font-weight: bold;
+}
+
+.page_content {
+    width: 80vw;
+    height: 75vh;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    margin: auto;
+}
+
+.page_content>.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.row {
+    margin-bottom: 1em;
+}
+
+#edit_rate_form {
+    width: 100%;
+    display: contents;
+}
+
+textarea#description {
+    box-shadow: var(--box-shadow);
+    resize: none;
+}
+
+#date_select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#date_select input[type='date'] {
+    width: 33%;
+}
+
+#date_select #arrow_right {
+    font-size: xx-large;
+}
+
+#final_buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+#final_buttons>button {
+    padding: 5px 20px;
+    box-shadow: var(--box-shadow);
+}
+
+#final_buttons>.dark-blue {
+    background-color: var(--color-dark-blue);
+    color: white;
+    cursor: pointer;
+}

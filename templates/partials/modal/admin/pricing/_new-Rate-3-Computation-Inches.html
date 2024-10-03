@@ -1,0 +1,149 @@
+<style>
+    .switch2.custom input.check-toggle-round-flat + label:after {
+        width: 60px;
+    }
+</style>
+<div id="new_rate_3_computation_inches" class="modal modal-md my-modal chase-modal">
+    <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;">
+        <span class="close" onclick="document.getElementById('new_rate_3_computation_inches').style.display='none'">&times;</span>
+        <br>  
+        <div class="heading-container text-center mb-5">
+            <h3 class="heading">New Rate</h3>
+        </div>      
+        <div class="progress-icons">
+        <div id="progress_0" class="progress-active"></div>
+        <div id="progress_1" class="progress-active"></div>
+        <div id="progress_2" class="progress-active"></div>
+        </div>
+        <br>  
+        <h3 class="heading text-center" style="margin-bottom: 0px;">
+            <a style="cursor: pointer;" onclick="document.getElementById('new_rate_3_computation_inches').style.display='none';document.getElementById('new_rate_3_computation').style.display='block';">Inches</a> 
+        </h3>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <hr style="margin:0px">
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <br>
+        <div class="">            
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">                          
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <strong>Default Cost Per Column Inch:</strong>
+                            </div>
+                        </div>                           
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input name="" id="" class="form-control" placeholder="$">
+                                </div>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                                <strong>Modular Override Rates:</strong>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <div class="">
+                                    <div class="switch2 custom" style="width: 120px;">
+                                        <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                        <label for="cc-toggle"></label>                        
+                                        <span class="active">Yes</span>
+                                        <span class="deactivate">No</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>                           
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for=""><strong>Product Type:</strong></label>
+                                    <select name="" id="" class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="table-container mt-2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" width="25%">Description</th>
+                                        <th scope="col" width="25%">Size</th>
+                                        <th scope="col" width="35%">Price</th>
+                                        <th scope="col" width="15%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Full Page</td>
+                                        <td>5x11</td>
+                                        <td>
+                                            <input class="form-control">
+                                        </td>
+                                        <td width="50">
+                                            <button class="btn btn-success btn-sm" style="width:50px;">Reset</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Full Page</td>
+                                        <td>5x11</td>
+                                        <td>
+                                            <input class="form-control">
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm" style="width:50px;">Reset</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="row btn-container text-right">
+                            <button class="btn btn-secondary px-5"> Save Price </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <a style="cursor: pointer;" onclick="document.getElementById('new_rate_3_computation_inches_1').style.display='block';document.getElementById('new_rate_3_computation_inches').style.display='none';">Advanced Options <i class="fa fa-chevron-down"></i></a>
+                    </div>
+                </div>
+                <div class="row btn-container">
+                    <div class="col-md-6 text-left">
+                        <button class="btn px-5 btn-gray" onclick="document.getElementById('new_rate_2_date').style.display='block';document.getElementById('new_rate_3_computation_inches').style.display='none';"> Previous  </button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_3_computation_inches').style.display='none';document.getElementById('new_rate_4_final').style.display='block';"> Create Rate  </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,56 @@
+{% include 'templates/partials/modal/_create-section.html'%}
+{% include 'templates/partials/modal/_edit-section.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Sections</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="btn-container text-center mgb-3">
+        <button class="btn btn-secondary-light" onclick="document.getElementById('createSectionModal').style.display='block'"><i class="fa fa-solid fa-plus"></i>&nbsp;Create a New Section</button>
+      </div>
+
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Page Count</th>
+              <th scope="col">Start Page</th>
+              <th scope="col">Ending Page</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sports</td>
+              <td>2</td>
+              <td>1</td>
+              <td>2</td>
+              <td>
+                <button class="btn pt-0" onclick="document.getElementById('editSectionModal').style.display='block'"><i class="fa fa-solid fa-pencil color-secondary"></i></button>
+                <button class="btn pt-0"><i class="fa fa-solid fa-trash color-primary"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>News</td>
+              <td>5</td>
+              <td>1</td>
+              <td>5</td>
+              <td>
+                <button class="btn pt-0" onclick="document.getElementById('editSectionModal').style.display='block'"><i class="fa fa-solid fa-pencil color-secondary"></i></button>
+                <button class="btn pt-0"><i class="fa fa-solid fa-trash color-primary"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="end-of-list-heading-container text-center py-5">
+          <span>You've reached the end!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

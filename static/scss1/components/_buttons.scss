@@ -1,0 +1,273 @@
+.btn {
+  min-width: 200px;
+}
+
+.btn-primary {
+  background-color: $primary !important;
+  border-color: $primary !important;
+  color: $white;
+  box-shadow: $shadow;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-secondary {
+  background-color: $secondary !important;
+  border-color: $secondary !important;
+  color: $white;
+  box-shadow: $shadow;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-secondary-alt {
+  background-color: $white;
+  border: 1px solid $secondary;
+  box-shadow: $shadow;
+  color: $secondary;
+}
+
+.btn-secondary-light {
+  background: rgba($secondary, 0.5) !important;
+  color: $white !important;
+  box-shadow: $shadow;
+
+  &:hover {
+    color: $white !important;
+  }
+}
+
+.btn-gray {
+  background: $gray-3 !important;
+  color: $white !important;
+  box-shadow: $shadow;
+}
+
+.btn-danger {
+  background-color: $danger !important;
+  border: 1px solid $danger !important;
+  box-shadow: $shadow;
+  color: $white !important;
+  svg {
+    margin-right: 10px;
+  }
+}
+
+.btn-danger-custom {
+  display: inline-flex;
+  align-items: center;
+  svg {
+    margin-right: 10px;
+  }
+}
+
+.btn-cancel {
+  background-color: $red;
+  border-color: $red;
+  color: $white;
+  box-shadow: $shadow;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-cancel-alt {
+  background-color: #666666;
+  border-color: #666666;
+  color: $white;
+  box-shadow: $shadow;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-ready {
+  background-color: $green !important;
+  border-color: $green !important;
+  color: $white;
+  border-radius: 30px !important;
+  padding: 4px;
+  font-size: 14px;
+  display: block;
+  box-shadow: $shadow;
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.btn-component {
+  background-color: $white;
+  border-color: $secondary !important;
+  color: $black;
+  box-shadow: $shadow;
+}
+
+.panel-btn-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-container {
+  padding: 2px 15px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 30%), 0 1px rgb(255 255 255 / 10%);
+  transition: all 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-of-type {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-of-type {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &.current {
+    background-color: $primary;
+    color: $white;
+    box-shadow: none;
+    a {
+      svg {
+        color: $white !important;
+      }
+    }
+  }
+  .toggle-button {
+    color: $secondary !important;
+    a {
+      svg {
+        color: $secondary !important;
+      }
+    }
+  }
+}
+
+// Round Buttons
+
+.btn-round {
+  background-color: $white;
+  border-radius: 50px !important;
+  border: none;
+  width: 45px;
+  height: 45px;
+  box-shadow: $shadow;
+  position: relative;
+  display: inline-block;
+
+  .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: $black;
+    color: $white;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 6px;
+    left: -131px;
+  }
+
+  &.primary {
+    &:hover {
+      background-color: $primary;
+      .fa {
+        color: $white;
+      }
+    }
+  }
+
+  &.secondary {
+    .fa {
+      color: $secondary !important;
+    }
+    &:hover {
+      background-color: $secondary;
+      .fa {
+        color: $white !important;
+      }
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .tooltiptext {
+      visibility: visible;
+    }
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
+
+  span {
+    position: absolute;
+    top: 0;
+    left: -10%;
+  }
+
+  // Button with svg img
+
+  img {
+    width: 70%;
+  }
+}
+
+// Custom Toggle
+
+.toggle {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  input {
+    @include hideInput;
+
+    &:checked + label {
+      background-color: $primary;
+      color: $white;
+      z-index: 1;
+    }
+  }
+
+  input + label {
+    margin: 0;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    border: solid 1px $black;
+    background-color: #fff;
+    font-size: 1rem;
+    line-height: 140%;
+    text-align: center;
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    transition: border-color 0.15s ease-out, color 0.25s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+
+    /* ADD THESE PROPERTIES TO SWITCH FROM AUTO WIDTH TO FULL WIDTH */
+    /*flex: 0 0 50%; display: flex; justify-content: center; align-items: center;*/
+    /* ----- */
+
+    &:first-of-type {
+      border-radius: 30px 0 0 30px;
+      border-right: none;
+    }
+    &:last-of-type {
+      border-radius: 0 30px 30px 0;
+      border-left: none;
+    }
+  }
+}

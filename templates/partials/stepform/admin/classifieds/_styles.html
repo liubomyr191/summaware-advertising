@@ -1,0 +1,166 @@
+{% include 'templates/partials/modal/admin/classifieds/styles/_new-style.html'%}
+{% include 'templates/partials/modal/admin/classifieds/styles/_publication-list.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Styles</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="mt-5">
+    <div class="">
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <div id="table-filter" class="filter-container d-flex">
+            <button class="btn btn-secondary mgr-1" onclick="document.getElementById('newStyle').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus" aria-hidden="true"></i> New Style</button>
+            <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+          </div>
+        </div>
+        <div class="col-md-6 custom-search-container">
+          <div class="form-group has-search">
+            <input type="text" class="form-control" placeholder="Search..." />
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+    </div>
+
+    <div class="table-container mt-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID #</th>
+            <th scope="col">Style Name</th>
+            <th scope="col">Assigned Pubs</th>
+            <th scope="col">Status</th>
+            <th scope="col">Available for Self-service</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if styles %}
+            {% for style in styles %}
+            <tr class="inactive">
+              <td>{{ style.id }}</td>
+              <td>{{ style.name }}</td>
+              <td><a href="#" onclick="viewPublicationListModal('{{ style.id }}')">See list</a></td>
+              <td>
+                <div class="style-status-toggle-container">
+                  <div class="switch-field">
+                    <input type="radio" onclick="updateStatusAvailableForSelfService('{{ style.id }}', true, true)" id="{{ style.id }}-style-status-radio-one" name="{{ style.id }}-style-status-switch-one" value="yes" {% if style.status == 1 %}checked {% endif %} />
+                    <label for="{{ style.id }}-style-status-radio-one">Active</label>
+                    <input type="radio" onclick="updateStatusAvailableForSelfService('{{ style.id }}', false, false)" id="{{ style.id }}-style-status-radio-two" name="{{ style.id }}-style-status-switch-one" value="no" {% if style.status == 0 %}checked {% endif %} />
+                    <label for="{{ style.id }}-style-status-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="style-sserve-toggle-container">
+                  <div class="switch-field">
+                    <input type="radio" onclick="updateStatusAvailableForSelfService('{{ style.id }}', null, null, true, true)" id="{{ style.id }}-style-sserve-radio-one" name="{{ style.id }}-style-sserve-switch-one" value="yes" {% if style.self_service_status == 1 %} checked {% endif %} />
+                    <label for="{{ style.id }}-style-sserve-radio-one">Active</label>
+                    <input type="radio" onclick="updateStatusAvailableForSelfService('{{ style.id }}', null, null, true, false)" id="{{ style.id }}-style-sserve-radio-two" name="{{ style.id }}-style-sserve-switch-one" value="no" {% if style.self_service_status == 0 %} checked {% endif %} />
+                    <label for="{{ style.id }}-style-sserve-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="pe-3 color-secondary" onclick="document.getElementById('editStyle').style.display='block'"><i class="fa fa-solid fa-pencil mgr-1"></i></span>
+                <span class="color-secondary"><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    function viewPublicationListModal(id) {
+      document.getElementById('viewPublicationList').style.cssText = 'display: block; opacity: 1; visibility: visible;';
+      
+      fetch(`/advertising/adadmin/advertising/list-style-publications/${id}/`)
+        .then(response => response.json())
+        .then(data => {
+          data = data.style_publications;
+          const publicationListContainer = document.querySelector('.publication-list-container');
+          publicationListContainer.innerHTML = '';
+    
+          const tableContainer = document.createElement('div');
+          tableContainer.classList.add('table-container', 'mt-3');
+    
+          const table = document.createElement('table');
+          table.classList.add('table');
+          
+          const thead = document.createElement('thead');
+          const tbody = document.createElement('tbody');
+          
+          const headerRow = document.createElement('tr');
+          const headers = ['ID #', 'Name', 'Address', 'City', 'State', 'Zip Code', 'Spot Color', 'Charge Tax', 'Credit Memo'];
+          headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.setAttribute('scope', 'col');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+    
+          data.forEach(publication => {
+            const row = document.createElement('tr');
+            row.classList.add('inactive');
+            
+            const cells = [
+              publication.id,
+              publication.name,
+              publication.address,
+              publication.city,
+              publication.state,
+              publication.zip_code,
+              publication.spot_color,
+              publication.charge_tax ? 'Yes' : 'No',
+              publication.credit_memo
+            ];
+            
+            cells.forEach(cellText => {
+              const td = document.createElement('td');
+              td.textContent = cellText;
+              row.appendChild(td);
+            });
+            tbody.appendChild(row);
+          });
+    
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          tableContainer.appendChild(table);
+          publicationListContainer.appendChild(tableContainer);
+        })
+        .catch(error => console.error('Error fetching publications:', error));
+    }
+
+    function updateStatusAvailableForSelfService(id, status=false, statusValue=null, selfServiceStatusValue=false, selfServiceStatus=null) {
+      const params = new URLSearchParams({
+        is_status: status,
+        status: statusValue,
+        
+        is_available_for_service: selfServiceStatusValue,
+        self_service_status: selfServiceStatus
+      });
+      const url = `/advertising/adadmin/classifieds/update-style-self-service-status/${id}/?${params.toString()}`;
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response data if needed
+          console.log('Status updated successfully:', data);
+        })
+        .catch(error => console.error('Error updating status:', error));
+    }
+    
+  </script>
+</div>

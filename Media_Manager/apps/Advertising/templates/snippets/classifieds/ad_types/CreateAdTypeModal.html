@@ -1,0 +1,57 @@
+<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#create_ad_type_modal">
+    <i class="fa fa-plus"></i> Create Ad Type
+</button> -->
+<div>
+<button class="mt-2 create-new" data-toggle="modal" data-target="#create_ad_type_modal" style="float: left;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+        <path d="M17.6429 7.07143H11.5357V1.28571C11.5357 0.575759 10.928 0 10.1786 0H8.82143C8.07203 0 7.46429 0.575759 7.46429 1.28571V7.07143H1.35714C0.607746 7.07143 0 7.64719 0 8.35714V9.64286C0 10.3528 0.607746 10.9286 1.35714 10.9286H7.46429V16.7143C7.46429 17.4242 8.07203 18 8.82143 18H10.1786C10.928 18 11.5357 17.4242 11.5357 16.7143V10.9286H17.6429C18.3923 10.9286 19 10.3528 19 9.64286V8.35714C19 7.64719 18.3923 7.07143 17.6429 7.07143Z" fill="#21215F"/>
+    </svg>
+    Create Ad Type
+</button>
+<div class="c-ad-table-search" >
+    <div class="input-group-rounded c-search-publication" style="margin-top:32px;width: 300px;height: 35px;">
+        <input type="text" id="search-input" class="form-control c-search" placeholder="Search Accounts..."/>
+
+        <span class="input-group-mark">
+            <i class="glyphicon glyphicon-search mr-1" style="color: #F26722"></i>
+        </span>
+    </div>
+</div>
+</div>
+
+<section id="create_ad_type_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create New Ad Type</h4>
+                
+            </div>
+            <div class="modal-body">
+                <form method="post" id="create_ad_type_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- <div class="advertiser-item" style="margin-bottom: 29px">
+                            <label>Name:</label>
+    
+                            <input id="name" type="text" name="name" class="advertiser-item-input" style="width: 90%;">
+                        </div> -->
+                        <div class="adtype-form-grounp">
+                            <div>Code:</div>
+                            <input id="code" name="code" type="text"></input>
+                        </div>
+
+                        <div class="adtype-form-grounp">
+                            <div>Description:</div>
+                            <textarea id="name" type="text" name="name" rows="4"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="save_btn" id="create_ad_type_submit">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

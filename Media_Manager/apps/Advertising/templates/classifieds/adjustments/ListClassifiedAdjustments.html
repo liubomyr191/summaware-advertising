@@ -1,0 +1,125 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+
+<script src="{% static "dist/js/advertising/classifieds/adjustments/CreateAdjustment.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifieds/adjustments/EditAdjustment.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h2>Classified Ad Adjustments</h2>
+            <br />
+            
+            {% include 'snippets/classifieds/adjustments/CreateAdjustmentModal.html' %}
+
+            <br /><br />
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#active_adjustments">Active</a></li>
+                <li><a data-toggle="tab" href="#inactive_adjustments">Inactive</a></li>
+            </ul>
+
+            <br /><br />
+
+            <div class="tab-content">
+                <div id="active_adjustments" class="tab-pane fade in active">
+                    <table class="table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Value Type</th>
+                                <th>Amount</th>
+                                <th>Apply Level</th>
+                                <th>Last Updated</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for adjustment in activeClassifiedAdjustments %}
+                            <tr>
+                                <td>{{ adjustment.id }}</td>
+                                <td>{{ adjustment.code }}</td>
+                                <td>{{ adjustment.description }}</td>
+                                <td>{{ adjustment.value_type|title }}</td>
+                                {% if adjustment.value_type == 'percentage' %}
+                                    <td>{{ adjustment.amount }}%</td>
+                                {% else %}
+                                    <td>$ {{ adjustment.amount }}</td>
+                                {% endif %}
+                                <td>{{ adjustment.apply_level|title }}</td>
+                                <td>{{ adjustment.date_updated }}</td>
+                                <td>
+                                    <button class="btn btn-xs edit-adjustment-btn" data-adjustment-id="{{ adjustment.id }}">
+                                        <i class="fa fa-pencil"> </i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8">No adjustments found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="inactive_adjustments" class="tab-pane fade in">
+                    <table class="table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Value Type</th>
+                                <th>Amount</th>
+                                <th>Apply Level</th>
+                                <th>Last Updated</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for adjustment in inactiveClassifiedAdjustments %}
+                            <tr>
+                                <td>{{ adjustment.id }}</td>
+                                <td>{{ adjustment.code }}</td>
+                                <td>{{ adjustment.description }}</td>
+                                <td>{{ adjustment.value_type|title }}</td>
+                                <td>{{ adjustment.amount }}</td>
+                                <td>{{ adjustment.apply_level|title }}</td>
+                                <td>{{ adjustment.date_updated }}</td>
+                                <td>
+                                    <button class="btn btn-xs edit-adjustment-btn" data-adjustment-id="{{ adjustment.id }}">
+                                        <i class="fa fa-pencil"> </i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8">No adjustments found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% include 'snippets/classifieds/adjustments/EditAdjustmentModal.html' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

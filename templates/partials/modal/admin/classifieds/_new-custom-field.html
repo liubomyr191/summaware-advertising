@@ -1,0 +1,73 @@
+<div id="newCustomField" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('newCustomField').style.display='none'">&times;</span>
+
+    <div class="edit-field">
+      <div class="edit-field-content">
+        <div class="heading-container text-center mgb-3">
+          <h3 class="heading">Edit Custom Field</h3>
+          <hr />
+        </div>
+
+        <div class="custom-field-status-toggle-container content-center mgb-3">
+          <div class="switch-field">
+            <input type="radio" id="0001-custom-field-edit-radio-one" name="0001-custom-field-edit-switch-one" value="active" checked />
+            <label for="0001-custom-field-edit-radio-one">Active</label>
+            <input type="radio" id="0001-custom-field-edit-radio-two" name="0001-custom-field-edit-switch-one" value="inactive" />
+            <label for="0001-custom-field-edit-radio-two">Inactive</label>
+          </div>
+        </div>
+
+        <div class="form-group mgb-3">
+          <label for="cfield-name">Name:</label>
+          <input type="text" name="" id="cfield-name" class="form-control" />
+        </div>
+
+        <div class="row mgb-3">
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label for="format-select">Select Format:</label>
+              <select name="" id="form-select" class="form-control"></select>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label for="upsell-select">Assign Upsell:</label>
+              <select name="" id="upsell-select" class="form-control"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mgb-3">
+          <div class="col-md-12 col-lg-6"></div>
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label for="classified-codes">Classified Codes:</label>
+              <select name="" id="classified-codes" class="form-control"></select>
+            </div>
+          </div>
+        </div>
+
+        {% include "components/item_select.html" with item_type="publications" available_items=publications %}
+
+        <div class="text-center mgb-3">
+          <p><strong>Available in Self-service</strong></p>
+          <div class="custom-switch-container">
+            <div class="switch-field center-block">
+              <input type="radio" id="self-service-edit-radio-one" name="self-service-edit-switch-one" value="yes" checked />
+              <label for="self-service-edit-radio-one">Yes</label>
+              <input type="radio" id="self-service-edit-radio-two" name="self-service-edit-switch-one" value="no" />
+              <label for="self-service-edit-radio-two">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-container text-center">
+          <button class="btn btn-gray">Archive</button>
+          <button class="btn btn-secondary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

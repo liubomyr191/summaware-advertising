@@ -1,0 +1,41 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <h2>Edit GL Code</h2>
+        <form method="post">
+            {% csrf_token %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="code">Code</label>
+                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter Code" value="{{ gl_code.code }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="description" name="description" placeholder="Enter Description" value="{{ gl_code.description }}" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default">Save</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

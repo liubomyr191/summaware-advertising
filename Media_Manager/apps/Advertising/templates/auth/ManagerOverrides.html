@@ -1,0 +1,64 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/admin/ManagerOverrides.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+		<div id="message">{{ message }}</div>
+
+		<h1>Manager Overrides</h1>
+
+        <div class="row">
+            <table class="table table-hover table-striped" id="manager_override_table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Account ID</th>
+                        <th>Manager ID</th>
+                        <th>Date Created</th>
+                        <th>Overridden?</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in managerOverrides %}
+                    <tr>
+                        <td>{{ row.order.id }}</td>
+                        <td>{{ row.account.id }}</td>
+                        <td>{{ row.manager.id }}</td>
+                        <td>{{ row.date_created }}</td>
+                        {% if row.overridden %}
+                        <td><i class="fa fa-check"></i></td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td><a href="{% url 'load_draft' row.account.id row.order.id %}">Load Draft</a></td>
+                        <td><button class="btn btn-primary override-btn">Override</button></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">No Orders to Override</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+	</div>
+</div>
+{% endblock %}

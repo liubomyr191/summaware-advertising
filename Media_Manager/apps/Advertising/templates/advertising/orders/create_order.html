@@ -1,0 +1,372 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/AdOrder.js" %}"></script>
+<script src="{% static "dist/js/advertising/OrderSubtotal.js" %}"></script>
+<script src="{% static "dist/js/advertising/idleTimeout.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+  <div class="col-md-12">
+    {% if access == "deny" %}
+    <div id="message">{{ message }}</div>
+    {% else %}
+    <div id="message">{{ message }}</div>
+
+    <h2>Create a New Advertising Order</h2>
+    <form method="post" name="new_order_form" id="new_order_form">
+      {% csrf_token %}
+
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#details">Details</a></li>
+        <li><a data-toggle="tab" href="#adjustments">Adjustments</a></li>
+        <li><a data-toggle="tab" href="#invoicing">Invoicing</a></li>
+      </ul>
+
+      <div class="tab-content"><br>
+        <div id="details" class="tab-pane fade in active">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="account">Account</label>
+                <select name="account" id="account" class="form-control" required>
+                  <option value="">Select an Account...</option>
+                  {% for account in accounts %}
+                  <option value="{{ account.id }}" {% if account.id == selected_account.id %}selected{% endif %}>
+                    {{ account.name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="publication">Publication</label>
+                <select class="form-control" id="publication" name="publication" required multiple>
+                  {% for publication in publications %}
+                  <option value="{{ publication.id }}">{{ publication.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea name="notes" id="notes" class="form-control" cols="20" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="submitter">Ad Taker</label>
+                <input class="form-control" type="text" name="submitter" value="{{ user.username }}" required />
+              </div>
+              <div class="form-group">
+                <label for="sales_person">Sales Person</label>
+                <select class="form-control" name="sales_person" id="sales_person" required>
+                  <option value="">Select Sales Person...</option>
+                  {% for sales_person in sales_people %}
+                  <option value="{{ sales_person.id }}" {% if sales_person.id == account_salesperson.id %}selected{% endif %}>
+                    {{ sales_person.id }} - {{ sales_person.first_name }} {{ sales_person.last_name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" name="start_date" id="start_date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" name="end_date" id="end_date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <input type="checkbox" class="form-check-input" id="tearsheets" name="tearsheets">
+                <label class="form-check-label" for="tearsheets">Tearsheets</label>
+              </div>
+              {% if perms.advertising.can_make_ad_color %}
+              <div class="form-group">
+                <input type="checkbox" class="form-check-input" id="color" name="color">
+                <label class="form-check-label" for="color">Color</label>
+              </div>
+              <div class="form-group" id="color-type" style="display:none">
+                <label for="color_type">Color Type</label>
+                <select class="form-control" name="color_type" id="color_type">
+                  <option value="">Select Color Type...</option>
+                  <option value="full_color">Full Color</option>
+                  <option value="black_and_white">Black and White</option>
+                  <option value="solid_color">Solid Color</option>
+                </select>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="ad_type">Ad Type</label>
+                <select class="form-control" name="ad_type" id="ad_type" data-code="{{ ad_type.name }}" required>
+                  <option value="">Select Ad Type...</option>
+                  {% for ad_type in ad_types %}
+                  <option value="{{ ad_type.id }}">{{ ad_type.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="ad_rate">Ad Rate</label>
+                <button class="btn btn-primary form-control" id="select-rate-btn">Select Ad Rate(s)</button>
+                <div id="select-rate-modal" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Select Ad Rates</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="publication-rates"></div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% if perms.advertising.can_override_pricing %}
+              <div class="form-group">
+                <label for="override_ad_cost">Override Ad Cost</label>
+                <input type="number" name="override_ad_cost" id="override_ad_cost" class="form-control" />
+              </div>
+              {% endif %}
+              <div class="form-group" id="predetermined">
+                <label for="size">Size</label>
+                <select name="size" class="form-control" id="size" required>
+                  <option value="">Select Size...</option>
+                  <option value="quarter">Quarter Page</option>
+                  <option value="half">Half Page</option>
+                  <option value="full">Full Page</option>
+                  {% if perms.advertising.can_define_custom_size %}
+                  <option value="custom">Custom</option>
+                  {% endif %}
+                </select>
+              </div>
+              {% if perms.advertising.can_define_custom_size %}
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" style="display: none;" id="custom_min_width">
+                    <label for="custom_min_width">Custom Min Width (in inches)</label>
+                    <input type="number" class="form-control" name="custom_min_width"
+                      placeholder="Enter Custom Min Width...">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" style="display: none;" id="custom_min_height">
+                    <label for="custom_min_height">Custom Min Height (in inches)</label>
+                    <input type="number" class="form-control" name="custom_min_height"
+                      placeholder="Enter Custom Min Height...">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" style="display: none;" id="custom_max_width">
+                    <label for="custom_max_width">Custom Max Width (in inches)</label>
+                    <input type="number" class="form-control" name="custom_max_width"
+                      placeholder="Enter Custom Max Width...">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" style="display: none;" id="custom_max_height">
+                    <label for="custom_max_height">Custom Max Height (in inches)</label>
+                    <input type="number" class="form-control" name="custom_max_height"
+                      placeholder="Enter Custom Max Height...">
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div id="adjustments" class="tab-pane fade in">
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-hover table-striped" id="adjustment-table">
+                <thead>
+                  <tr>
+                    <th>Publication</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="invoicing" class="tab-pane fade in">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="bill_date">Bill Date</label>
+                <select class="form-control" name="bill_date" id="bill_date" required>
+                  <option value="">Select a billing date...</option>
+                  <option value="placement">Bill at Placement</option>
+                  <option value="bill_at_start">Bill at Start Date</option>
+                  <option value="bill_at_end">Bill at End Date</option>
+                  <option value="bill_on_demand">Bill On Demand</option>
+                  <option value="accounting_period">Bill at End of Accounting Period</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+              <div class="form-group" id="custom_billing_date_form" style="display:none;">
+                <label for="custom_billing_date">Custom Billing Date</label>
+                <input class="form-control" type="date" name="custom_billing_date" id="custom_billing_date" />
+              </div>
+              <div class="form-group">
+                <label for="invoice_frequency">Invoice Frequency</label>
+                <select class="form-control" name="invoice_frequency" id="invoice_frequency">
+                    <option value="">Select Invoice Frequency...</option>
+                    <option value="day">Everyday</option>
+                    <option value="week">Every Week</option>
+                    <option value="month">Every Month</option>
+                    <!-- <option value="period">Every Period</option> -->
+                    <option value="default" selected>Use Account Default</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="submit-btn" class="btn btn-primary">
+        Preview Order
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  {% include 'snippets/LateApprovalModal.html' %}
+
+  {% include 'advertising/snippets/SubtotalModal.html' %}
+
+  <script>
+    var account = document.getElementById('account');
+    var account_id;
+    account.addEventListener('change', (e) => {
+      account_id = e.target.value;
+    })
+    var colorCheckbox = document.getElementById('color');
+    var colorTypeDropdown = document.getElementById('color-type');
+
+    colorCheckbox.addEventListener('click', (e) => {
+      let checked = e.target.checked;
+      if (checked) {
+        colorTypeDropdown.style.display = "block";
+      } else {
+        colorTypeDropdown.style.display = "none";
+      }
+    })
+    let newOrderForm = document.getElementById('new_order_form');
+    let confirmEmailForm = document.getElementById('confirmEmailForm');
+    let confirmSubmit = document.getElementById('confirm-submit');
+
+    confirmSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      let jsonFormData = JSON.stringify(serializeArray(newOrderForm));
+      let confirmFormData = JSON.stringify(serializeArray(confirmEmailForm));
+
+      let formData = {
+        'jsonFormData': jsonFormData,
+        'confirmFormData': confirmFormData
+      }
+
+      fetch("{% url 'ajax_late_order' %}", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Accept": "application/json",
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+        success:
+          window.location.href = "http://localhost:8000/advertising"
+      })
+    });
+
+    var startDate = document.getElementById('start_date');
+    var endDate = document.getElementById('end_date');
+
+    var currentDate = new Date().toISOString().slice(0, 10);
+
+    startDate.addEventListener('change', () => {
+      if (startDate.value < currentDate) {
+        alert('Cannot choose past date');
+        startDate.value = currentDate;
+      }
+    });
+
+    endDate.addEventListener('change', () => {
+      if (endDate.value < currentDate) {
+        alert('Cannot choose past date');
+        endDate.value = currentDate;
+      } else if (endDate.value < startDate.value) {
+        alert('Cannot choose end date that occurs before the start date');
+
+      }
+    })
+
+    var customSizeCheckbox = document.getElementById('customSizes');
+    var predeterminedSizes = document.getElementById('predetermined');
+    var customMinHeight = document.getElementById('custom_min_height');
+    var customMinWidth = document.getElementById('custom_min_width');
+    var customMaxWidth = document.getElementById('custom_max_width');
+    var customMaxHeight = document.getElementById('custom_max_height');
+
+    var sizeDropdown = document.getElementById('size');
+
+    size.addEventListener('change', function (e) {
+      if (size.value == 'custom') {
+        // customSizeCheckbox.checked = true;
+        customMinHeight.style.display = "block";
+        customMinWidth.style.display = "block";
+        customMaxWidth.style.display = "block";
+        customMaxHeight.style.display = "block";
+      } else {
+        // customSizeCheckbox.checked = false;
+        customMinHeight.style.display = "none";
+        customMinWidth.style.display = "none";
+        customMaxWidth.style.display = "none";
+        customMaxHeight.style.display = "none";
+      }
+    });
+
+    var serializeArray = function (form) {
+      var arr = [];
+      Array.prototype.slice.call(form.elements).forEach(function (field) {
+        if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1) return;
+        if (field.type === 'select-multiple') {
+          Array.prototype.slice.call(field.options).forEach(function (option) {
+            if (!option.selected) return;
+            arr.push({
+              name: field.name,
+              value: option.value
+            });
+          });
+          return;
+        }
+        if (['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked) return;
+        arr.push({
+          name: field.name,
+          value: field.value
+        });
+      });
+      return arr;
+    };
+
+  </script>
+
+  {% endblock %}

@@ -1,0 +1,55 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>Current Company</h2>
+
+            {% if user.first_name and user.last_name %}
+                <h4>{{ user.first_name }} {{ user.last_name }} </h4>
+            {% else %}
+                <h4>{{ user.email }}</h4>
+            {% endif %}
+
+            <form id="current_company_form" method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <select name="company" id="company" class="form-control">
+                                <option value="">Select a company...</option>
+                                {% for company in companyList %}
+                                    <option value="{{ company.id }}">{{ company.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

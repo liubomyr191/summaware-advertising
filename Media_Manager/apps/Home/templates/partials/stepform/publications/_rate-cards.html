@@ -1,0 +1,68 @@
+{% include 'templates/partials/modal/_new-rate-card.html'%} {% include 'templates/partials/modal/_edit-rate-card.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Rate Cards</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="content-container container">
+      <div class="row add-filter-search">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col">
+              <div class="add-rate-card">
+                <button class="btn btn-secondary" onclick="document.getElementById('createRateCardModal').style.display='block'"><i class="fa fa-solid fa-plus"></i>&nbsp;New Rate Card</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <div class="form-group has-search">
+            <input type="text" class="form-control" placeholder="Search" />
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+        </div>
+        <hr class="my-3" />
+      </div>
+
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID #</th>
+              <th scope="col">Rate Name</th>
+              <th scope="col">Ad Type</th>
+              <th scope="col">Size</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Price</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0001</td>
+              <td>Rate 01</td>
+              <td>Video</td>
+              <td>Kyle Jernigan</td>
+              <td>02/06/2024</td>
+              <td>02/24/2024</td>
+              <td>Active</td>
+              <td>$120.00</td>
+              <td>
+                <button class="btn pt-0" onclick="document.getElementById('editRateCardModal').style.display='block'"><i class="fa fa-solid fa-pencil color-secondary"></i></button>
+                <button class="btn pt-0"><i class="fa fa-solid fa-trash color-primary"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="end-of-list-heading-container text-center py-5">
+          <span>You've reached the end!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

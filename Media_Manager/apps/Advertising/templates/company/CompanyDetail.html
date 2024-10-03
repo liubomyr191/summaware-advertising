@@ -1,0 +1,108 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/companies/CompanyDetail.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/company/CompanyDetail.css" %}">
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div id="page_contents">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+			<div id="header_nav">
+				<h2 id="title">Company Details</h2>
+			</div>
+			<div id="content_box">
+				<div class="page-row">
+					<div class="page-column" id="left_side">
+						<div id="company_name_header">
+							<div id="company_name">{{ company.name }}</div>
+							{% include 'snippets/companies/EditCompanyModal.html' %}
+						</div>
+						<div class="address" id="address_1">{{ company.address }}, {{ company.city }}</div>
+						<div class="address" id="address_2">{{ company.state }} {{ company.zipcode }}</div>
+						<p>Email: {{ company.email }}</p>
+						<p>Phone Number: {{ company.phone }}</p>
+						<p>Type: {{ company.type|title }}</p>
+						{% if company.agency_id %}
+							<p>{{ company.agency_id }}</p>
+						{% endif %}
+						<br />
+						{% if hasAccess %}
+						<div>Current Viewing Company:
+							<input type="checkbox" name="current-company" id="current-company" 
+							{% if isCurrentCompany %}checked{% endif %}>
+						</div>
+						{% endif %}
+					</div>
+					<div class="page-column" id="right_side">
+					</div>
+				</div>
+				<div id="account_header">
+					<div id="account_nav">
+						<h3 class="section-title">Accounts</h3>
+						<button class="company-details-button" data-toggle="modal" data-target="#add_account_modal" id="add_account_btn">
+							<i class="fa fa-plus"></i> Add Account
+						</button>		
+					</div>
+					<div id="account_search">
+						<input type="text" name="account_search" id="account_search" placeholder="Search for an account ...">
+					</div>
+				</div>
+				
+				
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Contact</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for row in company_accounts %}
+							<tr data-account="{{ row.account.id }}">
+								<td>{{ row.account.id }}</td>
+								<td><a href="{% url 'advertising_account' row.account.id %}">{{ row.account.name }}</a></td>
+								{% if row.contact_email %} 
+									<td>{{ row.contact_name }} ({{ row.contact_email }})</td>
+								{% else %}
+									<td>{{ row.contact_name }}</td>
+								{% endif %}
+								<td>
+									<button class="btn btn-default btn-xs remove-account-btn"  style="color:red;">Remove</button>
+								</td>
+							</tr>
+						{% empty %}
+						<tr>
+							<td colspan="3">No accounts</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+	</div>
+	{% include 'snippets/companies/AddAccountModal.html' %}	
+</div>
+<script>
+	const company_id = "{{ company.id }}";
+</script>
+{% endblock %}

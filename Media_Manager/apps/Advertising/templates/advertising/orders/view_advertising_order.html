@@ -1,0 +1,129 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#details">Order Details</a></li>
+            <li><a data-toggle="tab" href="#insertions">Insertions</a></li>
+            <li><a data-toggle="tab" href="#history">History/Logs</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="details" class="tab-pane fade in active">
+                <br>
+                {% if not order.locked or perms.advertising.can_edit_ad %}
+                <a href="{% url 'edit_order' order.id %}"><button class="btn btn-default btn-md">Edit <i class="fa fa-pencil"></i></button></a>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Account: <a href="{% url 'advertising_account' order.account.id %}">{{ order.account.name }}</a></h2>
+                        <h3>Publications: </h3>
+                        <ul>
+                            {% for publication in publicationsList %}
+                                <li><a href="{% url 'view_publication' publication.publication.id %}">{{ publication.publication.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <h3>Price: {{ order.total_price }}</h3>
+                        <br>
+                        <p>Ad Type: {{ order.ad_type.name }}</p>
+                        <p>Rate Name: {{ order.ad_rate.name }}</p>
+                        <p>Sales Person: {{ salesperson.first_name }} {{ salesperson.last_name }}</p>
+                        <br>
+                        <p>Size: {{ order.size }}</p>
+                        {% if isCustomSize %}
+                            <p>Custom Size: {{ order.custom_min_width }} x {{ order.custom_min_height }} - {{ order.custom_max_width }} x {{ order.custom_max_height }}</p>
+                        {% endif %}
+                        <br>
+                        <p>Start Date: {{ order.start_date }}</p>
+                        <p>End Date: {{order.end_date }}</p>
+                        <br>
+                        <p>Bill Date: {{ order.bill_date }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Submitted By: {{ order.submitter }}</h4>
+                        <br>
+                        <p>Is this a tearsheet ad? {{ order.tearsheets }}</p>
+                        <p>Is this ad in color? {{ order.color }}</p>
+                        {% if order.color %}
+                        <p>Color Type: {{ order.color_type }}</p>
+                        {% endif %}
+                        {% if order.override_ad_cost %}
+                        <p>Override Ad Cost: {{ order.override_ad_cost }}</p>
+                        {% endif %}
+                        <br>
+                        <h4>Notes</h4>
+                        <p>{{ order.notes }}</p>
+                    </div>
+                </div>
+            </div>
+            <div id="insertions" class="tab-pane fade">
+                {% if insertions %}
+                    <br>
+                    <h3>Insertions</h3>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Publication</th>
+                                <th>Status</th>
+                                <th>Run Date</th>
+                                <th>Weekday</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for insertion in insertions %}
+                                <tr>
+                                    <td>{{ insertion.id }}</td>
+                                    <td>{{ insertion.publication.name }}</td>
+                                    <td>{{ insertion.status|title }}</td>
+                                    <td>{{ insertion.date }}</td>
+                                    <td>{{ insertion.weekday|title }}</td>
+                                    <td><a href="{% url 'edit_insertion' insertion.id %}">Edit</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div id="history" class="tab-pane fade">
+                {% if history %}
+                <p>History</p>
+                {% endif %}
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>User</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in history %}
+                        <tr>
+                            <td>{{ line.detail }}</td>
+                            <td>{{ line.submitter }}</td>
+                            <td>{{ line.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

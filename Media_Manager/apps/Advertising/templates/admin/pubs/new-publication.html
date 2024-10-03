@@ -1,0 +1,60 @@
+{% extends 'templates/base_gamma.html' %}{% load static %} {% block content %}
+
+<div class="admin-landing-container container mt-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">New Publication Setup</h3>
+  </div>
+
+  <div class="admin-tab-container">
+    <a href="{% url 'adminGeneral' %}">Admin Home</a>
+
+    <!-- Step Form -->
+    <div class="step-form-container">
+      <div class="content">
+        <!--content inner-->
+        <div class="content__inner">
+          <div class="">
+            <!--multisteps-form-->
+            <div class="multisteps-form">
+              <!--progress bar-->
+              <div class="row justify-content-center progress-btns-container">
+                <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                  <div class="multisteps-form__progress">
+                    <button class="multisteps-form__progress-btn js-active" type="button">General Info</button>
+                    <button class="multisteps-form__progress-btn" type="button">Scheduling</button>
+                    <button class="multisteps-form__progress-btn" type="button">Rate Groups</button>
+                    <button class="multisteps-form__progress-btn" type="button">Ad Type</button>
+                    <button class="multisteps-form__progress-btn" type="button">Adjustments</button>
+                    <button class="multisteps-form__progress-btn" type="button">Sections</button>
+                    <button class="multisteps-form__progress-btn" type="button">Deadlines</button>
+                  </div>
+                </div>
+              </div>
+              <!--form panels-->
+              <div class="row">
+                <div class="col-12 m-auto">
+                  <div class="multisteps-form__form">
+                    {% include 'templates/partials/stepform/publications/_general-info.html'%}
+                    {% include 'templates/partials/stepform/publications/_scheduling.html'%}
+                    {% include 'templates/partials/stepform/publications/_rate-groups.html'%}
+                    {% include 'templates/partials/stepform/publications/_ad-type-new-pub.html'%}
+                    {% include 'templates/partials/stepform/publications/_adjustments-new-pub.html'%}
+                    {% include 'templates/partials/stepform/publications/_sections-new-pub.html'%}
+                    {% include 'templates/partials/stepform/publications/_deadlines.html'%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="{% static "admin/js/item-select.js" %}"></script>
+
+
+{% endblock %}

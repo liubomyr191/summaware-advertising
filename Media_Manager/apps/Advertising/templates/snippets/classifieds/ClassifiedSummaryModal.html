@@ -1,0 +1,29 @@
+<button type="button" class="btn btn-primary" id="summary_modal_btn" data-toggle="modal" data-target="#show_summary_modal">Show Summary</button>
+
+<div id="show_summary_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Classifed Ad Summary</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please review the following details before creating the classified ad</p><br>
+                <table class="table table-hover table-striped table-condensed" id="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div style="text-align: right">Total Price: $ <span id="total_price"></span></div>
+                <br><br>
+                <div id="summary_preview"></div>
+                <button type="button" id="classified_form_submit" class="btn btn-primary" form="new_classified_form">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

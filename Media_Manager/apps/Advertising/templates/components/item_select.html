@@ -1,0 +1,23 @@
+<!-- templates/components/item_select.html -->
+<div class="item-select-container mgb-3">
+  <div class="available-pubs">
+    <b>Available {{ item_type|title }}:</b><br />
+    <select multiple="multiple" class="lstBox1 form-control" id="{{id}}-lstBox1">
+      {% for item in available_items %}
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="transferBtns">
+    <input type="button" class="btnRight" value="  >  " />
+    <br /><input type="button" class="btnLeft" value="  <  " />
+  </div>
+  <div class="selected-pubs">
+    <b>Selected {{ item_type|title }}: </b><br />
+    <select multiple="multiple" class="lstBox2 form-control" id="{{id}}-lstBox2">
+      {% for item in selected_items %}
+      <option value="{{item.id}}">{{item.name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

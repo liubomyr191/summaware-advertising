@@ -1,0 +1,51 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <h2>Edit Insertion</h2>
+        <div class="row">
+            <div class="col-sm-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="publication">Publication</label>
+                        <select class='form-control' name="publication" id="publication" required>
+                            <option value="">Select a publication...</option>
+                            {% for publication in publications %}
+                            <option value="{{ publication.id }}" {% if publication.id == insertion.publication.id %}selected{% endif %}>{{ publication.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input name="date" class='form-control' value="{{ insertion.date }}" type="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class='form-control' name="status" id="status">
+                            <option value="">Select a status...</option>
+                            <option value="Good" {% if insertion.status == 'Good' %}selected{% endif %}>Good</option>
+                            <option value="Late" {% if insertion.status == 'Late' %}selected{% endif %}>Late</option>
+                            <option value="Killed" {% if insertion.status == 'Killed' %}selected{% endif %}>Killed</option>
+                        </select>
+                    </div>
+                    <button class='btn btn-primary' type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

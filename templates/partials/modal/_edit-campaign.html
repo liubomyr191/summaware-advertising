@@ -1,0 +1,57 @@
+<div id="myModal" class="modal my-modal">
+  <div class="modal-content edit-campaign-info">
+    <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+    <div class="edit-campaign-container">
+      <div class="heading-container">
+        <h3 class="heading">Edit Campaign Info</h3>
+        <hr />
+      </div>
+
+      <div class="edit-fields container">
+        <div class="row mb-4">
+          <div class="form-group">
+            <label for="ad_name">Campaign Name:</label>
+            <input type="text" name="" id="" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col">
+            <div class="form-group">
+              <label for="ad_name">Sales Contact:</label>
+              <select id="ad_name" class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="ad_name">Start Date:</label>
+              <input type="text" name="" id="startdate" class="form-control" placeholder="05/17/2023" />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="ad_name">End Date:</label>
+              <input type="text" name="" id="enddate" class="form-control" placeholder="07/17/2023" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="description">Brief Description:</label>
+          <textarea class="form-control" placeholder="Enter Brief Description" id="description" rows="5"></textarea>
+        </div>
+
+        <div class="btn-container d-flex justify-content-around">
+          <button class="btn btn-cancel-alt">Cancel</button>
+          <button class="btn btn-secondary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

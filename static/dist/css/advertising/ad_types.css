@@ -1,0 +1,67 @@
+.container {
+    /* width: 50%; */
+    margin: 0 auto;
+}
+
+#title {
+    text-align: center;
+    border-bottom: 2px solid black;
+    font-size: x-large;
+    font-weight: bold;
+    width: 40%;
+    margin: 0 auto 2rem auto;
+}
+
+.row {
+    display: initial;
+}
+
+button i {
+    color: orange;
+}
+
+#create_ad_type_btn {
+    border: 1px solid grey;
+    box-shadow: var(--box-shadow);
+}
+
+#ad-type-search-input {
+    border-radius: 15px;
+    border: 1px solid grey;
+    box-shadow: var(--box-shadow);
+}
+
+#ad_types_table {
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+}
+
+#ad_types_table thead tr th {
+    background-color: white;
+    color: black;
+    text-align: center;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#ad_types_table thead,
+#ad_types_table tbody tr {
+    border: 1px solid black;
+}
+
+#ad_types_table tbody tr td {
+    margin: 0 auto;
+}
+
+#ad_types_table tbody tr:hover {
+    background-color: #c9c9d5;
+    border: 1px solid black;
+}
+
+#ad_types_table,
+#ad_types_table thead tr th,
+#ad_types_table tbody tr td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

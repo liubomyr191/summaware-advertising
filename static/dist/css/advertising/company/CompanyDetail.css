@@ -1,0 +1,91 @@
+#title {
+    text-align: center;
+    border-bottom: 3px solid black;
+    font-size: x-large;
+    font-weight: bold;
+    width: 25%;
+    margin: 3rem auto 3rem auto;
+}
+
+#page_contents {
+    width: 85%;
+    margin: 0 auto;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+}
+
+#header_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9c2a6;
+    border-radius: 5px;
+}
+
+#content_box {
+    padding: 1.5rem;
+}
+
+.page-row {
+    margin: 0;
+    height: 23%;
+    min-height: 40vh;
+}
+
+.page-column {
+    width: 50%;
+    float: left;
+}
+
+#company_name_header {
+    display: flex;
+    align-items: center;
+}
+
+#company_name {
+    font-size: x-large;
+    margin-right: 2.5rem;
+    font-weight: bold;
+}
+
+.company-details-button {
+    background-color: #9090af;
+    color: white;
+    padding: 0.25rem 1.5rem;
+    border: none;
+    box-shadow: var(--box-shadow);
+    height: fit-content;
+    border-radius: var(--border-radius);
+    width: 100%;
+    font-size: small
+}
+
+#edit_company_btn {
+    width: 15%;
+}
+
+#add_account_btn {
+    width: 45%;
+}
+
+.section-title {
+    margin-right: 2.5rem;
+    color: black;
+    font-size: larger;
+}
+
+#account_header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+button i {
+    font-size: small;
+}
+
+#account_nav {
+    display: flex;
+    align-items: center;
+    min-width: 25%;
+}

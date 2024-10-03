@@ -1,0 +1,98 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifieds/UploadGraphics.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/classifieds/classifieds.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/classifieds/list_graphics.css" %}">
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+		<div id="message">{{ message }}</div>
+
+        {% if hasUploadPermission %}
+        <div id="upload_file_header">
+            {% include 'snippets/classifieds/graphics/UploadGraphicsModal.html' %}
+            <div id="permission_modals">
+              {% include 'snippets/classifieds/graphics/UploadPermissionModal.html' %}
+              {% include 'snippets/classifieds/graphics/DeletePermissionModal.html' %}
+            </div>
+        </div>
+        {% endif %}
+
+        <h2>Active Graphics</h2>
+        <table class="table table-hover table-striped table-condensed" id="active_graphics_table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              {% if hasDeletePermission %}
+                <th>Delete</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for graphic in activeGraphicsList %}
+              <tr>
+                <td><img src="{{ graphic.local_path}}{{graphic.file.name}}" width="100" height="100"/></td>
+                <td>{{ graphic.file.name }}</td>
+                {% if hasDeletePermission %}
+                  <td data-graphic-id="{{ graphic.id }}">
+                    <button class="btn btn-default delete-btn"><i class="fa fa-trash"></i></button>
+                  </td>
+                {% endif %}
+              </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="3">No graphics have been uploaded</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>    
+        <br />
+
+        <h2>Inactive Graphics</h2>
+        <table class="table table-hover table-striped table-condensed" id="inactive_graphics_table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for graphic in inactiveGraphicsList %}
+              <tr>
+                <td><img src="{{ graphic.local_path}}{{graphic.file.name}}" width="100" height="100"/></td>
+                <td>{{ graphic.file.name }}</td>
+                <td data-graphic-id="{{ graphic.id }}">
+                  <button class="btn btn-default mark-active"><i class="fa fa-check"></i></button>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="3">No inactive graphics</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>    
+      {% endif %}
+	</div>
+</div>
+{% endblock %}

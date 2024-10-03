@@ -1,0 +1,34 @@
+{% load static %}
+
+<section id="salesperson-shortcuts">
+    <h3>My Accounts (where I'm the sales rep)</h3>
+    <table class="table table-striped table-hover" id="shortcuts-table">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>ID</th>
+                <th>Account Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in salesperson_accounts %}
+            <tr data-id="{{ account.id }}">
+                <td style="max-width: 30px;">
+                    <select name="action-dropdown" id="action-dropdown" class="form-control">
+                        <option value="">Select an action...</option>
+                        <option value="create_order">Create an Advertising Order</option>
+                        {% if perms.advertising.can_create_rates %}
+                            <option value="create_rate">Create an Advertising Rate</option>
+                        {% endif %}
+                        <option value="create_account_note">Add Account Note (coming soon)</option>
+                        <option value="create_salesrep_note">Add Sales Rep Note (coming soon)</option>
+                    </select>
+                </td>
+                <td>{{ account.id }}</td>
+                <td><a href="{% url 'advertising_account' account.id %}">{{ account.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+<script src="{% static "dist/js/advertising/SalespersonShortcuts.js" %}"></script>

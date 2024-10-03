@@ -1,0 +1,244 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "admin/css/financial.css" %}">
+{% endblock %}
+
+
+{% block endjs %}
+    <script src='{% static "dist/js/financial/financial_home.js" %}'></script>
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Financial</li>
+{% endblock %}
+
+{% block content %}
+
+	<div class="financial-back-image">
+		<img src="{% static "svg/detail_back_img.svg" %}">
+	</div>
+
+    <div id="financial-content">
+
+		<h1 style="text-align: center;">Admin - Financial</h1>
+		
+		<div style="display: flex; align-items: end;">
+            <a class="back-link" href="#"><span>Admin Home </span></a>-> Pricing
+        </div>
+
+        <div class="col-md-12">
+
+
+            <div class="financial-title">
+		
+				<div class="financial-title-header">
+					<a href="#"><i class="fa fa-chevron-left"></i></a>
+					<span>GL Codes</span>
+					<a href="#"><i class="fa fa-chevron-right"></i></a>
+				</div>
+
+				<div class="financial-title-buttons">
+					<button>GL Codes</button>
+					<span>Billing Terms</span>
+					<span>Fiscal Years & Accounting Periods</span>
+				</div>
+
+            </div>
+
+			<div class="financial-main">
+				<div class="save-change">
+					<button>Save changes</button>
+				</div>
+				<div class="description">
+					Select a section below to view/manage its <br>
+					list of codes.
+				</div>
+
+				<div class="financial-code-group">
+					<div class="code-item">
+						<button id="manage_company">Company</button>
+						<div class="code-item-style">XX</div>
+					</div>
+					<div>-</div>
+					<div class="code-item">
+						<button id="manage_location">Location</button>
+						<div class="code-item-style">XXX</div>
+					</div>
+					<div>-</div>
+					<div class="code-item">
+						<button id="manage_department">Department</button>
+						<div class="code-item-style">XX</div>
+					</div>
+					<div>-</div>
+					<div class="code-item">
+						<button id="manage_profit">Profit</button>
+						<div class="code-item-style">XX</div>
+					</div>
+					<div>-</div>
+					<div class="code-item">
+						<button id="manage_gl">GL</button>
+						<div class="code-item-style">XXXX-XXX</div>
+					</div>
+					<div class="edit-layout">
+						<button class="btn btn-edit" data-target="#editLayout" data-toggle="modal">
+							<svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+							  <path d="M6.68706 2.00307L9.63142 4.75355L3.23786 10.7261L0.61272 10.9968C0.261291 11.0331 -0.0356291 10.7555 0.00346968 10.4272L0.29556 7.97325L6.68706 2.00307ZM11.4525 1.59358L10.07 0.302129C9.63878 -0.10071 8.93938 -0.10071 8.50814 0.302129L7.20753 1.51709L10.1519 4.26757L11.4525 3.0526C11.8837 2.64955 11.8837 1.99641 11.4525 1.59358Z" fill="black"/>
+							</svg>
+							Edit Layout
+						</button>
+					</div>
+				</div>
+
+				{% include 'financial_company_code.html' %}
+				{% include 'financial_location_code.html' %}
+				{% include 'financial_department_code.html' %}
+				{% include 'financial_profit_code.html' %}
+				{% include 'financial_gl_code.html' %}
+
+
+				<div class="save-change-bottom">
+					<button>Save changes</button>
+				</div>
+			</div>
+
+
+        </div>
+    </div>
+	<div class="modal fade" id="editLayout" role="dialog" style="padding-top:3vh;">
+		<div class="modal-dialog">
+
+	
+			<!-- Modal content-->
+			<div class="modal-content" style="border-radius: 15px;">
+				<div class="modal-header text-center">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+	
+					<div class="modal-title">
+						<span>Edit Code Layout</span>
+					</div>
+				</div>
+	
+				<div class="modal-body">
+					<div class="modal_description">
+						Select which codes you want to add and then organize them <br>to best suit you!
+					</div>
+					<div class="available_code">
+						<span>Available Codes:</span>
+						<div class="mt-1" style="display: flex;">
+							<div class="item">
+								<button>Location</button>
+								<div class="icon">
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="9" cy="9" r="8.5" fill="white" stroke="#666666" />
+										<path
+											d="M13.2857 7.92857H10.0714V4.71429C10.0714 4.31987 9.75156 4 9.35714 4H8.64286C8.24844 4 7.92857 4.31987 7.92857 4.71429V7.92857H4.71429C4.31987 7.92857 4 8.24844 4 8.64286V9.35714C4 9.75156 4.31987 10.0714 4.71429 10.0714H7.92857V13.2857C7.92857 13.6801 8.24844 14 8.64286 14H9.35714C9.75156 14 10.0714 13.6801 10.0714 13.2857V10.0714H13.2857C13.6801 10.0714 14 9.75156 14 9.35714V8.64286C14 8.24844 13.6801 7.92857 13.2857 7.92857Z"
+											fill="#F26722" />
+									</svg>
+										
+								</div>
+							</div>
+							<div class="item">
+								<button>Department</button>
+								<div class="icon">
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="9" cy="9" r="8.5" fill="white" stroke="#666666" />
+										<path
+											d="M13.2857 7.92857H10.0714V4.71429C10.0714 4.31987 9.75156 4 9.35714 4H8.64286C8.24844 4 7.92857 4.31987 7.92857 4.71429V7.92857H4.71429C4.31987 7.92857 4 8.24844 4 8.64286V9.35714C4 9.75156 4.31987 10.0714 4.71429 10.0714H7.92857V13.2857C7.92857 13.6801 8.24844 14 8.64286 14H9.35714C9.75156 14 10.0714 13.6801 10.0714 13.2857V10.0714H13.2857C13.6801 10.0714 14 9.75156 14 9.35714V8.64286C14 8.24844 13.6801 7.92857 13.2857 7.92857Z"
+											fill="#F26722" />
+									</svg>
+								</div>
+							</div>
+							<div class="item">
+								<button>Profit</button>
+								<div class="icon">
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="9" cy="9" r="8.5" fill="white" stroke="#666666" />
+										<path
+											d="M13.2857 7.92857H10.0714V4.71429C10.0714 4.31987 9.75156 4 9.35714 4H8.64286C8.24844 4 7.92857 4.31987 7.92857 4.71429V7.92857H4.71429C4.31987 7.92857 4 8.24844 4 8.64286V9.35714C4 9.75156 4.31987 10.0714 4.71429 10.0714H7.92857V13.2857C7.92857 13.6801 8.24844 14 8.64286 14H9.35714C9.75156 14 10.0714 13.6801 10.0714 13.2857V10.0714H13.2857C13.6801 10.0714 14 9.75156 14 9.35714V8.64286C14 8.24844 13.6801 7.92857 13.2857 7.92857Z"
+											fill="#F26722" />
+									</svg>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="selected_code">
+						<span>Selected Codes:</span>
+						<div class="button_group">
+							<div class="item">
+								<button>GL</button>
+							</div>
+							<div class="item">
+								<button>Company</button>
+								<div class="icon">
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="9" cy="9" r="8.5" fill="white" stroke="#666666" />
+										<path d="M4 9H14" stroke="#E00000" stroke-width="3" stroke-linecap="round" />
+									</svg>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal_description">
+						Select how many characters you want for <br>each selected code!
+					</div>
+					<div class="row mt-4" style="padding-left: 10%;">
+
+						<div class="col-xs-4">
+							<div class="input_item">
+								<div>GL:</div>
+								<input class="enabled" type="text"></input>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input_item">
+								<div class="disabled">Location:</div>
+								<input type="text" disabled></input>
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="input_item">
+								<div class="disabled">Department:</div>
+								<input type="text" disabled></input>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mt-4" style="padding-left: 25%;">
+						<div class="col-xs-6">
+							<div class="input_item">
+								<div>Company:</div>
+								<input class="enabled" type="text"></input>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="input_item">
+								<div class="disabled">Profit:</div>
+								<input type="text" disabled></input>
+							</div>
+						</div>
+					</div>
+
+				</div>
+	
+				<div class="modal-footer mt-4">
+					<div class="flex-row">
+						<button class="btn btn-primary bg-primary campaign-cancel" data-dismiss="modal" style="width: 40%;">
+							Discard Changes
+						</button>
+	
+						<button class="btn btn-primary bg-primary campaign-edit" style="width: 40%;">
+							Save Changes
+						</button>
+					</div>
+				</div>
+
+				<img src="{% static "svg/Frame 267.svg" %}" style="width: 100%;">
+
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}

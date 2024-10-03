@@ -1,0 +1,170 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="col-md-10">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+                <h2>Edit Account Details</h2>
+                <form method="post">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ account.name }}" placeholder="Enter Name..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="account_type">Account Type</label>
+                                <select class="form-control" id="account_type" name="account_type" required>
+                                    <option value="">Select Account Type...</option>
+                                    {% for account_type in account_types %}
+                                    <option value="{{ account_type.id }}" {% if account_type.id == account.account_type.id %}selected{% endif %}>
+                                        {{ account_type.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry_code">Industry Code</label>
+                                <select class="form-control" id="industry_code" name="industry_code" required>
+                                    <option value="">Select Industry Code...</option>
+                                    {% for industry_code in industry_codes %}
+                                    <option value="{{ industry_code.id }}" {% if industry_code.id == account.industry_code.id %}selected{% endif %}>
+                                        <!-- {{ industry_code.id }} - {{ industry_code.description }} -->
+                                        {{ industry_code.code }} - {{ industry_code.description }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sales_person">Sales Person</label>
+                                <select class="form-control" id="sales_person" name="sales_person" required>
+                                    <option value="">Select Sales Person...</option>
+                                    {% for sales_person in sales_people %}
+                                    <option value="{{ sales_person.id }}" {% if sales_person.id == account.sales_person.id %}selected{% endif %}>
+                                        {{ sales_person.id }} - {{ sales_person.first_name }} {{ sales_person.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="legacy_id">Legacy ID</label>
+                                <input type="text" class="form-control" id="legacy_id" name="legacy_id" value="{{ account.legacy_id }}" placeholder="Enter Legacy ID..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="default_publication">Default Publication</label>
+                                <select class="form-control" id="default_publication" name="default_publication">
+                                    <option value="">Select Default Publication...</option>
+                                    {% for publication in publications %}
+                                    <option value="{{ publication.id }}" {% if publication.id == account.default_publication.id %}selected{% endif %}>
+                                        {{ publication.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="{{ account.address }}" placeholder="Enter Address..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" value="{{ account.city }}" placeholder="Enter City..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state" value="{{ account.state }}" placeholder="Enter State..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip_code">Zip</label>
+                                <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ account.zip_code }}" placeholder="Enter Zip..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoice_frequency">Invoice Frequency</label>
+                                <select class="form-control" name="invoice_frequency" id="invoice_frequency">
+                                    <option value="day">Everyday</option>
+                                    <option value="week">Every Week</option>
+                                    <option value="month">Every Month</option>
+                                    <option value="period">Every Period</option>
+                                </select>
+                            </div>
+                            {% if adminOrManager %}
+                            <div class="form-group">
+                                <label for="mail_invoice_charge">Service Charge for Mailed Invoices</label>
+                                <input class="form-control" type="number" step="any" value="{{ account.mail_invoice_charge }}"name="mail_invoice_charge" id="mail_invoice_charge" placeholder="Enter Service Charge amount...">
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="contact_name">Contact Name</label>
+                                <input type="text" class="form-control" id="contact_name" name="contact_name" value="{{ account.contact_name }}" placeholder="Enter Contact Name..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{ account.phone }}" placeholder="Enter Phone Number..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ account.email }}" placeholder="Enter Email..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_email">Billing Email</label>
+                                <input type="email" class="form-control" id="billing_email" name="billing_email" value="{{ account.billing_email }}" placeholder="Enter Billing Email..." required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="text" class="form-control" id="website" name="website" value="{{ account.website }}" placeholder="Enter Website..." />
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="archived" name="archived" {% if account.archived %}checked{% endif %}>
+                                <label class="form-check-label" for="archived">Archived</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="can_accept_checks" name="can_accept_checks" {% if account.can_accept_checks %}checked{% endif %} />
+                                <label class="form-check-label" for="can_accept_checks">Can Accept Checks</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="tax_exempt" name="tax_exempt" {% if account.tax_exempt %}checked{% endif %} />
+                                <label class="form-check-label" for="tax_exempt">Tax Exempt</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default btn-primary">Save</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("phone").addEventListener("input", () => {
+            let number = document.getElementById("#phone");
+            number.value = formatPhoneNumber(number.value);
+        });
+
+        let select = document.getElementById("invoice_frequency");
+        for(i=0; i < select.options.length; i++){
+            if(select.options[i].value == "{{ account.invoice_frequency }}"){
+                select.selectedIndex = i;
+            }
+        }
+    
+        function formatPhoneNumber(phoneNumberString) {
+            let cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+            let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+            if (match) {
+                return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+            }
+            return phoneNumberString;
+        }
+    </script>
+{% endblock %}

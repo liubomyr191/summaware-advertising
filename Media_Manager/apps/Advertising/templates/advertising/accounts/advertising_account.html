@@ -1,0 +1,418 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/AccountNotes.js" %}"></script>
+<script src="{% static "dist/js/advertising/finance/invoicing/AccountInvoices.js" %}"></script>
+<script src="{% static "dist/js/advertising/finance/AccountBalance.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        {% if account.archived == 1 %}
+        <h2 style="color: red; font-weight: bold">This account is archived</h2>
+        {% endif %}
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#details">Account Details</a></li>
+            <li><a data-toggle="tab" href="#history">History/Logs</a></li>
+            <li><a data-toggle="tab" href="#accountNotes">Account Notes</a></li>
+            <li><a data-toggle="tab" href="#salesRepNotes">Sales Rep Notes</a></li>
+            {% if adminOrManager %}
+                <li><a data-toggle="tab" href="#account_invoices">Account Invoices</a></li>
+            {% endif %}
+        </ul>
+
+        <br>
+
+        <div class="tab-content">
+            <div id="details" class="tab-pane fade in active">
+
+                {% if perms.advertising.can_change_accounts %}
+                <a href="{% url 'edit_account' account.id %}"><button class="btn btn-default btn-md">Edit <i
+                            class="fa fa-pencil"></i></button></a>
+                {% endif %}
+
+                {% if account.archived != 1 and account.can_run_ads %}
+                <a href="{% url 'create_order' account.id %}"><button class="btn btn-default btn-md"><i
+                            class="fa fa-plus"></i> Create Ad Order</button></a>
+                {% endif %}
+
+                <a href="{% url 'list_account_rates' account.id %}"><button class="btn btn-default btn-md"><i
+                    class="fa fa-bars"></i> List Account Rates</button></a>
+
+                    <a href="{% url 'list_account_drafts' account.id %}"><button class="btn btn-default btn-md"><i
+                        class="fa fa-bars"></i> List Account Drafts</button></a>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Name: {{ account.name }}</h3>
+                        <h3>Salesperson: {{ account.sales_person.first_name }} {{ account.sales_person.last_name }}</h3>
+                        <h3>Legacy ID: {{ account.legacy_id }}</h3>
+                        <h3>Bill To: {{ billing_contact.first_name }} {{ billing_contact.last_name }} ({{ billing_contact.email }})</h3>
+                        <h3>Address: {{ account.address }}, {{ account.city }}, {{ account.state }}, {{ account.zip_code }}</h3>
+                        <h3>Total Spent: ${{ account.total_spent }}</h3>
+                        <h3>Account Balance: ${{ account.balance }}</h3>
+                        <h3>Industry Code: {{ account.industry_code.description }}</h3>
+                        {% if account.website %}
+                            <h3>Website: {{ account.website }}</h3>
+                        {% endif %}
+                        {% if account.default_publication %}
+                            <h3>Default Publication: {{ account.default_publication.name }}</h3>
+                        {% endif %}
+                        <h3>Invoice Frequency: {{ account.invoice_frequency|title }}</h3>
+                        <h3>Service Charge for Mailed Invoices: ${{ account.mail_invoice_charge }}</h3>
+                        <br />
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Advertising Orders 
+                            <a href="{% url 'list_account_orders' account.id %}">
+                                (<i class="fa fa-bars"></i> See all)
+                            </a>
+                        </h4>
+                        <table class="table table-hover table-striped" id="advertising-orders">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Total Price</th>
+                                    <th>View Order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if advertising_orders %}
+                                    {% for order in advertising_orders %}
+                                    <tr>
+                                        <td>{{ order.id }}</td>
+                                        {% if today <= order.end_date and today >= order.start_date %}
+                                            <td style="color:green">Active</td>
+                                        {% elif today > order.end_date %}
+                                            <td style="color:red">Inactive</td>
+                                        {% else %}
+                                            <td style="color:orange">Upcoming</td>
+                                        {% endif %}
+                                        <td>{{ order.start_date }}</td>
+                                        <td>{{ order.end_date }}</td>
+                                        <td>${{ order.total_price }}</td>
+                                        {% if perms.advertising.can_access_ad %}
+                                        <td><a href="{% url 'view_order' order.id %}"><i class="fa fa-eye"></i> View
+                                                Order</a></td>
+                                        {% else %}
+                                        <td><i class="fa fa-eye"></i> View Order</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="8">No Advertising Orders</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Company Contacts 
+                            <a href="{% url 'list_company_contacts' account.id %}">
+                                (<i class="fa fa-bars"></i> See all)
+                            </a>
+                        </h4>
+                        <table class="table table-hover table-striped" id="secondary-emails">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Department</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if company_contacts %}
+                                {% for contact in company_contacts %}
+                                {% if contact.active == 1 %}
+                                <tr>
+                                    <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+                                    <td>{{ contact.email }}</td>
+                                    <td>{{ contact.phone_number }}</td>
+                                    <td>{{ contact.department }}</td>
+                                    {% if contact.default %}
+                                        <td><i class="fa fa-check"></i></td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="5">No Company Contacts</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        {% if account.archived != 1 %}
+                        <a href="{% url 'create_company_contact' account.id %}">
+                            <button class="btn btn-default btn-md">
+                                Add Company Contact
+                            </button>
+                        </a>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            <div id="history" class="tab-pane fade">
+                {% if history %}
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>User</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in history %}
+                        <tr>
+                            <td>{{ line.detail }}</td>
+                            <td>{{ line.submitter }}</td>
+                            <td>{{ line.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No history found.</p>
+                {% endif %}
+            </div>
+            <div id="accountNotes" class="tab-pane fade">
+                <div class="col-md-10">
+                    {% if account.archived != 1 %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#account-notes-modal">Add Note</button>
+                    {% endif %}
+                    <table class="table table-hover table-striped" id="account-notes-table">
+                        <thead>
+                            <tr>
+                                <th>Last Updated</th>
+                                <th>User</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    
+                </div>                
+                <div id="account-notes-modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add an Account Note</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><form method="post">
+                                    <textarea name="account_notes" id="account_notes" cols="83" rows="15" style="resize: none;"></textarea>
+                                </form></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-default btn-md btn-primary" id="notes-submit-btn">Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="edit-account-notes-modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" id="edit-account-notes-modal-title"></h4>
+                            </div>
+                            <div class="modal-body" id="edit-account-notes-modal-body"></div>
+                            <div class="modal-footer" id="edit-account-notes-modal-footer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="salesRepNotes" class="tab-pane fade">
+                {% if perms.advertising.can_view_sales_rep_notes %}
+                <div class="col-md-10">
+                    {% if account.archived != 1 and perms.advertising.can_add_sales_rep_notes %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sales-rep-notes-modal">Add Note</button>
+                    {% endif %}
+                    <table class="table table-hover table-striped" id="sales-rep-notes-table">
+                        <thead>
+                            <tr>
+                                <th>Last Updated</th>
+                                <th>User</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="sales-rep-notes-modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add a Sales Rep Note</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><form method="post">
+                                    <textarea name="sales_rep_notes" id="sales_rep_notes"  cols="83" rows="15" style="resize: none;"></textarea>
+                                </form></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-default btn-md btn-primary" id="sales-notes-submit-btn">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="edit-sales-rep-notes-modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" id="modal-title"></h4>
+                            </div>
+                            <div class="modal-body" id="modal-body">
+                                <p><form method="post">
+                                    <textarea name="sales_rep_notes" id="sales_rep_notes"  cols="83" rows="7" style="resize: none;"></textarea>
+                                </form></p>
+                            </div>
+                            <div class="modal-footer" id="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-default btn-md btn-primary" id="sales-notes-submit-btn">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% if adminOrManager %}
+                <div id="account_invoices" class="tab-pane fade">
+                    {% include 'snippets/finance/AccountBalanceModal.html' %}
+                    {% include 'snippets/finance/PayInvoiceModal.html' %}
+                    <a href="{% url 'account_ledger' account.id %}">
+                        <button class="btn btn-default btn-md"><i class="fa fa-bars"></i> View Account Ledger</button>
+                    </a><br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Amount</th>
+                                        <th>Due Date</th>
+                                        <th>Pay Invoice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for invoice in open_invoices %}
+                                        {% if invoice.bill_end < today %}
+                                            <tr style="color: red" data-invoice-id="{{ invoice.id }}">
+                                                <td>{{ invoice.id }}</td>
+                                                <td>${{ invoice.amount }}</td>
+                                                <td>{{ invoice.bill_end }}</td>
+                                                <td><button type="button" class="btn btn-sm btn-default pay-invoice-btn">Pay</button></td>
+                                            </tr>
+                                        {% else %}
+                                            <tr data-invoice-id="{{ invoice.id }}">
+                                                <td>{{ invoice.id }}</td>
+                                                <td>${{ invoice.amount }}</td>
+                                                <td>{{ invoice.bill_end }}</td>
+                                                <td><button type="button" class="btn btn-sm btn-default pay-invoice-btn">Pay</button></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4">No open invoices</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Amount</th>
+                                        <th>Due Date</th>
+                                        <th>Date Paid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for invoice in paid_invoices %}
+                                        {% if invoice.bill_end < today %}
+                                            <tr style="color: red">
+                                                <td>{{ invoice.id }}</td>
+                                                <td>${{ invoice.original_amount }}</td>
+                                                <td>{{ invoice.bill_end }}</td>
+                                                <td>{{ invoice.date_paid }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{ invoice.id }}</td>
+                                                <td>${{ invoice.original_amount }}</td>
+                                                <td>{{ invoice.bill_end }}</td>
+                                                <td>{{ invoice.date_paid }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4">No paid invoices</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <br />
+        <script>
+            var account_id = "{{ account.id }}";
+            var sales_rep_id = "{{ account.sales_person.id }}";
+            var csrf_token = "{{ csrf_token }}";
+        </script>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+<div id="editAccountingYear" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editAccountingYear').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">Edit Accounting Year</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form method="POST" id="edit-accounting-year-form">
+      <div id="hidden_id" disabled></div>
+
+      <div class="form-group w-75 mx-auto mb-5">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" class="form-control" />
+
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="start-date">Start Date:</label>
+              <input type="text" name="start-date" id="start-date" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="end-date">End Date:</label>
+              <input type="text" name="end-date" id="end-date" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-danger" onclick="saveEditChangesAccountingYear(1)">Lose Period</button>
+      <button class="btn btn-gray" onclick="saveEditChangesAccountingYear(2)">Archive</button>
+      <button class="btn btn-secondary" onclick="saveEditChangesAccountingYear(0)">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function saveEditChangesAccountingYear(index) {
+      let form = $('#edit-accounting-year-form');
+      var formData = new FormData(form[0]);
+      var data = {};
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      data['status'] = 1;
+      if(index == 1) {
+        data['status'] = 2;
+      } else if(index == 2) {
+        data['active'] = !data['active'];
+      }
+      data['fiscal_year_id'] = `{{ fiscal_years.id }}`;
+      
+      data['id'] = document.getElementById('hidden_id').value;
+      fetch("/advertising/adadmin/financial/edit-accounting-periods/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          window.location.href = `{% url 'adminFinancialFiscal' fiscal_years.id %}`
+        } else {
+          $.toastr.error("Saving FiscalYear Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Saving FiscalYear Failed");
+      })
+    }
+  </script>
+</div>

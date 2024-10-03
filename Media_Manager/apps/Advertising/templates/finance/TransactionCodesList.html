@@ -1,0 +1,41 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>Transaction Codes List</h2>
+            {% include 'snippets/finance/NewTransactionCodeModal.html' %}
+			<table class="table table-hover table-striped table-condensed" id="transaction_codes_table">
+				<thead>
+					<tr>
+						<th>Code</th>
+                        <th>Description</th>
+                        <th>Type</th>
+						<th>Subtype</th>
+                        <th>GL Code</th>
+                        <th>Balanced Manually</th>
+						<th>Edit</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

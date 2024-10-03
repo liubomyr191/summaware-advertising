@@ -1,0 +1,55 @@
+<div id="new_rate_2_date" class="modal modal-md my-modal chase-modal">
+    <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;">
+      <span class="close" onclick="document.getElementById('new_rate_2_date').style.display='none'">&times;</span>
+      <br>  
+      <div class="heading-container text-center mb-5">
+        <h3 class="heading">New Rate</h3>
+      </div>      
+      <div class="progress-icons">
+        <div id="progress_0" class="progress-active"></div>
+        <div id="progress_1" class="progress-active"></div>
+        <div id="progress_2"></div>
+      </div>
+      <br>  
+      <div class="heading-container text-center mb-5">
+        <h3 class="heading">
+            Select your desired dates. These can also<br>
+            be changed and updated later!
+        </h3>
+      </div>      
+      <br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-4">
+                <label for=""><strong>Start Date:</strong></label>
+                <input type="date" id="start-date" class="sel-date form-control"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-4">
+                <label for=""><strong>End Date(optional):</strong></label>
+                <input type="date" id="end-date" class="sel-date form-control"/>
+              </div>
+            </div>
+          </div>
+          <br>      
+          <br>      
+          <br>
+          <div class="row btn-container">
+            <div class="col-md-6 text-left">
+                <button class="btn px-5 btn-gray" onclick="document.getElementById('new_rate_1_general_info').style.display='block';document.getElementById('new_rate_2_date').style.display='none';"> Previous  </button>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_2_date').style.display='none';document.getElementById('new_rate_3_computation').style.display='block';"> Next  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

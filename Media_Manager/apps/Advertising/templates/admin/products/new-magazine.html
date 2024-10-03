@@ -1,0 +1,441 @@
+{% extends 'templates/base.html' %} {% block content %}{% load static %}
+
+<div class="container mt-5">
+  <div class="heading-container product text-center">
+    <h3 class="heading">New Magazine Product</h3>
+    <img class="img-fluid" src="{% static 'images/Magazine.png' %}" alt="Magazine" />
+  </div>
+
+  <div class="breadcrumb"><a href="{% url 'admin' %}">Admin Home</a></div>
+
+  <div class="multistep-container mgb-3">
+    <div class="c-card magazine">
+      <div class="progress-icons">
+        <div class="progress-dot-container">
+          <div id="progress_0" class="progress-dot progress-active">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Product Info</p>
+        </div>
+
+        <div class="progress-dot-container">
+          <div id="progress_1" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Size Setup</p>
+        </div>
+
+        <div class="progress-dot-container">
+          <div id="progress_2" class="progress-dot">
+            <span><i class="fa fa-solid fa-check"></i></span>
+          </div>
+          <p class="step-label">Review</p>
+        </div>
+      </div>
+
+      <div id="section1" class="section multistep-content mgb-3">
+        <div class="heading-container text-center">
+          <h3 class="heading">Product Info</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="row mgb-3">
+            <div class="col-lg-6 col-md-12">
+              <div class="form-group mb-5">
+                <div class="row">
+                  <div class="col-md-6">
+                    <span class="aster">*</span>
+                    <label for="product-mag">Magazine Product:</label>
+                    <input type="text" name="" id="product-mag" class="form-control" required />
+                  </div>
+                  <div class="col-md-6">
+                    <span class="aster">*</span>
+                    <label for="measurement-type">Measurement Type:</label>
+                    <select name="" id="measurement-type" class="form-control" required>
+                      <option value="inch">Inch</option>
+                      <option value="cm">Cm</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mb-5">
+                <div class="row mb-5">
+                  <div class="col-md-6">
+                    <span class="aster">*</span>
+                    <label for="orientation">Fold Orientation:</label>
+                    <select name="" id="orientation" class="form-control" required>
+                      <option value="horizontal">Horizontal</option>
+                      <option value="vertical">Vertical</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="aster">*</span>
+                    <label for="orientation">Size:</label>
+                    <div class="double">
+                      <input type="text" name="" id="height" class="form-control" required />
+                      <strong class="px-1 font-weight-bold">X</strong>
+                      <input type="text" name="" id="width" class="form-control" required />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="columns">Columns Per Page: (Optional)</label>
+                    <input type="text" name="" id="columns" class="form-control" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="column-width">Column Width: (Optional)</label>
+                    <input type="text" name="" id="column-width" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row mb-5">
+                  <div class="col-md-6">
+                    <label for="page-width">Page Width: (Optional)</label>
+                    <input type="text" name="" id="page-width" class="form-control" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="page-height">Page Height: (Optional)</label>
+                    <input type="text" name="" id="page-height" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="page-border">Page Border: (Optional)</label>
+                    <input type="text" name="" id="page-border" class="form-control" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="gutter-size">Gutter Size: (Optional)</label>
+                    <input type="text" name="" id="gutter-size" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="measurement-container text-center">
+                <img class="img-fluid" src="{% static 'images/magazine-img.png' %}" alt="magazine-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-container text-center">
+          <button class="btn btn-secondary" id="magazine" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section2" class="section multistep-content mgb-3 hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Size Setup</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="row mgb-3">
+            <div class="col-lg-4 col-md-12">
+              <div class="standard-size-container">
+                <div class="heading-container">
+                  <h3 class="heading">New Standard Size</h3>
+                  <hr />
+                </div>
+                <form method="post" id="standardsize-form">
+                  <div class="form-group px-3 mb-3">
+                    <label for="size-description">Size Description</label>
+                    <input type="text" name="description" id="size-description" class="form-control" />
+                  </div>
+
+                  <div class="form-group px-3 mb-3">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="column-num">No. of Columns</label>
+                        <input type="text" name="columns" id="column-num" class="form-control" />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="height">Height</label>
+                        <input type="text" name="height" id="height" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="link-container text-center w-50 mx-auto">
+                  <a href="" class="calculation-link">Click here to see Total Column Inches calculation</a>
+                </div>
+
+                <div class="total-container text-center my-5">
+                  <h3 class="total">Total Column Inches: <span>2.25</span></h3>
+                </div>
+
+                <div class="btn-container text-center mb-3">
+                  <button class="btn btn-secondary" onclick="createStandardSize()">Create</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+              <div class="created-sizes-container">
+                <div class="heading-container">
+                  <h3 class="heading">Created Standard Size</h3>
+                  <hr />
+                </div>
+
+                <form method="post" id="magazine-standardsize-table">
+                  <div class="product-table-container table-container mt-3">
+                    <table class="table product-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">No. of Columns</th>
+                          <th scope="col">Height</th>
+                          <th scope="col">Total Column In.</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="standardsize-table-body">
+                        {% for size in standardsizes %}
+                        <tr data-index="{{size.id}}">
+                          <td>{{size.id}}</td>
+                          <td>{{size.description}}</td>
+                          <td>{{size.columns}}</td>
+                          <td>{{size.height}}</td>
+                          <td>{{ size.total_columns_in }}</td>
+                          <td>
+                            <div class="toggle-switch-container">
+                              <div class="switch-field">
+                                <input type="radio" id="{{size.id}}-product-radio-one" name="{{size.id}}-product-switch-one" value="active" checked />
+                                <label for="{{size.id}}-product-radio-one">Active</label>
+                                <input type="radio" id="{{size.id}}-product-radio-two" name="{{size.id}}-product-switch-one" value="inactive" />
+                                <label for="{{size.id}}-product-radio-two">Inactive</label>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-container text-center">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" id="review-magazine" onclick="next_step(event)">Next</button>
+        </div>
+      </div>
+
+      <div id="section3" class="section multistep-content hide">
+        <div class="heading-container text-center">
+          <h3 class="heading">Review</h3>
+        </div>
+
+        <div class="section-content">
+          <div class="row mgb-3">
+            <div class="col-lg-4 col-md-12">
+              <div class="product-info">
+                <div class="heading-container text-center">
+                  <h3 class="heading">Product Info</h3>
+                  <hr />
+                </div>
+
+                <div class="info-container">
+                  <span>Magazine Product:</span>
+                  <span class="d-block font-weight-bold review-product-mag">Mini Mag</span>
+                </div>
+
+                <div class="info-container">
+                  <span>Fold Orientation: <span class="color-primary review-orientation">*</span></span>
+                </div>
+
+                <div class="info-container">
+                  <span>Size: <span class="color-primary review-size">*</span></span>
+                </div>
+
+                <div class="info-container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="page-columns">
+                        <span>Columns Per Page: (optional)</span>
+                        <div class="value-container d-flex justify-content-between">
+                          <span class="value review-columns"></span>
+                          <span class="inch">In</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="page-height">
+                        <span>Page Height: (optional)</span>
+                        <div class="value-container d-flex justify-content-between">
+                          <span class="value review-page-height"></span>
+                          <span class="inch">In</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="page-border">
+                      <div>Page Border: (optional)</div>
+                      <span class="review-page-border"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="gutter-size">
+                      <span>Gutter Size: (optional)</span>
+                      <div class="value-container d-flex justify-content-between">
+                        <span class="value review-gutter-size"></span>
+                        <span class="inch">In</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+              <div class="created-sizes-container">
+                <div class="heading-container">
+                  <h3 class="heading">Applied Standard Size</h3>
+                  <hr />
+                </div>
+
+                <div class="product-table-container mt-3">
+                  <table class="table product-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">No. of Columns</th>
+                        <th scope="col">Height</th>
+                        <th scope="col">Total Column In.</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="review-standardsize-table-body">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-container text-center">
+          <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+          <button class="btn btn-secondary" onclick="create_product(event, 'magazine')">Create Product</button>
+        </div>
+      </div>
+      <div id="section4" class="section multistep-content hide">
+        <div class="section-content">
+          <div class="complete-product-container text-center">
+            <h3 class="heading">Product has been created!</h3>
+            <div class="big-check mx-auto my-5">
+              <i class="fa fa-solid fa-check"></i>
+            </div>
+            <div class="btn-container d-flex justify-content-around">
+              <a href="" class="btn btn-gray">Create Another Product</a>
+              <a href="{% url 'adminGeneral' %}" class="btn btn-secondary">Return to Products</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function getCookie(name) {
+      let cookie = {};
+      document.cookie.split(';').forEach(function (el) {
+        let [k, v] = el.split('=');
+        cookie[k.trim()] = v;
+      })
+      return cookie[name];
+    }
+    function createStandardSize() {
+      let form = $('#standardsize-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      data['type'] = 1;
+      currentSection = document.querySelector('#standardsize-form');
+      var requiredInputs = currentSection.querySelectorAll('[required]');
+      var allFilled = true;
+
+      // Check if all required inputs are filled
+      requiredInputs.forEach(function (input) {
+        if (!input.value.trim()) {
+          allFilled = false;
+          input.classList.add('input-error'); // Optionally, add an error class for styling
+        } else {
+          input.classList.remove('input-error'); // Remove error class if input is filled
+        }
+      });
+
+      // If not all required inputs are filled, exit the function
+      if (!allFilled) {
+        alert('Please fill in all required fields.');
+        return;
+      } else {
+        fetch(`/advertising/adadmin/financial/create-standardsize`, {
+          method: 'POST',
+          headers: {
+            "X-CSRFToken": getCookie('csrftoken'),
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(res => {
+          if(res.success) {
+            $.toastr.success('Saved Success');
+            var tbody = document.getElementById('standardsize-table-body');
+            // Get the last child element (last <tr> element) within the tbody
+            var lastTr = tbody.lastElementChild;
+            var lastRateId = 0
+            // Check if the lastTr is a <tr> element
+            if (lastTr.tagName === 'TR') {
+                // Get the ID of the last rate element from the last <tr> element
+                var lastRateId = lastTr.querySelector('td:first-child').textContent;
+            }
+            var newRow = `
+            <tr>
+              <td>${res.id}</td>
+              <td>${data['description']}</td>
+              <td>${data['columns']}</td>
+              <td>${data['height']}</td>
+              <td>{{ size.total_columns_in }}</td>
+              <td>
+                <div class="toggle-switch-container">
+                  <div class="switch-field">
+                    <input type="radio" id="${Number(lastRateId) + 1}-product-radio-one" name="${Number(lastRateId) + 1}-product-switch-one" value="active" checked />
+                    <label for="${Number(lastRateId) + 1}-product-radio-one">Active</label>
+                    <input type="radio" id="${Number(lastRateId) + 1}-product-radio-two" name="${Number(lastRateId) + 1}-product-switch-one" value="inactive" />
+                    <label for="${Number(lastRateId) + 1}-product-radio-two">Inactive</label>
+                  </div>
+                </div>
+              </td>
+            </tr>`;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+          } else {
+            $.toastr.error("Saved failure");  
+          }
+        })
+        .catch(error => {
+          $.toastr.error("Saved failure");
+        });
+      }
+    }
+  </script>
+</div>
+
+{% endblock %}

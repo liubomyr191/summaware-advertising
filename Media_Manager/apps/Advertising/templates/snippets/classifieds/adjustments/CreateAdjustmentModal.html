@@ -1,0 +1,77 @@
+<button class="btn btn-primary" data-toggle="modal" data-target="#create_adjustment_modal">
+    <i class="fa fa-plus"></i> Create Adjustment
+</button>
+
+<section id="create_adjustment_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create New Adjustment</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="create_adjustment_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="code">Code</label>
+                                <input type="text" name="code" id="code" class="form-control" placeholder="Enter code ..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input type="text" name="description" id="description" class="form-control" placeholder="Enter description ..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <input type="number" name="amount" id="amount" class="form-control" placeholder="Enter amount ..." min="0" step="0.01" />
+                            </div>
+                            <div class="form-group">
+                                <label for="value_type">Value Type</label>
+                                <select name="value_type" id="value_type" class="form-control">
+                                    <option value="">Select a value type ...</option>
+                                    <option value="amount">Amount</option>
+                                    <option value="percentage">Percentage</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="applyLevel">Apply Level</label>
+                                <select name="applyLevel" id="applyLevel" class="form-control">
+                                    <option value="">Select an apply level...</option>
+                                    <option value="order">Order</option>
+                                    <option value="insertion">Insertion</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="credit_debit">Credit/Debit</label>
+                                <select class="form-control" name="credit_debit" id="credit_debit">
+                                    <option value="">Select a type ...</option>
+                                    <option value="credit">Credit</option>
+                                    <option value="debit">Debit</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="publication">Publication</label>
+                                <select name="publication" id="publication" class="form-control">
+                                    {% if publications %}
+                                        <option value="">Select a publication...</option>
+                                        {% for publication in publications %}
+                                            <option value="{{ publication.id }}">{{ publication.name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="" selected disabled>No publications found</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="create_adjustment_submit">Create</button>
+            </div>
+        </div>
+    </div>
+</section>

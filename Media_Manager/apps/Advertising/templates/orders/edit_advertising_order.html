@@ -1,0 +1,578 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<!-- <script src="{% static "dist/js/advertising/idleTimeout.js" %}"></script> -->
+<!-- <script src="{% static "dist/js/advertising/OrderSubtotal.js" %}"></script> -->
+<script src="{% static "dist/js/advertising/orders/EditOrder.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/datepicker.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/orders/CreateOrder.css" %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div id="page_content">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <div id="content_box">
+            <div id="header_box">
+                <div id="header_nav">
+                    <button class="page_nav" id="nav_left">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                    <div id="current_page">Details</div>
+                    <button class="page_nav" id="nav_right">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div id="header_nav_buttons">
+                    <button class="button_nav active" id="order_details">New Order Details</button>
+                    <button class="button_nav" id="publication_list">Publication List</button>
+                    <button class="button_nav" id="order_summary">Order Summary</button>
+                </div>
+            </div>
+            <form id="new_order_form">
+                <div id="order_details_page">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control" type="text" name="name" id="name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="account">Account</label>
+                                <select class="form-control" name="account" id="account">
+                                    <option value="">Select an account ...</option>
+                                    {% for account in accounts %}
+                                    <option value="{{ account.id }}">{{ account.id }} - {{ account.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="adTaker">Ad Taker/Submitter</label>
+                                <input class="form-control" type="text" name="adTaker" id="adTaker"
+                                    value="{{ request.user.username }}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="salesperson">Salesperson</label>
+                                <select class="form-control" name="salesperson" id="salesperson" required>
+                                    <option value="">Select a salesperson ...</option>
+                                    {% for person in sales_people %}
+                                    <option value="{{ person.id }}">{{ person.id}} - {{ person.first_name }} {{
+                                        person.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="notes">Notes</label>
+                                <textarea name="notes" id="notes" class="form-control" cols="20" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="bill_date">Bill Date</label>
+                                <select class="form-control" name="bill_date" id="bill_date" required>
+                                    <option value="">Select a billing date...</option>
+                                    <option value="placement" selected>Bill at Placement</option>
+                                    <option value="bill_at_start">Bill at Start Date</option>
+                                    <option value="bill_at_end">Bill at End Date</option>
+                                    <option value="bill_on_demand">Bill On Demand</option>
+                                    <option value="accounting_period">Bill at End of Accounting Period</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="custom_billing_date_form" style="display:none">
+                                <label for="custom_billing_date">Custom Billing Date</label>
+                                <input class="form-control" type="date" id="custom_billing_date" />
+                            </div>
+                            <div class="form-group">
+                                <label for="invoiceFrequency">Invoice Frequency</label>
+                                <select class="form-control" name="invoiceFrequency" id="invoiceFrequency" required>
+                                    <option value="">Select Invoice Frequency...</option>
+                                    <option value="day">Everyday</option>
+                                    <option value="week">Every Week</option>
+                                    <option value="month">Every Month</option>
+                                    <!-- <option value="period">Every Period</option> -->
+                                    <option value="default" selected>Use Account Default</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="overrideCost">Override Ad Cost</label>
+                                <input type="number" name="overrideCost" id="overrideCost" class="form-control"
+                                    step="0.01" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label" for="tearsheets">
+                                    <input type="checkbox" class="form-check-input" id="tearsheets" name="tearsheets">
+                                    Tearsheets
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="publication_list_page" style="display:none;">
+                    <div id="publications_details_row">
+                        <div class="column" id="publicationList_column">
+                            <div id="publicationList_header">
+                                <div id="publicationList_header_title">Select Publication(s)</div>
+                                <div id="publicationList_header_options">
+                                    <button class="header-button" id="filter_publications"><i
+                                            class="fa fa-filter"></i></button>
+                                    <button class="header-button" id="search_publications"><i
+                                            class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                            <div id="publication_list_group">
+                                {% for publication in publications %}
+                                <button type="button" class="publication-button" data-name="{{ publication.name }}"
+                                    data-id="{{ publication.id }}">
+                                    <input class="form-check-input publication-input" type="checkbox"
+                                        value="publication-{{ publication.id }}" data-name="{{ publication.name }}" />
+                                    {{ publication.name }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="column" id="publicationDetails_column" style="display:none;">
+                            <div id="details_nav_header">
+                                <div class="details_nav_btn active" id="details_section">Details</div>
+                                <div class="details_nav_btn" id="adjustments_section">Adjustments</div>
+                                <div class="details_nav_btn" id="colors_section">Colors</div>
+                            </div>
+                            <div id="details_section_page">
+                                <div class="form-group">
+                                    <label for="publication_dates">Dates <button type="button" id="update_dates"
+                                            class="btn btn-sm btn-default">Update</button></label>
+                                    <input class="form-control" type="text" id="publication_dates"
+                                        data-provide="datepicker-inline" />
+                                    <label for="till_further_notice">
+                                        <input type="checkbox" id="till_further_notice" />
+                                        Till Further Notice
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="publication_adType">Ad Type</label>
+                                    <select class="form-control" id="publication_adType">
+                                        <option value="">Select an ad type ...</option>
+                                        {% for type in ad_types %}
+                                        <option value="{{ type.code }}">{{ type.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    {% comment %} TODO - When ad type is unit-based, allow user to input number of units
+                                    {% endcomment %}
+                                    <label for="publication_adRate">Ad Rate</label>
+                                    <select class="form-control" id="publication_adRate">
+                                        <option value="">Select an ad rate ...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="numberUnitsGroup" style="display:none;">
+                                    <label for="numberUnitsInput">Number of <span id="numberUnitsLabel"> </span></label>
+                                    <input class="form-control" type="number" name="numberUnitsInput"
+                                        id="numberUnitsInput" step="1" min="1" />
+                                </div>
+                                <div class="form-group" id="predetermined">
+                                    <label for="size">Size</label>
+                                    <select class="form-control" id="size">
+                                        <option value="">Select size...</option>
+                                        <option value="quarter">Quarter Page</option>
+                                        <option value="half">Half Page</option>
+                                        <option value="full">Full Page</option>
+                                        {% if canDefineCustomSize %}
+                                        <option value="custom">Custom</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <div id="custom_size_select" style="display:none">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" id="custom_min_width">
+                                                <label for="custom_min_width">Custom Min Width (in inches)</label>
+                                                <input type="number" class="form-control" name="custom_min_width"
+                                                    placeholder="Enter Custom Min Width..."
+                                                    value="{{ draft.custom_min_width }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" id="custom_min_height">
+                                                <label for="custom_min_height">Custom Min Height (in inches)</label>
+                                                <input type="number" class="form-control" name="custom_min_height"
+                                                    placeholder="Enter Custom Min Height..."
+                                                    value="{{ draft.custom_min_height }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" id="custom_max_width">
+                                                <label for="custom_max_width">Custom Max Width (in inches)</label>
+                                                <input type="number" class="form-control" name="custom_max_width"
+                                                    placeholder="Enter Custom Max Width..."
+                                                    value="{{ draft.custom_max_width }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" id="custom_max_height">
+                                                <label for="custom_max_height">Custom Max Height (in inches)</label>
+                                                <input type="number" class="form-control" name="custom_max_height"
+                                                    placeholder="Enter Custom Max Height..."
+                                                    value="{{ draft.custom_max_height }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="publication_section">Publication Section (optional)</label>
+                                    <select class="form-control" id="publication_section">
+                                        <option value="">Select a publication section ...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="adjustments_section_page">
+                                <table class="table table-hover table-striped table-condensed"
+                                    id="publication_adjustmentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>Value/Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3">No adjustments</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="colors_section_page">
+                                <div class="form-group">
+                                    <input type="checkbox" class="form-check-input" id="color">
+                                    <label class="form-check-label" for="color">Is the ad in color?</label>
+                                </div>
+                                <select class="form-control" name="publication_colorType" id="publication_colorType"
+                                    style="display:none">
+                                    <option value="">Select a color type...</option>
+                                    <option value="full_color">Full Color</option>
+                                    <option value="black_and_white">Black and White</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="order_summary_page" style="display: none;">
+                    <div id="order_summary_content">
+                        <div id="order_summary_row">
+                            <div class="order-summary-column" id="summary-left">
+                                <div class="summary-header">
+                                    <div class="summary-title">Order Details</div>
+                                </div>
+                                <div id="summary_left_content"></div>
+                            </div>
+                            <div class="order-summary-column" id="summary-right">
+                                <div class="summary-header">
+                                    <div class="summary-title">Publication List Details</div>
+                                </div>
+                                <div id="summary_right_content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="update_summary_btn">Update</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script>
+    const navigateBtns = document.querySelectorAll('.page_nav');
+    const headerNavigateBtns = document.querySelectorAll('.button_nav');
+
+    const newOrderForm = document.querySelector('#new_order_form');
+
+    const orderDetailsPage = document.querySelector('#order_details_page');
+    const publicationListPage = document.querySelector('#publication_list_page');
+    const orderSummaryPage = document.querySelector('#order_summary_page');
+
+    const currentPageTitle = document.querySelector('#current_page');
+
+    const navBtns = document.querySelectorAll('.page_nav');
+
+    const navLeftBtn = document.querySelector('#nav_left');
+    const navRightBtn = document.querySelector('#nav_right');
+
+    const detailsNavigationBtns = document.querySelectorAll('.details_nav_btn');
+
+    const detailsSectionPage = document.querySelector('#details_section_page');
+    const adjustmentsSectionPage = document.querySelector('#adjustments_section_page');
+    const colorsSectionPage = document.querySelector('#colors_section_page');
+
+    let currentPageIndex = 0;
+
+    window.onload = function (e) {
+        orderDetailsPage.style.display = 'block';
+        publicationListPage.style.display = 'none';
+        orderSummaryPage.style.display = 'none';
+
+        detailsSectionPage.style.display = 'block';
+        adjustmentsSectionPage.style.display = 'none';
+        colorsSectionPage.style.display = 'none';
+    }
+
+    headerNavigateBtns.forEach(button => {
+        button.addEventListener('click', e => {
+            headerNavigateBtns.forEach(button => button.classList.remove('active'));
+            e.target.classList.add('active');
+
+            currentTitle = e.target.textContent;
+            currentPageTitle.innerHTML = e.target.textContent;
+
+            switch (e.target.id) {
+                case "order_details":
+                    orderDetailsPage.style.display = 'block';
+                    publicationListPage.style.display = 'none';
+                    orderSummaryPage.style.display = 'none';
+                    break;
+                case "publication_list":
+                    orderDetailsPage.style.display = 'none';
+                    publicationListPage.style.display = 'block';
+                    orderSummaryPage.style.display = 'none';
+                    break;
+                case "order_summary":
+                    orderDetailsPage.style.display = 'none';
+                    publicationListPage.style.display = 'none';
+                    orderSummaryPage.style.display = 'block';
+                    break;
+            }
+        })
+    });
+
+    detailsNavigationBtns.forEach(button => {
+        button.addEventListener('click', e => {
+            detailsNavigationBtns.forEach(button => button.classList.remove('active'));
+            e.target.classList.add('active');
+
+            currentTitle = e.target.textContent;
+            currentPageTitle.innerHTML = e.target.textContent;
+
+            switch (e.target.id) {
+                case "details_section":
+                    detailsSectionPage.style.display = 'block';
+                    adjustmentsSectionPage.style.display = 'none';
+                    colorsSectionPage.style.display = 'none';
+                    break;
+                case "adjustments_section":
+                    detailsSectionPage.style.display = 'none';
+                    adjustmentsSectionPage.style.display = 'block';
+                    colorsSectionPage.style.display = 'none';
+                    break;
+                case "colors_section":
+                    detailsSectionPage.style.display = 'none';
+                    adjustmentsSectionPage.style.display = 'none';
+                    colorsSectionPage.style.display = 'block';
+                    break;
+            }
+        })
+    });
+</script>
+{% comment %} <div class="col-md-10">
+    {% if access == "deny" %}
+    <div id="message">{{ message }}</div>
+    {% else %}
+    <div id="message">{{ message }}</div>
+    <h1>Edit Order</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post" id="edit_order_form">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" type="text" name="name" id="name" value="{{ order.name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="ad_type">Ad Type</label>
+                            <select name="ad_type" id="ad_type" class="form-control">
+                                <option value="">Select Ad Type...</option>
+                                {% for ad_type in ad_types %}
+                                <option value="{{ ad_type.id }}" {% if ad_type.id==order.ad_type.id %}selected{% endif
+                                    %}>{{ ad_type.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="account">Account</label>
+                            <select name="account" id="account" class="form-control">
+                                <option value="">Select Account...</option>
+                                {% for account in accounts %}
+                                <option value="{{ account.id }}" {% if account.id==order.account.id %}selected{% endif
+                                    %}>{{ account.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="publication">Publication</label>
+                            <select name="publication[]" id="publication" class="form-control" required multiple>
+                                {% for publication in publications %}
+                                <option value="{{ publication.id }}" {% if publication.id in orderPublications
+                                    %}selected{% endif %}>{{ publication.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sales_person">Sales Person</label>
+                            <select name="sales_person" id="sales_person" class="form-control">
+                                <option value="">Select Sales Person...</option>
+                                {% for sales_person in sales_people %}
+                                <option value="{{ sales_person.id }}" {% if sales_person.id==order.salesperson.id
+                                    %}selected{% endif %}>{{ sales_person.first_name }} {{ sales_person.last_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" name="start_date" id="start_date" class="form-control"
+                                value="{{ order.start_date }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" name="end_date" id="end_date" class="form-control"
+                                value="{{ order.end_date }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill_date">Billing Date</label>
+                            <input type="date" name="bill_date" id="bill_date" class="form-control"
+                                value="{{ order.bill_date }}" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="form-control btn btn-primary" data-toggle="modal"
+                                data-target="#edit_rates_modal">Edit Ad Rates</button>
+                            <div id="edit_rates_modal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Edit Ad Rates</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="ad_rates_selects"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
+                                            <!-- <button type="submit" class="btn btn-md btn-primary" id="sales-notes-submit-btn">Save</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if perms.advertising.can_override_pricing %}
+                        <div class="form-group">
+                            <label for="override_ad_cost">Override Ad Cost</label>
+                            <input type="number" name="override_ad_cost" id="override_ad_cost" class="form-control"
+                                value="{{ order.override_ad_cost }}">
+                        </div>
+                        {% endif %}
+                        <div class="form-check">
+                            <input type="checkbox" name="tearsheets" id="tearsheets" class="form-check-input" {% if
+                                order.tearsheets %}checked{% endif %}>
+                            <label for="tearsheets">Tearsheets</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="active" id="active" class="form-check-input" {% if order.active
+                                %}checked{% endif %}>
+                            <label for="active" class="form-check-label">Active</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="locked" id="locked" class="form-check-input" {% if order.locked
+                                %}checked{% endif %}>
+                            <label for="locked" class="form-check-label">Locked</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea name="notes" id="notes" class="form-control" rows="5">{{ order.notes }}</textarea>
+                        </div>
+                        {% if perms.advertising.can_make_ad_color %}
+                        <div class="form-group">
+                            <input type="checkbox" id="color" name="color" {% if order.color %}checked{% endif %} />
+                            <label for="color">In Color</label>
+                        </div>
+                        <div class="form-group" id="color_type_select" style="display:none">
+                            <label for="color_type">Color Type</label>
+                            <select class="form-control" name="color_type" id="color_type">
+                                <option value="">Select Color Type...</option>
+                                <option value="full_color" {% if order.color_type=="full_color" %}selected{% endif %}>
+                                    Full Color</option>
+                                <option value="black_and_white" {% if order.color_type=="black_and_white" %}selected{%
+                                    endif %}>Black and White</option>
+                                <option value="solid_color" {% if order.color_type=="solid_color" %}selected{% endif %}>
+                                    Solid Color</option>
+                            </select>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit_btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+</div>
+
+<script>
+    const colorCheckbox = document.querySelector('#color');
+    const colorTypeDiv = document.querySelector('#color_type_select');
+    const colorTypeInput = document.querySelector('#color_type');
+
+    const orderId = "{{ order.id }}";
+
+    colorCheckbox.addEventListener('change', e => {
+        let isChecked = colorCheckbox.checked;
+        if (isChecked) {
+            colorTypeDiv.style.display = "block";
+        } else {
+            colorTypeDiv.style.display = "none";
+            let options = colorTypeInput.options;
+            for (let i = 0; i < options.length; i++) {
+                console.log(options[i])
+                options[i].selected = false;
+            }
+        }
+    })
+
+    const checkColor = () => {
+        if ('{{ order.color }}' == 'True') {
+            colorTypeDiv.style.display = "block";
+        } else {
+            colorTypeDiv.style.display = "none";
+        }
+    }
+    checkColor();
+</script> {% endcomment %}
+{% endblock %}

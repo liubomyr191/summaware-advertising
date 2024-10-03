@@ -1,0 +1,166 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <h2>Rates</h2>
+        {% if perms.advertising.can_create_rates %}
+        <a href="{% url 'create_rate' %}"><button type="button" class="btn btn-default btn-md"><i
+                    class="fa fa-plus"></i> Create Advertising Rate</button></a>
+        {% endif %}
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#active">Active Rates</a></li>
+            <li><a data-toggle="tab" href="#inactive">Inactive Rates</a></li>
+            {% if perms.advertising.can_view_hidden_rates %}
+            <li><a data-toggle="tab" href="#hidden">Hidden Rates</a></li>
+            {% endif %}
+        </ul>
+
+        <div class="tab-content">
+            <div id="active" class="tab-pane fade in active">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Rate Type</th>
+                            <th>Unit Price</th>
+                            <th>Unit Type</th>
+                            <th>Tax Category</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>View Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rate in activeRates %}
+                        <tr>
+                            <td>{{ rate.id }}</td>
+                            <td>{{ rate.name }}</td>
+                            <td>{{ rate.description }}</td>
+                            <td>{{ rate.ad_type.name }}</td>
+                            <td>{{ rate.unit_price }}</td>
+                            <td>{{ rate.unit_type }}</td>
+                            <td>{{ rate.tax_category }}</td>
+                            <td>{{ rate.start_date }}</td>
+                            {% if now == rate.notice_date %}
+                            <td style="color:red">{{ rate.end_date }}</td>
+                            {% else %}
+                            <td>{{ rate.end_date }}</td>
+                            {% endif %}
+                            </td>
+                            <td><a href="{% url 'view_rate' rate.id %}"><i class="fa fa-eye"></i> View Rate</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9">No active rates.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="inactive" class="tab-pane fade in">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Rate Type</th>
+                            <th>Unit Price</th>
+                            <th>Unit Type</th>
+                            <th>Tax Category</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>View Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rate in inactiveRates %}
+                        <tr>
+                            <td>{{ rate.id }}</td>
+                            <td>{{ rate.name }}</td>
+                            <td>{{ rate.description }}</td>
+                            <td>{{ rate.ad_type.name }}</td>
+                            <td>{{ rate.unit_price }}</td>
+                            <td>{{ rate.unit_type }}</td>
+                            <td>{{ rate.tax_category }}</td>
+                            <td>{{ rate.start_date }}</td>
+                            {% if now == rate.notice_date %}
+                            <td style="color:red">{{ rate.end_date }}</td>
+                            {% else %}
+                            <td>{{ rate.end_date }}</td>
+                            {% endif %}
+                            </td>
+                            <td><a href="{% url 'view_rate' rate.id %}"><i class="fa fa-eye"></i> View Rate</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9">No inactive rates.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if perms.advertising.can_view_hidden_rates %}
+            <div id="hidden" class="tab-pane fade in">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Rate Type</th>
+                            <th>Unit Price</th>
+                            <th>Unit Type</th>
+                            <th>Tax Category</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>View Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rate in hiddenRates %}
+                        <tr>
+                            <td>{{ rate.id }}</td>
+                            <td>{{ rate.name }}</td>
+                            <td>{{ rate.description }}</td>
+                            <td>{{ rate.ad_type.name }}</td>
+                            <td>{{ rate.unit_price }}</td>
+                            <td>{{ rate.unit_type }}</td>
+                            <td>{{ rate.tax_category }}</td>
+                            <td>{{ rate.start_date }}</td>
+                            {% if now == rate.notice_date %}
+                            <td style="color:red">{{ rate.end_date }}</td>
+                            {% else %}
+                            <td>{{ rate.end_date }}</td>
+                            {% endif %}
+                            </td>
+                            <td><a href="{% url 'view_rate' rate.id %}"><i class="fa fa-eye"></i> View Rate</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9">No hidden rates.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}

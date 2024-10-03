@@ -1,0 +1,150 @@
+// Media Query Mixins
+//
+// To be used inside of css selectors to logically group media queries.
+//
+// Usage example:
+//
+// .nav-item {
+//   all global and extra small styles
+//
+//   @include small-screen(){
+//     all small device style changes
+//   }
+//
+//   @include medium-screen() {
+//     all medium device style changes
+//   }
+//
+//   @include large-screen() {
+//     all large devices/laptops etc style changes
+//   }
+//
+//   @include xlarge-screen() {
+//     all mondo desktops and larger styles
+//   }
+// }
+//
+// Note: You rarely will need to use ALL of these media queries, just use the
+// ones that are applicable
+// ----------------------------------------------------------------------------
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@mixin small-screen() {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@mixin medium-screen() {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@mixin large-screen() {
+  @media (max-width: 992px) {
+    @content;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@mixin xlarge-screen() {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin focusOutline {
+  outline: dotted 1px #ccc;
+  outline-offset: 0.45rem;
+}
+@mixin hideInput {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+@mixin breakpoint($point) {
+  @if $point == 1100 {
+    @media (max-width: 1100px) {
+      @content;
+    }
+  } @else if $point == 800 {
+    @media (max-width: 800px) {
+      @content;
+    }
+  }
+}
+
+// Variable Media Query Mixins
+//
+// For when you need to define a specific breakpoint
+//
+// Usage:
+//
+// .nav-item {
+//   normal styles
+//
+//   @include respond-min(1400px) {
+//     styles for devices larger than 1400px
+//   }
+// }
+// ----------------------------------------------------------------------------
+
+// Inline media queries, Can these be removed?
+@mixin respond-min($width) {
+  @media screen and (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin respond-max($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+// text color mixins
+@mixin bg-text-white {
+  h1,
+  h4,
+  h2,
+  p {
+    color: $white;
+  }
+}
+
+@mixin bg-text-black {
+  h4,
+  h2,
+  p {
+    color: $black;
+  }
+}
+
+@mixin hideInput {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+
+@mixin transition-mix($property: all, $duration: 0.2s, $timing: linear, $delay: 0s) {
+  transition-property: $property;
+  transition-duration: $duration;
+  transition-timing-function: $timing;
+  transition-delay: $delay;
+}
+
+@mixin position-absolute($top: null, $left: null, $right: null, $bottom: null) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+}

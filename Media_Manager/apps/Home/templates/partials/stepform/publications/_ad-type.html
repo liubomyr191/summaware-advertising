@@ -1,0 +1,62 @@
+{% include 'templates/partials/modal/_edit-ad-type.html'%} {% include 'templates/partials/modal/_create-ad-type.html'%}
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Ad Type</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="content-container container">
+      <div class="row add-filter-search">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col">
+              <!-- Add New Campaign Button -->
+
+              <div class="add-rate-card">
+                <button class="btn btn-secondary" onclick="document.getElementById('createAdTypeModal').style.display='block'"><i class="fa fa-solid fa-plus"></i> New Add Type</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <div class="form-group has-search">
+            <input type="text" class="form-control" placeholder="Search" />
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+        </div>
+        <hr class="my-3" />
+      </div>
+
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID #</th>
+              <th scope="col">Ad Type Name</th>
+              <th scope="col">Code</th>
+              <th scope="col">Description</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0001</td>
+              <td>Liner</td>
+              <td>liner</td>
+              <td>Description will only be max of 80 characters</td>
+              <td>
+                <button class="btn pt-0" id="modalBtn" onclick="document.getElementById('editAdTypeModal').style.display='block'"><i class="fa fa-solid fa-pencil color-secondary"></i></button>
+                <button class="btn pt-0"><i class="fa fa-solid fa-trash color-primary"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="end-of-list-heading-container text-center py-5">
+          <span>You've reached the end!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

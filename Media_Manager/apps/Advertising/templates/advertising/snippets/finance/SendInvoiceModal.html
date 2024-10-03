@@ -1,0 +1,59 @@
+<div id="send_invoice_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#details">Invoice Details</a></li>
+                    <li><a data-toggle="tab" href="#service_charges">Service Charges</a></li>
+                </ul><br>
+                
+                <div class="tab-content">
+                    <div id="details" class="tab-pane fade in active">
+                        <form method="post" id="send_invoice_form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input class="form-control" type="number" name="amount" id="amount" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="memo">Memo</label>
+                                    <textarea class="form-control" name="memo" id="memo" cols="30" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="service_charges" class="tab-pane fade in">
+                        <table class="table table-hover table-striped" id='service_charge_table'>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                    <th>Apply Level</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {% comment %} TODO - add a total right here so they know how much the invoice is for {% endcomment %}
+                <p>Total Invoice Amount: $ <span id="total_cost"></span></p>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="sendInvoice_submit_btn">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div id="editGlCodeModal" class="modal my-modal">
+  <div class="modal-content w-50 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('editGlCodeModal').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">Edit GL Code</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="form-group text-center mb-4">
+      <label for="gl-code"><strong>Code:</strong></label>
+      <input type="text" name="" id="codeInput" class="form-control w-50 m-auto" value="{{ glcode.code}}" />
+    </div>
+
+    <div class="form-group mb-4">
+      <label for="gl-code-descr"><strong>Description:</strong></label>
+      <textarea name="" id="descriptionInput" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary px-5">Save</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>All Invoices</h2>
+            <br />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Open Invoices</h3>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for invoice in open_invoices %}
+                                {% if invoice.bill_end < today %}
+                                    <tr style="color: red">
+                                        <td>{{ invoice.id }}</td>
+                                        <td>{{ invoice.amount }}</td>
+                                        <td>{{ invoice.bill_end }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>{{ invoice.id }}</td>
+                                        <td>{{ invoice.amount }}</td>
+                                        <td>{{ invoice.bill_end }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">No open invoices</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h3>Paid Invoices</h3>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for invoice in paid_invoices %}
+                                {% if invoice.bill_end < today %}
+                                    <tr style="color: red">
+                                        <td>{{ invoice.id }}</td>
+                                        <td>{{ invoice.amount }}</td>
+                                        <td>{{ invoice.bill_end }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>{{ invoice.id }}</td>
+                                        <td>{{ invoice.amount }}</td>
+                                        <td>{{ invoice.bill_end }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">No paid invoices</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

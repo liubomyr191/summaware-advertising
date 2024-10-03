@@ -1,0 +1,103 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "admin/css/salesrep.css" %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="advertiser-back-image">
+        <img src="{% static "svg/advertiser_back_img.svg" %}">
+    </div>
+
+    <div id="advertiser-content">
+        <div class="col-md-12">
+            <div class="advertiser-logo">
+                <img alt="Advertiser Logo" src="{% static "svg/advertiser_logo.svg" %}">
+            </div>
+            <div class="advertiser-title">
+                <span>New Sales Rep</span>
+            </div>
+            <form method="POST" id="create_salesperson_form">
+                {% csrf_token %}
+                <div class="advertiser-info sales-row">
+                    <div class="info-left">
+                        <div class="advertiser-item">
+                            <label>First Name:</label>
+                            <input class="advertiser-item-input" type="text" name="firstName" id="firstName" required/>
+                        </div>
+                    </div>
+                    <div class="info-right">
+                        <div class="advertiser-item">
+                            <label>Last Name:</label>
+                            <input class="advertiser-item-input" type="text" name="lastName" id="lastName" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <div class="advertiser-item" style="width: 100%;" >
+                        <label>Company:</label>
+                        <input class="advertiser-item-input" type="text" name="company" id="company"/>
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <div class="info-left">
+                        <div class="advertiser-item">
+                            <label>Email:</label>
+                            <input class="advertiser-item-input" type="email" name="email" id="email" required/>
+                        </div>
+                    </div>
+                    <div class="info-right">
+                        <div class="advertiser-item">
+                            <label>Phone Number:</label>
+                            <input class="advertiser-item-input" type="text" name="phone" id="phone" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <div class="advertiser-item" style="width: 100%;" >
+                        <label>Address:</label>
+                        <input class="advertiser-item-input" type="text" name="address" id="address" />
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <div class="info-left-3">
+                        <div class="advertiser-item">
+                            <label>City:</label>
+                            <input class="advertiser-item-input" type="text" name="city" id="city" />
+                        </div>
+                    </div>
+                    <div class="info-middle-3">
+                        <div class="advertiser-item">
+                            <label>State:</label>
+                            <input class="advertiser-item-input" type="text" name="state" id="state" />
+                        </div>
+                    </div>
+                    <div class="info-right-3">
+                        <div class="advertiser-item">
+                            <label>Zip Code:</label>
+                            <input class="advertiser-item-input" type="text" name="zip_code" id="zip_code" />
+                        </div>
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <div class="advertiser-item" style="width: 100%;" >
+                        <label>Commission Percentage:</label>
+                        <input class="advertiser-item-input" type="number" name="commissionPercentage" id="commissionPercentage" placeholder="Enter the percentage as a whole number..."/>
+                    </div>
+                </div>
+                <div class="advertiser-info sales-row-default">
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>            
+
+{% endblock %}

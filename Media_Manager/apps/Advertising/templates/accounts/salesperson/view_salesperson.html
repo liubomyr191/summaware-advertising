@@ -1,0 +1,126 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/salesperson/EditSalesperson.js" %}"></script>
+<script src="{% static "dist/js/advertising/salesperson/AdAssistant.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/salesperson/ViewSalesperson.css" %}">
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div id="content">
+    <div id="page_contents">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <div id="header_nav">
+            <h2 class="title">Sales Rep Details</h2>
+        </div>
+
+        <div id="content_box">
+            <div class="page-row">
+                <div class="page-column">
+                    <div style="display: flex;">
+                        <img src="{% static "svg/avatar1.png" %}">
+                        <div style="margin-left: 20px;">
+                            <div style="display: flex;align-items: center;">
+                                <h2 class="section_title">{{ salesperson.first_name }} {{ salesperson.last_name }}</h2>
+                                <button class="salesperson-button" data-toggle="modal" data-target="#edit-details-modal"><i class="fa fa-pencil"></i> Edit</button>
+                            </div>
+                            <p style="margin-top:15px;margin-left:2px">Company - <span style="color: #337AB7;"> {{ salesperson.company }} </span></p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px;"> <b><i class="fa fa-phone"></i></b> Phone:  <span style="color: #337AB7;">{{ salesperson.phone_number }}</span></p>
+                    <p style="margin-top: 20px;"><i class="fa fa-envelope"></i> Email:  <span style="color: #337AB7;">{{ salesperson.email }}</span></p>
+                    <div style="margin-top: 20px">
+                        <div class="page-column">
+                            <p>Address:</p>
+                            <p><b>{{ salesperson.address }}</b></p>
+                        </div>
+                        <div class="page-column">
+                            <p>Commission Percentage:</p>
+                            <p><b>${{ salesperson.commission_percentage }}</b></p>
+                        </div>
+                    </div>
+                    {% include 'snippets/EditSalespersonModal.html' %}
+                </div>
+                <div class="page-column">
+                    <div class="section-header" id="ad_assistant_title">
+                        <h2 class="section_title">Ad Assistants</h2>
+                        <button class="salesperson-button" data-toggle="modal" data-target="#add_ad_assistant_modal">
+                            <i class="fa fa-pencil"></i> Add an Assistant
+                        </button>
+                        {% include 'snippets/salesperson/AddAdAssistantModal.html' %}
+                    </div>
+                    {% for assistant in adAssistants %}
+                        <p>{{ assistant.user.id }} - {{ assistant.user.email }}</p>
+                    {% empty %}
+                    <p>This Sales Rep doesn’t have any Assistants</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="section-header">
+                <h2 class="section_title">Ad Order Drafts</h2>
+                <button class="salesperson-button"><i class="fa fa-pencil"></i> Start an Ad Order</button>
+            </div>
+            <table class="table table-hover table-striped table-condensed" id="ad_order_drafts">
+                <thead>
+                    <tr>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>ID</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Rate</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Ad Type</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Account</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Submitter</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Start Date</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>End Date</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}>Price</th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}></th>
+                        <th {% if not drafts|length %}style="display:none;"{% endif %}></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for draft in drafts %}
+                    <tr>
+                        <td>{{ draft.id }}</td>
+                        <td>{{ draft.ad_rate.name }}</a></td>
+                        <td>{{ draft.ad_type.name }}</td>
+                        <td>{{ draft.account.name }}</td>
+                        <td>{{ draft.submitter }}</td>
+                        <td>{{ draft.start_date }}</td>
+                        <td>{{ draft.end_date }}</td>
+                        <td>${{ draft.total_price }}</td>
+                        <td><a href="{% url 'load_draft' draft.account.id draft.id %}">Load</a></td>
+                        <td><a href="{% url 'delete_account_draft' draft.account.id draft.id %}">Delete</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10">No advertising order drafts</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        const salespersonId = "{{ salesperson.id }}";
+    </script>
+</div>
+
+{% endblock %}

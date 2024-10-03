@@ -1,0 +1,148 @@
+{% extends 'templates/base_gamma.html' %} 
+
+{% block content %} 
+
+{% include 'templates/partials/modal/admin/financial/_edit-fiscal-year.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-accounting-year.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-accounting-year.html'%}
+
+<div class="landing-container container mt-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">{{ fiscal_years.name }}</h3>
+  </div>
+
+  <div class="link-container">
+    <a href="{% url 'admin' %}">Admin Home</a>
+  </div>
+
+  <div class="content-container custom-border pb-3">
+    <div class="save-container">
+      <button class="btn btn-secondary-light">Save Changes</button>
+    </div>
+
+    <div class="fiscal-details-container">
+      <h3 class="heading">{{ fiscal_years.name }}</h3>
+      <div class="date-container py-3">
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <span>Start Date:</span>
+            <p>{{ fiscal_years.start_date }}</p>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <span>End Date:</span>
+            <p>{{ fiscal_years.end_date }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="btn-container text-center">
+        <button class="btn btn-secondary" onclick="document.getElementById('editFiscalYear').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-pencil"></i> Edit</button>
+      </div>
+    </div>
+
+    <div class="add-container">
+      <div class="row align-center">
+        <div class="col-md-6">
+          <div class="filter-container d-flex">
+            <h3 class="heading mgr-1">Account Periods</h3>
+            
+            <button class="btn btn-secondary mb-1" onclick="document.getElementById('newAccountingYear').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-plus"></i> New Accounting Period</button>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex content-end">
+          <div class="has-search">
+            <input type="text" class="form-control" placeholder="Search..." />
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="mgt-0" />
+    </div>
+
+    <div class="accounts-table-container mb-5">
+      <div class="table-container mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">NAME</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if accounting_periods  %}
+              {% for year in accounting_periods %}
+                <tr>
+                  <td>{{ year.id }}</td>
+                  <td>{{ year.code }}</td>
+                  <td>{{ year.start_date }}</td>
+                  <td>{{ year.end_date }}</td>
+                  <td>
+                    <div class="switch-field">
+                      <input type="radio" id="{{ year.id }}-fiscal-radio-one" name="{{ year.id }}-fiscal-switch-one" value="open" {% if year.status == 1 %} checked {% endif %} onclick="updateStatusFiscalYear('{{ year.id }}', 'True')"/>
+                      <label for="{{ year.id }}-fiscal-radio-one">Open</label>
+                    
+                      <input type="radio" id="{{ year.id }}-fiscal-radio-two" name="{{ year.id }}-fiscal-switch-one" value="locked" {% if year.status == 0 %} checked {% endif %} onclick="updateStatusFiscalYear('{{ year.id }}', 'False')"/>
+                      <label for="{{ year.id }}-fiscal-radio-two">Locked</label>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="mgr-1" onclick="openEditModal('{{ year.id }}', '{{ year.start_date|date:'Y-m-d' }}', '{{ year.end_date|date:'Y-m-d' }}', '{{ year.status }}')"><i class="fa fa-solid fa-pencil"></i></span>
+                    <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" class="text-center">No Accounting periods found</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="save-container">
+      <button class="btn btn-secondary-light">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function openEditModal(id, start_date, end_date, status) {
+      document.getElementById('start-date').value = start_date;
+      document.getElementById('end-date').value = end_date;
+      document.getElementById('hidden_id').value = id;
+      document.getElementById('editAccountingYear').style.cssText = 'display: block; opacity: 1; visibility: visible;';
+    }
+    function updateStatusFiscalYear(id, status) {
+      body = {
+        id: id,
+        status: status
+      }
+
+      fetch(`/advertising/adadmin/financial/update-status-accounting-period/`, {
+        method: "POST",
+        credentials: "same-origin",
+        body: JSON.stringify(body),
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then((response) => {
+        if(response.success) {
+          window.location.href = `{% url 'adminFinancialFiscal' fiscal_years.id %}`;
+        } else {
+          $.toastr.error("Updating FiscalYear Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Updating FiscalYear Failed");
+      })
+    }
+  </script>
+</div>
+{% endblock %}

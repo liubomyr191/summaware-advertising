@@ -1,0 +1,52 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            {% if not rate.active %}
+                <div class="alert alert-danger" role="alert">
+                    This rate is not active
+                </div>
+            {% else %}
+                <button class="btn btn-default">
+                    <a href="{% url 'edit_classified_rate' rate.id %}"><i class="fa fa-pencil"> </i> Edit</a>
+                </button>
+            {% endif %}
+
+            <br>
+
+            <h2>Name: {{ rate.name }}</h2>
+            <br>
+            <p>Description: {{ rate.description }}</p>
+            <p>Price: ${{ rate.unit_price }} / line</p>
+            <p>Tax Category: {{ rate.tax_category|title }}</p>
+            <p>Pricing: {{ rate.pricing|title }}</p>
+            <p>Run Dates: {{ rate.start_date }} - {{ rate.end_date }}</p>
+
+            <br>
+
+            <p>Hidden: {{ rate.hidden }}</p>
+            <p>Locked: {{ rate.locked }}</p>
+            {% if rate.locked %}
+            <p>Account: {{ rate.account.name }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

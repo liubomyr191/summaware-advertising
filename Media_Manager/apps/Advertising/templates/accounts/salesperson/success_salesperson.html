@@ -1,0 +1,51 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/EditSalesperson.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="advertising-back-image">
+    <img src="{% static "svg/campaign_back_img.svg" %}">
+</div>
+
+<div id="content">
+    <div class="content text-content">
+        <div class="card c-card">
+            <div class="col-md-12">
+                <div class="m-6 text-center">
+                    <div class="success-label">Sales Rep Created!</div>
+
+                    <div id="favoriteIcon1" class="mt-2 adsuccess-mark">
+                        <img src="{% static "svg/Vector (2).svg" %}" style="height: 140px; margin-top: 35px;">
+                    </div>
+
+                    <div class="flex-row ad-success-btn" style="justify-content: space-evenly; margin-top:60px">
+                        <a class="btn btn-primary" href="{{url}}/advertising/salesperson/new/"
+                                style="width: 25%; background-color: rgb(33,33,95);color: white;">Create Another Sales Rep
+                        </a>
+    
+                        <a class="btn btn-primary bg-primary campaign-view" onclick="viewCampaign()">View Sales Rep</a>
+    
+                        <a class="btn btn-primary bg-primary" href="{{url}}/advertising/salesperson/all/" onclick="" style="width: 25%;color: white;">See all Sales Rep</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

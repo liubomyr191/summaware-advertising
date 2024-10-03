@@ -1,0 +1,14 @@
+.ads-booked-container {
+  margin-top: 60px;
+  .heading-container {
+    width: 40%;
+  }
+
+  .custom-accordion {
+    background-color: rgb($secondary, 0.1);
+
+    .heading {
+      padding: 20px;
+    }
+  }
+}

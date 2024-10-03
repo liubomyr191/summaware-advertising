@@ -1,0 +1,50 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+            <h2>Industry Codes</h2>
+
+            <a href="{% url 'create_industry_code' account_id %}"><button class="btn btn-primary">Create New Industry Code</button></a>
+
+            {% if industry_codes %}
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for code in industry_codes %}
+                        {% if code.active %}
+                            <tr>
+                                <td>{{ code.id }}</td>
+                                <td>{{ code.description }}</td>
+                                <td>{{ code.code }}</td>
+                                <td>
+                                    <a href="{% url 'edit_industry_code' account_id code.id %}"><i class="fa fa-pencil"></i> Edit</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

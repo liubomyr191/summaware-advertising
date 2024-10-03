@@ -1,0 +1,66 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% include "templates/sections/header-tags.html" %}
+		{% include "templates/sections/header.html" %}
+
+		{% block css %}{% endblock %}
+	</head>
+	{% if request.path == '/' %}
+	{% if settingsSidebar %}
+	<body class="hold-transition skin-blue sidebar-mini">
+	{% else %}
+	<body class="hold-transition skin-blue sidebar-mini settings-sidebar-collapse">
+	{% endif %}
+	{% include "templates/sections/body-tags.html" %}
+	{% else %}
+	{% if settingsSidebar %}
+	<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+	{% else %}
+	<body class="hold-transition skin-blue sidebar-mini sidebar-collapse settings-sidebar-collapse">
+	{% endif %}
+	{% endif %}
+		<div class="wrapper">
+			<!-- Main Header -->
+			{% if advertising %}
+			{% include "templates/sections/advertise_navbar.html" %}
+			{% elif financial %}
+			{% include "templates/sections/financial_navbar.html" %}
+			{% else %}
+			{% include "templates/sections/navbar.html" %}
+			{% endif %}
+			
+			<div id="body">
+		     	 <!-- Content Wrapper. Contains page content -->
+		      	<div class="content-wrapper">
+			        <!-- Main content -->
+			        <section class="content container-fluid" style="padding: 0">
+			        	{%block forwardjs %}
+						<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+						{% endblock %}
+						{%block content %}{% endblock %}
+					</section>
+					<!-- /.content -->
+				</div>
+				<!-- /.content-wrapper -->
+			</div>
+			<!-- Page Settings Sidebar -->
+			{% if settingsSidebar %}
+			<aside class="settings-sidebar">
+				{%block settings-sidebar %}
+				{% endblock %}
+			</aside>
+			{% endif %}
+			<!-- Control Sidebar -->
+			<aside class="control-sidebar control-sidebar-dark">
+				{% include "templates/sections/right_navbar.html" %}
+			</aside>
+			<footer>
+				{% include "templates/sections/javascript.html" %}
+				{%block endjs %}{% endblock %}
+			</footer>
+		</div>
+	</body>
+</html>
+{% endautoescape %}

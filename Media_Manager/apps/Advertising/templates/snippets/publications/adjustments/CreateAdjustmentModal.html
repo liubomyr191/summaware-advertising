@@ -1,0 +1,91 @@
+<button type="button" id="add_adjustment_btn" data-toggle="modal" data-target="#add_adjustment_modal">
+    <i class="fa fa-plus"></i> Create an Adjustment
+</button>
+
+<section id="add_adjustment_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Adjustment</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create_adjustment_form">
+                    <div class="form-group">
+                        <label for="adjustment_code">Code</label>
+                        <input type="text" name="adjustment_code" id="adjustment_code" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="adjustment_description">Description</label>
+                        <textarea name="adjustment_description" id="adjustment_description" cols="30" rows="4" class="form-control"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adjustment_apply_level">Apply Level</label>
+                                <select name="adjustment_apply_level" id="adjustment_apply_level" class="form-control">
+                                    <option value="">Select an apply level ...</option>
+                                    <option value="order">Order</option>
+                                    <option value="insertion">Insertion</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adjustment_value_type">Value Type</label>
+                                <select name="adjustment_value_type" id="adjustment_value_type" class="form-control">
+                                    <option value="">Select a value type ...</option>
+                                    <option value="amount">Amount</option>
+                                    <option value="percentage">Percentage</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adjustment_type">Type</label>
+                                <select name="adjustment_type" id="adjustment_type" class="form-control">
+                                    <option value="">Select a type ...</option>
+                                    <option value="credit">Credit (+)</option>
+                                    <option value="debit">Debit (-)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adjustment_amount">Amount</label>
+                                <input type="number" name="adjustment_amount" id="adjustment_amount" class="form-control" placeholder="Enter an amount/percentage ..." min="0" s/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adjustment_section">Section (optional)</label>
+                        <select name="adjustment_section" id="adjustment_section" class="form-control">
+                            <option value="">Select a section ...</option>
+                            {% for section in sectionList %}
+                                <option value="{{ section.id }}">{{ section.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="adjustment_gross_net">Gross/Net</label>
+                        <select name="adjustment_gross_net" id="adjustment_gross_net" class="form-control">
+                            <option value="">Select ...</option>
+                            <option value="gross">Gross Total</option>
+                            <option value="net">Net Total</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="adjustment_prompt_value" id="adjustment_prompt_value" />
+                        <label for="adjustment_prompt_value">Prompt For Value?</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-md btn-primary" id="create_adjustment_submit">Create</button>
+            </div>
+        </div>
+    </div>
+</section>

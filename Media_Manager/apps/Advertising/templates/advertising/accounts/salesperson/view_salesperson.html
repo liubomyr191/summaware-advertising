@@ -1,0 +1,89 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/EditSalesperson.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <button class="btn btn-primary" data-toggle="modal" data-target="#add_deadline_modal">Add Deadline</button>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h2>{{ salesperson.first_name}} {{ salesperson.last_name }}</h2>
+
+                <p>Email: {{ salesperson.email }}</p>
+                <p>Phone Number: {{ salesperson.phone_number }}</p>
+                <p>Company: {{ salesperson.company }}</p>
+                <p>Address: {{ salesperson.address }}</p>
+
+                {% include 'snippets/EditSalespersonModal.html' %}
+            </div>
+            <div class="col-md-8">
+                <h2>Ad Order Drafts</h2>
+
+                {% if drafts %}
+                <table class="table table-hover table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Rate</th>
+                            <th>Ad Type</th>
+                            <th>Account</th>
+                            <th>Submitter</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Price</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for draft in drafts %}
+                        <tr>
+                            <td>{{ draft.id }}</td>
+                            <td>{{ draft.ad_rate.name }}</a></td>
+                            <td>{{ draft.ad_type.name }}</td>
+                            <td>{{ draft.account.name }}</td>
+                            <td>{{ draft.submitter }}</td>
+                            <td>{{ draft.start_date}}</td>
+                            <td>{{ draft.end_date }}</td>
+                            <td>${{ draft.total_price }}</td>
+                            <td><a href="{% url 'load_draft' draft.account.id draft.id %}">Load</a></td>
+                            <td><a href="{% url 'delete_account_draft' draft.account.id draft.id %}">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No Ad Order Drafts</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Ad Assistants</h3>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

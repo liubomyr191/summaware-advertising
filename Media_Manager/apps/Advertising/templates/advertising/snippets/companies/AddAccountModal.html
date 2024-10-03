@@ -1,0 +1,31 @@
+<button class="btn btn-default" data-toggle="modal" data-target="#add_account_modal">
+    <i class="fa fa-plus"></i> Add 
+</button>
+
+<section id="add_account_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Account</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="account_search">Search...</label>
+                    <input class="form-control" type="text" id="account_search" />
+                </div>
+                <table class="table table-hover table-striped" id="account_table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

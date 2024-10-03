@@ -1,0 +1,434 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+    <script src='{% static "dist/js/advertising/Search.js" %}'></script>
+{% endblock %}
+
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="advertising-back-image">
+    <img src="{% static "svg/advertising_back_img.svg" %}">
+</div>
+
+<div id="content" style="padding: 20px 60px 40px !important">
+    <div class="content text-center col-md-12 c-ad-content">
+        <img src="{% static "svg/advertising-logo.svg" %}" alt="advertising logo">
+
+        <span class="good-morning">{{greeting}}</span>
+
+        <button class="mt-2 create-new" data-toggle="modal" data-target="#myModal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+                <path d="M17.6429 7.07143H11.5357V1.28571C11.5357 0.575759 10.928 0 10.1786 0H8.82143C8.07203 0 7.46429 0.575759 7.46429 1.28571V7.07143H1.35714C0.607746 7.07143 0 7.64719 0 8.35714V9.64286C0 10.3528 0.607746 10.9286 1.35714 10.9286H7.46429V16.7143C7.46429 17.4242 8.07203 18 8.82143 18H10.1786C10.928 18 11.5357 17.4242 11.5357 16.7143V10.9286H17.6429C18.3923 10.9286 19 10.3528 19 9.64286V8.35714C19 7.64719 18.3923 7.07143 17.6429 7.07143Z" fill="#21215F"/>
+            </svg>
+            Create Something New!
+        </button>
+
+        <hr style="width: 100%; margin-bottom: 25px">
+
+        <div class="card text-left c-pub-account">
+            <div class="row" style="display: flex">
+                <div style="margin-right: 20px;">
+                    <h2 class="primary">
+                        Publications & Accounts
+                        <hr style="height:3px; margin-right: 30px">
+                    </h2>
+                </div>
+
+                <!-- <div class="c-new-pub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M13 5.5H8.5V1C8.5 0.447812 8.05219 0 7.5 0H6.5C5.94781 0 5.5 0.447812 5.5 1V5.5H1C0.447812 5.5 0 5.94781 0 6.5V7.5C0 8.05219 0.447812 8.5 1 8.5H5.5V13C5.5 13.5522 5.94781 14 6.5 14H7.5C8.05219 14 8.5 13.5522 8.5 13V8.5H13C13.5522 8.5 14 8.05219 14 7.5V6.5C14 5.94781 13.5522 5.5 13 5.5Z" fill="white"/>
+                    </svg>
+
+                    <a href="{{url}}/advertising/publication/new/" style="color: white">Add a New Publication</a>
+                </div>
+
+                <div class="c-new-acc">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M13 5.5H8.5V1C8.5 0.447812 8.05219 0 7.5 0H6.5C5.94781 0 5.5 0.447812 5.5 1V5.5H1C0.447812 5.5 0 5.94781 0 6.5V7.5C0 8.05219 0.447812 8.5 1 8.5H5.5V13C5.5 13.5522 5.94781 14 6.5 14H7.5C8.05219 14 8.5 13.5522 8.5 13V8.5H13C13.5522 8.5 14 8.05219 14 7.5V6.5C14 5.94781 13.5522 5.5 13 5.5Z" fill="white"/>
+                    </svg>
+
+                    <a href="{{url}}/advertising/account/types/new/" style="color: white;">Add a New Account</a>
+                </div> -->
+                <div class="c-ad-table-search">
+                    <div class="input-group-rounded c-search-publication">
+                        <input type="text" id="search-input" class="form-control c-search" placeholder="Search Accounts..."/>
+
+                        <span class="input-group-mark">
+                            <i class="glyphicon glyphicon-search mr-1" style="color: #F26722"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 80px">
+                <div class="col-md-5" style="width: 45%;">
+                    <h3>
+                        <div class="c-ad-table-title">
+                            Publications
+
+                            <!-- <div class="c-ad-table-search">
+                                <div class="input-group-rounded c-search-publication">
+                                    <input type="text" id="search-input-pub" class="form-control c-search" placeholder="Search Pubs..."/>
+
+                                    <span class="input-group-mark">
+                                        <i class="glyphicon glyphicon-search mr-1" style="color: #21215F"></i>
+                                    </span>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <hr class="bg-success c-pub-hr">
+                    </h3>
+
+                    <div class="advertising-table">
+                        <table id="publication-table" class="w-full general-table">
+                            <thead>
+                                <th>ID</th>
+                                <th>NAME</th>
+                            </thead>
+
+                            {% if publications %}
+                            <tbody>
+                                {% for publication in publications %}
+                                <tr>
+                                    <td>{{ publication.id }}</td>
+                                    <td>
+                                        <a href="{% url 'view_publication' publication.id %}">{{ publication.name }}</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            {% else %}
+
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">No Publications Found</td>
+                                </tr>
+                            </tbody>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-7" style="width: 55%;">
+                    <h3>
+                        <div class="c-ad-table-title">
+                            Accounts
+
+                            <!-- <div class="c-ad-table-search">
+                                <div class="input-group-rounded c-search-publication">
+                                    <input type="text" id="search-input-acc" class="form-control c-search" placeholder="Search Accounts..."/>
+
+                                    <span class="input-group-mark">
+                                        <i class="glyphicon glyphicon-search mr-1" style="color: #21215F"></i>
+                                    </span>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <hr class="bg-success c-pub-hr">
+                    </h3>
+
+                    <div class="advertising-table">
+                        <table id="account-table" class="w-full general-table">
+                            <thead>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>TYPE</th>
+                            </thead>
+
+                            <tbody>
+                                {% for account in accountList %}
+                                <tr>
+                                    <td>{{ account.id }}</td>
+                                    <td><a href="{% url 'advertising_account' account.id %}">{{ account.name }}</a></td>
+                                    <td>{{ account.account_type.name }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3">No Accounts Found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="c-advertising-dashboard">
+            <div class="c-dash-left">
+                <div class="c-dash-announcement">
+                    <div class="c-announcement-title">
+                        ANNOUNCEMENTS
+                    </div>
+
+                    <div class="c-announcement-hr"></div>
+
+                    <div class="c-announcement-list">
+                        <div class="c-announcement-item">
+                            Announcement Goes Here
+                        </div>
+
+                        <div class="c-announcement-item">
+                            Announcement Goes Here
+                        </div>
+
+                        <div class="c-announcement-item">
+                            Announcement Goes Here
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-dash-sales">
+                    <div class="c-sales-title">
+                        Sales Goal
+                    </div>
+
+                    <div class="c-sales-hr"></div>
+
+                    <div class="c-sales-percent">
+                        <div class="c-sales-percent-grade-8"></div>
+                        <div class="c-sales-percent-grade-7"></div>
+                        <div class="c-sales-percent-grade-6"></div>
+                        <div class="c-sales-percent-grade-5"></div>
+                        <div class="c-sales-percent-grade-4"></div>
+                        <div class="c-sales-percent-grade-3"></div>
+                        <div class="c-sales-percent-grade-2"></div>
+                        <div class="c-sales-percent-grade-1"></div>
+                        <div class="c-sales-percent-grade-0"></div>
+
+                        <div class="c-sales-percent-active"></div>
+                    </div>
+
+                    <div class="c-sales-percent-num">55%</div>
+
+                    <div class="c-sales-desc">away from sales goal!</div>
+                </div>
+            </div>
+
+            <div class="c-dash-right">
+                <div class="c-task-title">Today's Task</div>
+
+                <div class="c-task-hr"></div>
+
+                <div class="c-task-list">
+                    <div class="c-task-item">
+                        <div class="c-task-mark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" viewBox="0 0 32 28" fill="none">
+                              <path d="M10.8686 26.5005L0.46861 14.7196C-0.156203 14.0118 -0.156203 12.8642 0.46861 12.1563L2.7313 9.59313C3.35611 8.88528 4.36924 8.88528 4.99405 9.59313L12 17.5293L27.0059 0.530835C27.6308 -0.176945 28.6439 -0.176945 29.2687 0.530835L31.5314 3.09405C32.1562 3.80183 32.1562 4.94941 31.5314 5.65726L13.1314 26.5006C12.5065 27.2084 11.4934 27.2084 10.8686 26.5005Z" fill="#666666"/>
+                            </svg>
+
+                            Mark as done
+                        </div>
+
+                        <div class="c-task-info">
+                            <div class="c-task-content">
+                                Contact Frank Zappa for Propsal Response.
+                            </div>
+
+                            <div class="c-task-date">
+                                <span>Due: </span>
+                                <span>9/18/22</span>
+                            </div>
+                        </div>
+
+                        <div class="c-task-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="22" viewBox="0 0 19 22" fill="none">
+                              <path d="M17.8545 16.893L12.7784 10.9149L17.6438 4.67788C18.2408 3.91255 18.2198 2.69698 17.5969 1.96342L16.4689 0.634963C15.846 -0.0985932 14.8567 -0.0728208 14.2597 0.692515L9.39433 6.92955L4.31822 0.951495C3.69534 0.217939 2.70602 0.243712 2.10901 1.00905L1.02782 2.39505C0.430802 3.16039 0.451777 4.37596 1.07466 5.10952L6.15077 11.0876L1.28543 17.3246C0.688417 18.0899 0.709392 19.3055 1.33227 20.0391L2.4603 21.3675C3.08318 22.1011 4.07249 22.0753 4.66951 21.31L9.53485 15.0729L14.611 21.051C15.2338 21.7845 16.2232 21.7588 16.8202 20.9934L17.9014 19.6074C18.4984 18.8421 18.4774 17.6265 17.8545 16.893Z" fill="#21215F"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="c-task-item">
+                        <div class="c-task-mark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" viewBox="0 0 32 28" fill="none">
+                              <path d="M10.8686 26.5005L0.46861 14.7196C-0.156203 14.0118 -0.156203 12.8642 0.46861 12.1563L2.7313 9.59313C3.35611 8.88528 4.36924 8.88528 4.99405 9.59313L12 17.5293L27.0059 0.530835C27.6308 -0.176945 28.6439 -0.176945 29.2687 0.530835L31.5314 3.09405C32.1562 3.80183 32.1562 4.94941 31.5314 5.65726L13.1314 26.5006C12.5065 27.2084 11.4934 27.2084 10.8686 26.5005Z" fill="#666666"/>
+                            </svg>
+
+                            Mark as done
+                        </div>
+
+                        <div class="c-task-info">
+                            <div class="c-task-content">
+                                Sales Dealine for Special Section: Best of Today.
+                            </div>
+
+                            <div class="c-task-date">
+                                <span>Due: </span>
+                                <span>9/23/22</span>
+                            </div>
+                        </div>
+
+                        <div class="c-task-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="22" viewBox="0 0 19 22" fill="none">
+                              <path d="M17.8545 16.893L12.7784 10.9149L17.6438 4.67788C18.2408 3.91255 18.2198 2.69698 17.5969 1.96342L16.4689 0.634963C15.846 -0.0985932 14.8567 -0.0728208 14.2597 0.692515L9.39433 6.92955L4.31822 0.951495C3.69534 0.217939 2.70602 0.243712 2.10901 1.00905L1.02782 2.39505C0.430802 3.16039 0.451777 4.37596 1.07466 5.10952L6.15077 11.0876L1.28543 17.3246C0.688417 18.0899 0.709392 19.3055 1.33227 20.0391L2.4603 21.3675C3.08318 22.1011 4.07249 22.0753 4.66951 21.31L9.53485 15.0729L14.611 21.051C15.2338 21.7845 16.2232 21.7588 16.8202 20.9934L17.9014 19.6074C18.4984 18.8421 18.4774 17.6265 17.8545 16.893Z" fill="#21215F"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="c-task-item">
+                        <div class="c-task-mark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" viewBox="0 0 32 28" fill="none">
+                              <path d="M10.8686 26.5005L0.46861 14.7196C-0.156203 14.0118 -0.156203 12.8642 0.46861 12.1563L2.7313 9.59313C3.35611 8.88528 4.36924 8.88528 4.99405 9.59313L12 17.5293L27.0059 0.530835C27.6308 -0.176945 28.6439 -0.176945 29.2687 0.530835L31.5314 3.09405C32.1562 3.80183 32.1562 4.94941 31.5314 5.65726L13.1314 26.5006C12.5065 27.2084 11.4934 27.2084 10.8686 26.5005Z" fill="#666666"/>
+                            </svg>
+
+                            Mark as done
+                        </div>
+
+                        <div class="c-task-info">
+                            <div class="c-task-content">
+                                Copy Deadline for Times Leader 7/15/22 Edition.
+                            </div>
+
+                            <div class="c-task-date">
+                                <span>Due: </span>
+                                <span>9/20/22</span>
+                            </div>
+                        </div>
+
+                        <div class="c-task-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="22" viewBox="0 0 19 22" fill="none">
+                              <path d="M17.8545 16.893L12.7784 10.9149L17.6438 4.67788C18.2408 3.91255 18.2198 2.69698 17.5969 1.96342L16.4689 0.634963C15.846 -0.0985932 14.8567 -0.0728208 14.2597 0.692515L9.39433 6.92955L4.31822 0.951495C3.69534 0.217939 2.70602 0.243712 2.10901 1.00905L1.02782 2.39505C0.430802 3.16039 0.451777 4.37596 1.07466 5.10952L6.15077 11.0876L1.28543 17.3246C0.688417 18.0899 0.709392 19.3055 1.33227 20.0391L2.4603 21.3675C3.08318 22.1011 4.07249 22.0753 4.66951 21.31L9.53485 15.0729L14.611 21.051C15.2338 21.7845 16.2232 21.7588 16.8202 20.9934L17.9014 19.6074C18.4984 18.8421 18.4774 17.6265 17.8545 16.893Z" fill="#21215F"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-task-all">View All Task</div>
+
+                <div class="c-task-weekly-title">Weekly Progress</div>
+
+                <div class="c-task-weekly-hr"></div>
+
+                <div class="c-task-progress">
+                    <div class="c-task-chat">
+                        <div class="c-task-chat-item c-task-progress-1">
+                            <div class="c-task-progress-1-active"></div>
+                        </div>
+
+                        <div class="c-task-chat-item c-task-progress-2">
+                            <div class="c-task-progress-2-active"></div>
+                        </div>
+
+                        <div class="c-task-chat-item c-task-progress-3">
+                            <div class="c-task-progress-3-active"></div>
+                        </div>
+
+                        <div class="c-task-chat-item c-task-progress-4">
+                            <div class="c-task-progress-4-active"></div>
+                        </div>
+
+                        <div class="c-task-chat-item c-task-progress-5">
+                            <div class="c-task-progress-5-active"></div>
+                        </div>
+                    </div>
+
+                    <div class="c-task-chat-desc">
+                        <div class="c-task-chat-desc-item">
+                            <div class="c-task-chat-desc-item-1-color"></div>
+
+                            <div>85% - Proposal Responses</div>
+                        </div>
+
+                        <div class="c-task-chat-desc-item">
+                            <div class="c-task-chat-desc-item-2-color"></div>
+
+                            <div>65% - Sales Dealines Met</div>
+                        </div>
+
+                        <div class="c-task-chat-desc-item">
+                            <div class="c-task-chat-desc-item-3-color"></div>
+
+                            <div>23% -</div>
+                        </div>
+
+                        <div class="c-task-chat-desc-item">
+                            <div class="c-task-chat-desc-item-4-color"></div>
+
+                            <div>15% -</div>
+                        </div>
+
+                        <div class="c-task-chat-desc-item">
+                            <div class="c-task-chat-desc-item-5-color"></div>
+
+                            <div>20% -</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog" style="visibility: visible;">
+        <div class="modal-dialog" style="position: relative; overflow: hidden; height: 430px;">
+            <img src="{% static "svg/advertising_modal_img.svg" %}" class="advertising-modal-img">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 100%; transform:none; top: 0; left: 0;">
+                <div class="modal-notice">
+                    Get Started With Something New!
+                </div>
+
+                <div class="modal-body advertising-modal-body" style="z-index: 1">
+                    <div class="anim-btn text-center">
+                        <a href="{% url 'create_classified_ad' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                  <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z" fill="#F26722"/>
+                                </svg>
+                                New Ad Campaign
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="anim-btn text-center mt-2">
+                        <a href="{% url 'create_advertiser' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                  <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z" fill="#F26722"/>
+                                </svg>
+                                New Advertiser
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="anim-btn text-center mt-2">
+                        <a href="{% url 'create_classified_rate' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z" fill="#F26722"/>
+                                </svg>
+                                New Ad Rate
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="anim-btn text-center mt-2">
+                        <a href="{% url 'create_salesperson' %}">
+                            <div class="c-new-ad">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M14.8571 6.28571H9.71429V1.14286C9.71429 0.511786 9.2025 0 8.57143 0H7.42857C6.7975 0 6.28571 0.511786 6.28571 1.14286V6.28571H1.14286C0.511786 6.28571 0 6.7975 0 7.42857V8.57143C0 9.2025 0.511786 9.71429 1.14286 9.71429H6.28571V14.8571C6.28571 15.4882 6.7975 16 7.42857 16H8.57143C9.2025 16 9.71429 15.4882 9.71429 14.8571V9.71429H14.8571C15.4882 9.71429 16 9.2025 16 8.57143V7.42857C16 6.7975 15.4882 6.28571 14.8571 6.28571Z" fill="#F26722"/>
+                                </svg>
+                                New Ad Order
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var salesperson_id = "{{ salesperson_id }}";
+
+</script>
+{% endblock %}

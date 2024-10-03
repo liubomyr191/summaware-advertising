@@ -1,0 +1,77 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <a href="{% url 'create_service_charge' %}"><button type="button" class="btn btn-default btn-md"><i
+                    class="fa fa-plus"></i> Create Service Charge</button></a>
+        <div class="row">
+            <div class="col-md-6">
+                {% if charges %}
+                    <h4>Service Charges</h4>
+                    <table class="table table-hover table-striped" id="service_charges"> 
+                        <thead>
+                            <tr>
+                                <th>Enabled?</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for charge in charges %}
+                            <tr data-row-id = "{{ charge.id }}">
+                                <td><input type="checkbox" {% if charge.enabled %} checked {% endif %}/></td>
+                                <td>{{ charge.name }}</a></td>
+                                <td>$ {{ charge.amount }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No Service Charges</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    var table = document.querySelector('#service_charges');
+    var rows = table.tBodies[0].rows;
+
+    Array.from(rows).forEach((row, rowIndex) => {
+        var cells = [...row.cells];        
+        var checkbox = cells[0].children[0];
+
+        checkbox.addEventListener('click', (event) => {
+            fetch("{% url 'list_service_charges' %}", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Accept": "application/json",
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            "charge_id": row.dataset["rowId"],
+                            "enabled": event.target.checked
+                        })
+                    })
+        })
+    })
+</script>
+{% endblock %}

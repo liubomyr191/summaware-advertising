@@ -1,0 +1,36 @@
+<section id="edit_location_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Location</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit_location_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div style="padding: 15px">
+                            <div class="form-group">
+                                <label for="editLocationCode">Location Code</label>
+                                <input type="text" name="editLocationCode" id="editLocationCode" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="editDescription">Description</label>
+                                <input type="text" name="editDescription" id="editDescription" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="editPC">PC</label>
+                                <input type="text" name="editPC" id="editPC" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-md btn-primary" value="submit" id="edit_location_submit">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,26 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <h2>Edit Ad Type</h2>
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ form.as_p }}</p>
+            <button type="submit">Save</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+<div id="editAdType" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editAdType').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">Edit Ad Type</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form method="post" id="edit-adtype-form">
+    <div class="form-container d-flex justify-content-center">
+      <div class="form-group w-50 text-center">
+        <label for="" class="">Name:</label>
+        <input type="text" class="form-control" name="name" id="edit-adtype-name" />
+      </div>
+    </div>
+
+    <div class="form-container d-flex justify-content-center mb-3">
+      <div class="form-group w-50 text-center">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="" class="">Code:</label>
+            <input type="text" class="form-control" name="code" id="edit-adtype-code" />
+          </div>
+          <div class="col-md-6">
+            <label for="" class="">Default Rate:</label>
+            <select name="default_rate" id="edit-adtype-default-rate" class="form-select">
+              {% for rate in rates %}
+                <option value="{{rate.id}}">{{rate.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    {% include "components/item_select.html" with item_type="publications" available_items=publications id="edit-adtype" %}
+
+    <div class="btn-container text-center mt-5">
+      <button class="btn btn-danger" id="adminadtype-active" onclick="saveChange(2)">Deactivate</button>
+      <button class="btn btn-gray" onclick="saveChange(1)">Archive</button>
+      <button class="btn btn-secondary" onclick="saveChange(3)">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function saveChange(index) {
+      let form = $('#edit-adtype-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      data['status'] = localStorage.getItem('edit-adtype-status');
+      data['active'] = localStorage.getItem('edit-adtype-active') == 'true' ? true : false;
+      if(index == 1) {
+        data['status'] = 2;
+      } else if(index == 2) {
+        data['active'] = !data['active'];
+      }
+      for (const [key, value] of formData) {
+        data[key] = value;
+      }
+      var selectElement = document.querySelector('.edit-adtype-lstBox2');
+      var values = [];
+      if(data['status'] == null) data['status'] = 1;
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['publication_id'] = JSON.stringify(values);
+      data['id'] = localStorage.getItem('edit-adtype-id');
+      fetch("ads/edit-adtype", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Accept": "application/json",
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then((response) => {
+        window.location.href = `{% url 'adminAds' %}`
+        if(response.success) {
+          $.toastr.success('AdType updated succesfully');
+        }
+        else {
+          $.toastr.error('Updating AdType failed');
+        }
+      })
+    };
+  </script>
+</div>

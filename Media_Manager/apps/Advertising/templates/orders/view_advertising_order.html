@@ -1,0 +1,293 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/orders/ViewAdOrder.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/orders/OrderDetails.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <div class="content-box">
+                <div id="header_box">
+                    <div id="header_nav">
+                        <button id="nav_left">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                        <div id="current_page">Order Details</div>
+                        <button id="nav_right">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div id="header_nav_buttons">
+                        <button class="button_nav active" id="order_details">Order Details</button>
+                        <button class="button_nav" id="insertions">Insertions</button>
+                        <button class="button_nav" id="history_logs">History/Logs</button>
+                    </div>
+                </div>
+                <div id="details_page">
+                    <div class="content-row">
+                        <div class="column" id="left-side">
+                            <div id="name_buttons">
+                                <div id="order_name">{{ order.name }}</div> - <span id="order_status">{{ order.status|title }}</span>
+                                <div id="button_group">
+                                    <button class="button" id="edit_btn">
+                                        <a href="{% url 'edit_order' order.id %}"><i class="fa fa-pencil"></i> Edit</a></button>
+                                    <button class="button"id="cancel_btn"><i class="fa fa-ban"></i> Cancel</button>
+                                    <button class="button" id="redo_btn"><i class="fa fa-rotate-right"></i> Re-run</button>
+                                </div>
+                            </div>
+    
+                            <div id="account_details">
+                                Account: 
+                                <a href="{% url 'advertising_account' order.account.id %}">
+                                    <span id="account_name"><u>{{ order.account.name }}</u></span>
+                                </a>
+                            </div>
+                            <div id="submitter_details">Submitted by: <span id="submitter_name">{{ order.submitter }}</span></div>
+    
+                            <div id="total_price">{{ order.total_price }}</div>
+                            <section id="technical_details">
+                                <div id="ad_type">
+                                    <p class="section-name">Ad Type: </p>
+                                    {% if order.ad_type %}
+                                        <p>{{ order.ad_type.name }}</p>
+                                    {% else %}
+                                        <p>None</p>
+                                    {% endif %}
+                                </div>
+                                <div id="salesperson">
+                                    <p class="section-name">Sales Person: </p>
+                                    {% if order.salesperson %}
+                                        <p>{{ order.salesperson.first_name }} {{ order.salesperson.last_name }}</p>
+                                    {% else %}
+                                        <p>None</p>
+                                    {% endif %}
+                                </div>
+                                <div id="size">
+                                    <p class="section-name">Size: </p>
+                                    {% if order.size %}
+                                        <p>{{ order.size }}</p>
+                                    {% else %}
+                                        <p>None</p>
+                                    {% endif %}
+                                </div>
+                            </section>
+                            <section id="tearsheet_section">
+                                <label class="section-name">Tearsheet ad?</label>
+                                {% if order.tearsheets %}
+                                    <p>Yes</p>
+                                {% else %}
+                                    <p>No</p>
+                                {% endif %}
+                            </section>
+                            <section id="dates_section">
+                                <div id="run_dates">
+                                    <label class="section-name">Run Dates: </label>
+                                    <p>{{ order.start_date }} - {{ order.end_date }}</p>
+                                </div>
+                                <div id="bill_date_section">
+                                    <label class="section-name">Bill Date: </label>
+                                    <p>{{ order.bill_date }}</p>
+                                </div>
+                            </section>
+                            <section id="notes_section">
+                                <label class="section-name">Notes: </label>
+                                {% comment %} 
+                                    TODO - on keyup, update the notes for the order in the database 
+                                {% endcomment %}
+                                <textarea cols="30" rows="5">
+                                    {{ order.notes }}
+                                </textarea>
+                            </section>
+                        </div>
+                        <div class="column" id="right-side">
+                            <section>
+                                <h2 class="section-title">Rates</h2>
+                                <table id="publication_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Publication</th>
+                                            <th>Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in publicationRateList %}
+                                        <tr>
+                                            <td><a href="{% url 'view_publication' row.publication.id %}">{{ row.publication.name }}</a></td>
+                                            <td><a href="{% url 'view_rate' row.rate.id %}">{{ row.rate.name }}</a></td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan='2'>Nothing found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </section>
+                            <section>
+                                <h2 class="section-title">Color</h2>
+                                <table id="publication_color_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Publication</th>
+                                            <th>Color</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in orderColorList %}
+                                        <tr>
+                                            <td><a href="{% url 'view_publication' row.publication.id %}">{{ row.publication.name }}</a></td>
+                                            <td>{{ row.colorType }}</td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan='2'>No colors selected</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div id="insertions_page">
+                    {% comment %} TODO - Show each insertion on a calendar {% endcomment %}
+                    {% comment %} TODO - Be able to move insertions to different dates {% endcomment %}
+                    <div id="insertion_contents">
+                        <div id="insertion_search">
+                            <input type="text" id="insertion_search_input" placeholder="Search ..."/>
+                        </div>
+                        <div id="insertion_table_details" class="data-table-details">
+                            <table id="insertion_table" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Publication</th>
+                                        <th>Status</th>
+                                        <th>Run Date</th>
+                                        <th>Weekday</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for insertion in insertions %}
+                                        <tr data-insertion-id="{{ insertion.id }}">
+                                            <td>{{ insertion.id }}</td>
+                                            <td>{{ insertion.publication.name }}</td>
+                                            <td>{{ insertion.status }}</td>
+                                            <td>{{ insertion.date }}</td>
+                                            <td>{{ insertion.weekday|title }}</td>
+                                            <td>
+                                                <i class="fa fa-pencil edit-insertion-edit_btn"></i>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="history_page">
+                    <div id="history_contents">
+                        <div id="history_search">
+                            <input type="text" id="history_search_input" placeholder="Search ..."/>
+                        </div>
+                        <div id="history_table_details" class="data-table-details">
+                            <table id="history_table" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>User</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for logEntry in history %}
+                                        <tr>
+                                            <td>{{ logEntry.detail }}</td>
+                                            <td>{{ logEntry.submitter }}</td>
+                                            <td>{{ logEntry.timestamp }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                {% comment %} <div id="insertions" class="tab-pane fade">
+                {% if insertions %}
+                    <br>
+                    <h3>Insertions</h3>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Publication</th>
+                                <th>Status</th>
+                                <th>Run Date</th>
+                                <th>Weekday</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for insertion in insertions %}
+                                <tr>
+                                    <td>{{ insertion.id }}</td>
+                                    <td>{{ insertion.publication.name }}</td>
+                                    <td>{{ insertion.status|title }}</td>
+                                    <td>{{ insertion.date }}</td>
+                                    <td>{{ insertion.weekday|title }}</td>
+                                    <td><a href="{% url 'edit_insertion' order.id insertion.id %}">Edit</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div id="history" class="tab-pane fade">
+                {% if history %}
+                <br>
+                <h3>History</h3>
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>User</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in history %}
+                        <tr>
+                            <td>{{ line.detail }}</td>
+                            <td>{{ line.submitter }}</td>
+                            <td>{{ line.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div> {% endcomment %}
+        {% endif %}
+    </div>
+{% endblock %}

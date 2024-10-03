@@ -1,0 +1,200 @@
+<style>
+    .switch2.custom input.check-toggle-round-flat + label:after {
+        width: 60px;
+    }
+</style>
+<div id="new_rate_3_computation_words" class="modal modal-md my-modal chase-modal">
+    <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;">
+        <span class="close" onclick="document.getElementById('new_rate_3_computation_words').style.display='none'">&times;</span>
+        <br>  
+        <div class="heading-container text-center mb-5">
+            <h3 class="heading">New Rate</h3>
+        </div>      
+        <div class="progress-icons">
+        <div id="progress_0" class="progress-active"></div>
+        <div id="progress_1" class="progress-active"></div>
+        <div id="progress_2" class="progress-active"></div>
+        </div>
+        <br>        
+        <h3 class="heading text-center" style="margin-bottom: 0px;">
+            <a style="cursor: pointer;" onclick="document.getElementById('new_rate_3_computation_words').style.display='none';document.getElementById('new_rate_3_computation').style.display='block';">Words</a>
+        </h3>    
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <hr style="margin:0px">
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <br>
+        <div class="">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="col-md-5">                          
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong>Number of insertions:</strong>
+                            </div>
+                        </div>                           
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for=""><strong>Min:</strong></label>
+                                    <input name="" id="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for=""><strong>Max:</strong></label>
+                                    <input name="" id="" class="form-control">
+                                </div>
+                            </div>
+                        </div> 
+                        <br>  
+                        <br>                          
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong>Number of lines for an ad(optional):</strong>
+                            </div>
+                        </div>                           
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for=""><strong>Min:</strong></label>
+                                    <input name="" id="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for=""><strong>Max:</strong></label>
+                                    <input name="" id="" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">  
+                        <div class="">
+                            <div class="col-md-12">
+                                <div class="form-group mb-4">
+                                    <div class="switch2 custom" style="width: 120px;">
+                                        <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                        <label for="cc-toggle"></label>                        
+                                        <span class="active">On</span>
+                                        <span class="deactivate">Off</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <br>  
+                        <br>
+                        <br>  
+                        <br> 
+                        <br>  
+                        <br> 
+                        <div class="">
+                            <div class="col-md-12">
+                                <div class="form-group mb-4">
+                                    <div class="switch2 custom" style="width: 120px;">
+                                        <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                        <label for="cc-toggle"></label>                        
+                                        <span class="active">On</span>
+                                        <span class="deactivate">Off</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                          
+                    <div class="col-md-5">
+                        <div class="">
+                            <div class="col-md-12">
+                                <table>
+                                    <tr>
+                                        <td width="30%">
+                                            <div class="form-group mb-4">
+                                                <label for=""><strong>Charge for:</strong></label> 
+                                                <br>           
+                                                <div class="switch2">
+                                                    <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                                                    <label for="cc-toggle"></label>
+                                                    <span class="deactivate">All</span>
+                                                    <span class="active">Free After</span>
+                                                </div>
+                                            </div>                                        
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td width="50%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">
+                                            <div class="form-group mb-4">
+                                                <label for=""><strong>Best cost:</strong></label> 
+                                                <input id="" class="form-control" placeholder="$ 0.00" />
+                                            </div>                                  
+                                        </td>
+                                        <td width="20%"></td>
+                                        <td width="50%">
+                                            <div class="form-group mb-4">
+                                                <div class="form-group mb-4">
+                                                    <label for=""><strong>Number of lines allowed for starting charge:</strong></label> 
+                                                    <input id="" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td colspan="3"><label for=""><strong>Additional cost(optional):</strong></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">
+                                            <label for=""><strong>Charge:</strong></label>                                        
+                                        </td>
+                                        <td width="20%">
+                                            
+                                        </td>
+                                        <td width="50%">
+                                            <label for=""><strong>No. of extra Lines:</strong></label> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group mb-4">
+                                                <input id="" class="form-control" placeholder="$ 0.00" />
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            For
+                                        </td>
+                                        <td>
+                                            <div class="form-group mb-4">                                    
+                                                <input id="" class="form-control" style="width:80px;"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <a style="cursor: pointer;">Advanced Options <i class="fa fa-chevron-down"></i></a>
+                    </div>
+                </div>
+                <div class="row btn-container">
+                    <div class="col-md-6 text-left">
+                        <button class="btn px-5 btn-gray" onclick="document.getElementById('new_rate_2_date').style.display='block';document.getElementById('new_rate_3_computation_words').style.display='none';"> Previous  </button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_3_computation_words').style.display='none';document.getElementById('new_rate_4_final').style.display='block';"> Create Rate  </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

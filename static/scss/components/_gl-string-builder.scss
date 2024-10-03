@@ -1,0 +1,85 @@
+.gl-code-builder {
+  .available-codes {
+    min-height: 60px;
+    padding: 20px 20px 20px 0;
+  }
+
+  .selected-codes {
+    background-color: $white;
+    border: 1px solid $black;
+    min-height: 60px;
+    padding: 20px;
+    border-radius: 7px;
+
+    .btn-custom {
+      position: relative;
+
+      &:after {
+        content: '\2212';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 20px;
+        height: 20px;
+        background-color: $white;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: 700;
+        color: $primary;
+        box-shadow: $shadow;
+      }
+      &:not(:last-of-type) {
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .btn-custom {
+    position: relative;
+
+    &#GL {
+      &:after {
+        content: '';
+        display: none;
+      }
+    }
+    &:after {
+      content: '\002B';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background-color: $white;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary;
+      box-shadow: $shadow;
+    }
+    &:not(:last-of-type) {
+      margin-right: 15px;
+    }
+  }
+
+  .selected-fields-container {
+    .text-container {
+      p {
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 14.4px;
+      }
+    }
+  }
+
+  .active-fields {
+    label {
+      text-transform: capitalize;
+    }
+
+    input {
+      border: 1px solid $black;
+      box-shadow: $shadow;
+    }
+  }
+}

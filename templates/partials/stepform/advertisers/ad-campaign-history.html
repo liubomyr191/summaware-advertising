@@ -1,0 +1,111 @@
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Ad Campaign History</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="btn-search-container">
+      <form id="filterForm" method="GET">
+        <input type="hidden" name="advertiserId" value="{{ id }}">
+        <div class="row mgb-1">
+          <div class="col-lg-8 col-md-12">
+            <div class="btn-container">
+              <button type="button" class="btn btn-secondary" onclick="openFilters()"><i class="fa fa-solid fa-plus"></i> Filters</button>
+              <div id="filters" class="bg-secondary-alpha mgt-1" style="display: none;">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="date">Date:</label>
+                      <select class="form-control" name="date" id="date">
+                        <option value="Select">Select</option>
+                        <option value="Most Recent" {% if date_filter == 'Most Recent' %}selected{% endif %}>Most Recent</option>
+                        <option value="Oldest" {% if date_filter == 'Oldest' %}selected{% endif %}>Oldest</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="creator">Creator:</label>
+                      <input type="text" class="form-control" name="creator" id="creator" value="{{ creator_filter }}">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="format">Format:</label>
+                      <input type="text" class="form-control" name="format" id="format" value="{{ format_filter }}">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="pricing">Pricing:</label>
+                      <select class="form-control" name="pricing" id="pricing">
+                        <option value="Select">Select</option>
+                        <option value="Most Expensive" {% if pricing_filter == 'Most Expensive' %}selected{% endif %}>Most Expensive</option>
+                        <option value="Least Expensive" {% if pricing_filter == 'Least Expensive' %}selected{% endif %}>Least Expensive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 search-container">
+            <div class="form-group has-search">
+              <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ search_query }}" />
+              <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            <a href="?advertiserId={{ id }}" class="btn btn-secondary">Reset Filters</a>
+          </div>
+        </div>
+      </form>
+      <hr />
+    </div>
+
+    <div class="table-container mt-3">
+      <table class="table">
+        <thead>
+          <th scope="col">Campaign ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Date Ordered</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Created By</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Format</th>
+        </thead>
+        <tbody>
+          {% for campaign in adCampaigns %}
+          <tr>
+            <td>{{ campaign.id }}</td>
+            <td><a href="">{{ campaign.campaign_name }}</a></td>
+            <td>{{ campaign.created_date }}</td>
+            <td>{{ campaign.start_date }}</td>
+            <td>{{ campaign.end_date }}</td>
+            <td>{{ campaign.sales_contact }}</td>
+            <td>${{ campaign.total_campaign }}</td>
+            <td>{{ campaign.campaign_detail }}</td> <!-- Adjust the format field as needed -->
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openFilters() {
+    var filtersContainer = document.getElementById('filters');
+    if (filtersContainer.style.display === 'none' || filtersContainer.style.display === '') {
+      filtersContainer.style.display = 'block';
+    } else {
+      filtersContainer.style.display = 'none';
+    }
+  }
+</script>

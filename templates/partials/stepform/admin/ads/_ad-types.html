@@ -1,0 +1,230 @@
+{% load static %}
+{% include 'templates/partials/modal/admin/ads/_edit-ad-type.html'%}
+<div class="multisteps-form__panel p-4 rounded js-active" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Ad Types</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container d-flex justify-content-end mb-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="new-ad-type-container">
+        <div class="heading-container text-center w-50 m-auto">
+          <h3 class="heading secondary">New Ad Type</h3>
+          <hr />
+        </div>
+
+        <div class="">
+          <div class="row">
+            <form method="post" id="new-adminadtype-form">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="">Name:</label>
+                <input type="text" class="form-control" name="name" id="" />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Code:</label>
+                    <input type="text" class="form-control" name="code" id="" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Default Rates:</label>
+                    <select type="text" class="form-control" name="default_rate" id="">
+                      {% for rate in rates %}
+                        <option value="{{rate.id}}">{{rate.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+            <div class="col-md-7">{% include "components/item_select.html" with item_type="publications" available_items=publications id="new-adtype" %}</div>
+          </div>
+
+          <div class="btn-container text-center mt-5">
+            <button class="btn btn-secondary" onclick="create()">Create</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ads-table-container mt-5">
+        <div class="">
+          <div class="row mb-2">
+            <div class="col-md-6">
+              <div class="filter-container d-flex">
+                <div class="filters ps-3 d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+              </div>
+            </div>
+            <div class="col-md-6 custom-search-container">
+              <div class="form-group has-search">
+                <input type="text" class="form-control" placeholder="Search..." />
+                <span class="fa fa-search form-control-feedback"></span>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+        </div>
+
+        <div class="table-container mt-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID #</th>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Publications</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created By</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for adtype in adtypes %}
+              <tr>
+                <td>{{adtype.id}}</td>
+                <td>{{adtype.name}}</td>
+                <td>{{adtype.code}}</td>
+                <td>
+                  {% for pub_adtype in pub_adtypes %}
+                    {% if pub_adtype.adminadtype_id == adtype.id %}
+                      {% for publication in publications %}
+                        {% if publication.id == pub_adtype.publication_id %}
+                          {% if forloop.counter <= 2 %}
+                            {{ publication.name }},
+                          {% else %}
+                            ...
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                </td>
+                <td>
+                  {% if adtype.active %}
+                    Active
+                  {% else %}
+                    Deactivate
+                  {% endif %}
+                </td>
+                <td>Kyle Jernigan</td>
+                <td>
+                  <span class="pe-3 color-secondary" onclick="editAdType(`{{ adtype.id }}`)"><i class="fa fa-solid fa-pencil"></i></span>
+                  <span class="color-secondary"><i class="fa fa-solid fa-envelope-open"></i></span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function create() {
+      let form = $('#new-adminadtype-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      var selectElement = document.getElementById('new-adtype-lstBox2');
+      var values = [];
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['publication_id'] = JSON.stringify(values);
+      fetch("ads/create-adtype", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then((response) => {
+        // window.location.href = `{% url 'adminAds' %}`
+        if(response.success) {
+          $.toastr.success('New AdType created succesfully');
+        }
+        else {
+          $.toastr.error('Creating AdType failed');
+        }
+      })
+    }
+    function editAdType(id) {
+      document.getElementById('editAdType').style.cssText = 'display: block; opacity: 1; visibility: visible;'
+      var selectElement = document.getElementById('edit-adtype-lstBox1');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      var selectElement = document.getElementById('edit-adtype-lstBox2');
+      while (selectElement.firstChild) {
+          selectElement.removeChild(selectElement.firstChild);
+      }
+      let data = {'id': id}
+      fetch("ads/adtype-detail", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // parse the JSON from the response
+      })
+      .then((data) => {
+        var adtype = JSON.parse(data['adtype']);
+        adtype = adtype[0].fields;
+        var assigned_publications = data['assigned_publications'];
+        var unsigned_publications = data['unsigned_publications'];
+        localStorage.setItem('edit-adtype-id', data['id']);
+        localStorage.setItem('edit-adtype-active', adtype.active);
+        localStorage.setItem('edit-adtype-status', adtype.status);
+        document.getElementById('edit-adtype-name').value = adtype.name;
+        document.getElementById('edit-adtype-code').value = adtype.code;
+        document.getElementById('edit-adtype-default-rate').value = adtype.default_rate;
+        document.getElementById('adminadtype-active').textContent = adtype.active == true ? 'Deactivate' : 'Active';
+        var select = document.getElementById("edit-adtype-lstBox1");
+        unsigned_publications.forEach(function(item) {
+          var option = new Option(item.name, item.id);
+          select.add(option);
+        });
+        var select = document.getElementById("edit-adtype-lstBox2");
+        assigned_publications.forEach(function(item) {
+          var option = new Option(item.name, item.id);
+          select.add(option);
+        });
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+  </script>
+</div>
+<script src="{% static "admin/js/item-select.js" %}"></script>

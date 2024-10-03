@@ -1,0 +1,49 @@
+<div id="editBillingTerm" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editBillingTerm').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">Edit Billing Term</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+
+    <div class="form-container mb-5">
+      <div class="form-group w-50 m-auto mb-5">
+        <label for="billing-term-name">Name:</label>
+        <input type="text" name="billing-term-name" id="" class="form-control" />
+      </div>
+
+      <div class="d-flex w-75 m-auto">
+        <div class="form-group w-75 pe-md-3">
+          <div class="form-group">
+            <label for="due">Due:</label>
+            <select name="due" id="" class="form-select"></select>
+          </div>
+        </div>
+
+        <div class="form-group w-25">
+          <label for="days">Day(s):</label>
+          <input type="text" name="days" id="" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="early-payment-discount text-center mgb-3">
+      <p>Early Payment Discount:</p>
+      <div class="custom-switch-container">
+        <div class="switch-field center-block">
+          <input type="radio" id="0001-edit-early-pay-radio-one" name="0001-edit-early-pay-switch-one" value="yes" checked />
+          <label for="0001-edit-early-pay-radio-one">Yes</label>
+          <input type="radio" id="0001-edit-early-pay-radio-two" name="0001-edit-early-pay-switch-one" value="no" />
+          <label for="0001-edit-early-pay-radio-two">No</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-danger">Deactivate</button>
+      <button class="btn btn-gray">Archive</button>
+      <button class="btn btn-secondary">Save Changes</button>
+    </div>
+  </div>
+</div>

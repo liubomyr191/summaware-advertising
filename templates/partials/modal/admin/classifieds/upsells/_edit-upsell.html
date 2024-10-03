@@ -1,0 +1,58 @@
+<div id="0001-manageUpsell" class="modal my-modal">
+  <div class="custom-modal-content w-75 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('0001-manageUpsell').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mgb-3">
+      <h3 class="heading">Manage Upsell</h3>
+      <hr class="w50 m-auto" />
+      <p>Change any of the upsell information below<br />to meet your needs!</p>
+    </div>
+
+    <div class="mgb-3">
+      <div class="form-group w50 center-block">
+        <label for="upsell-name">Upsell Name:</label>
+        <input type="text" name="" id="upsell-name" class="form-control" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="form-group">
+          <label for="upsell-desc">Description:</label>
+          <textarea name="" id="upsell-desc" class="form-control" rows="10"></textarea>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <label for="assigned-rate">Assigned Rate:</label>
+        <div class="upsell-switch-container mgb-100">
+          <div class="switch-field">
+            <input type="radio" id="0001-rate-radio-one" name="0001-rate-switch-one" value="use-default" checked />
+            <label for="0001-rate-radio-one">Use Default</label>
+            <input type="radio" id="0001-rate-radio-two" name="0001-rate-switch-one" value="override" />
+            <label for="0001-rate-radio-two">Override</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <label for="assigned-gl">Assigned GL:</label>
+            <div class="upsell-switch-container">
+              <div class="switch-field">
+                <input type="radio" id="0001-GL-radio-one" name="0001-GL-switch-one" value="use-default" checked />
+                <label for="0001-GL-radio-one">Use Default</label>
+                <input type="radio" id="0001-GL-radio-two" name="0001-GL-switch-one" value="override" />
+                <label for="0001-GL-radio-two">Override</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <div class="form-group">
+              <label for="available-gl-code">Available GL Codes:</label>
+              <select name="" id="available-gl-code" class="form-control"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,114 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#active">Active Orders</a></li>
+            <li><a data-toggle="tab" href="#inactive">Inactive/Previous Orders</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="active" class="tab-pane fade in active">
+                {% if active_orders %}
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Rate</th>
+                                <th>Ad Type</th>
+                                <th>Account</th>
+                                <th>Submitter</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in active_orders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    {% if order.status == 'Active' %}
+                                            <td style="color:green">{{ order.status }}</td>
+                                    {% elif order.status == 'Inactive' %}
+                                        <td style="color:red">{{ order.status }}</td>
+                                    {% else %}
+                                        <td style="color:orange">{{ order.status }}</td>
+                                    {% endif %}
+                                    <td>{{ order.ad_rate.name }}</a></td>
+                                    <td>{{ order.ad_type.name }}</td>
+                                    <td>{{ order.account.name }}</td>
+                                    <td>{{ order.submitter }}</td>
+                                    <td>{{ order.start_date}}</td>
+                                    <td>{{ order.end_date }}</td>
+                                    <td>{{ order.total_price }}</td>
+                                    <td><a href="{% url 'view_order' order.id %}"><i class="fa fa-eye" ></i> View</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="alert">There are no active orders.</div>
+                {% endif %}
+            </div>
+            <div id="inactive" class="tab-pane fade">
+                {% if inactive_orders %}
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Rate</th>
+                            <th>Ad Type</th>
+                            <th>Submitter</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in inactive_orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                {% if order.status == 'Active' %}
+                                            <td style="color:green">{{ order.status }}</td>
+                                    {% elif order.status == 'Inactive' %}
+                                        <td style="color:red">{{ order.status }}</td>
+                                    {% else %}
+                                        <td style="color:orange">{{ order.status }}</td>
+                                    {% endif %}
+                                <td>{{ order.ad_rate.name }}</a></td>
+                                <td>{{ order.ad_type.name }}</td>
+                                <td>{{ order.submitter }}</td>
+                                <td>{{ order.start_date}}</td>
+                                <td>{{ order.end_date }}</td>
+                                <td>{{ order.total_price }}</td>
+                                <td><a href="{% url 'view_order' order.id %}"><i class="fa fa-eye" ></i> View</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <div class="alert">There are no inactive orders.</div>
+                {% endif %}
+            </div>
+        </div>
+            
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/classifications/CreateClassification.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifications/EditClassification.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <h2>All Classifications</h2><br>
+
+            {% include 'snippets/classifieds/CreateClassificationModal.html' %}
+            {% include 'snippets/classifieds/EditClassificationModal.html' %}
+
+            <br /><br />
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#active_classifications">Active</a></li>
+                <li><a data-toggle="tab" href="#inactive_classifications">Inactive</a></li>
+            </ul>
+
+            <br /><br />
+
+            <div class="tab-content">
+                <div id="active_classifications" class="tab-pane fade in active">
+                    <table class="table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for classification in activeClassificationList %}
+                            <tr data-classification-id="{{ classification.id }}">
+                                <td>{{ classification.id }}</td>
+                                <td>{{ classification.code }}</td>
+                                <td>{{ classification.name }}</td>
+                                <td><button class="btn btn-default btn-sm edit-classification-btn"><i class="fa fa-pencil"></i></button></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">No classifications found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="inactive_classifications" class="tab-pane fade in">
+                    <table class="table table-hover table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for classification in inactiveClassificationList %}
+                            <tr data-classification-id="{{ classification.id }}">
+                                <td>{{ classification.id }}</td>
+                                <td>{{ classification.code }}</td>
+                                <td>{{ classification.name }}</td>
+                                <td><button class="btn btn-default btn-sm edit-classification-btn"><i class="fa fa-pencil"></i></button></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">No classifications found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

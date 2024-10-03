@@ -1,0 +1,170 @@
+      {% extends "templates/base.html" %}
+      {% block page-header %}<i class="fa fa-line-chart"></i> Business Intelligence{% if logo_url != '' %}<img src="{{logo_url}}" style="height:50px;width:75px;margin-left:10px;"></img>{% endif %}{% endblock %}
+
+      {% block breadcrumb %}
+       <li class="active"><a href="{{url}}/bi">BI</a></li>
+      <li class="active">{{section}}</li>
+      {% endblock %}
+      {% block content %}
+      <div style="margin-bottom:10px; margin-top:10px;">
+        <a href="/bi/"><button>Back</button></a>
+      </div>
+      {% if access == "deny" %}
+      <div id="message">{{ message }}</div>
+      {% else %}
+          <div class="box box-primary">
+            <!-- Box header -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Dashboards</h3>
+              <div class="box-tools pull-right">
+                <div class="has-feedback">
+                  <form method="get" action="/bi/{{section}}/filter">{% csrf_token %}
+                    <input id="search_bar" type="text" class="form-control input-sm" placeholder="Search Dashboards" name="search">
+                    <span id="search_button" class="glyphicon glyphicon-search form-control-feedback"></span>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div id="mobile_search_bar" style="display:none;">
+              <form method="get" action="/bi/filter">{% csrf_token %}
+                <input type="text" class="form-control input-sm" placeholder="Search Dashboards" name="search">
+              </form>
+            </div>
+            <!-- Box body -->
+            <div class="box-body no-padding">
+              <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                </div>
+                <!-- /.btn-group -->
+                <div class="pull-right">
+                  Results: {{page_info.per_this_page}}-{{page_info.per_this_page_total}} ({{page_info.page}}/{{page_info.total_pages}})
+                  <div class="btn-group">
+                    <form method="get" action="/bi/filter">{% csrf_token %}
+                      {% if submitted_category != '' %}
+                      <input type='hidden' name='category' value='{{submitted_category}}' />
+                      {% endif %}
+                      {% if submitted_organization != -1 %}
+                      <input type='hidden' name='organization' value='{{submitted_organization}}' />
+                      {% endif %}
+                      <button type="submit" name="page" class="btn btn-default btn-sm"{% if page_info.prev == 'false' %} disabled="true"><i class="fa fa-chevron-left"></i>{% else %} value="{{ page_info.page|add:"-1" }}"><i class="fa fa-chevron-left"></i>{% endif %}</button>
+                      <button type="submit" name="page" class="btn btn-default btn-sm"{% if page_info.next == 'false' %} disabled="true"><i class="fa fa-chevron-right"></i>{% else %} value="{{ page_info.page|add:"1" }}"><i class="fa fa-chevron-right"></i>{% endif %}</button>
+                    </form>
+                  </div>
+                  <!-- /.btn-group -->
+                </div>
+                <!-- /.pull-right -->
+              </div>
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th style="text-align:center;">Favorited</th>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Last Updated</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if dashboards.count > 0 %}
+                    {% for dashboard in dashboards %}
+                    {% if forloop.counter <= page_info.per_page %}
+                    <tr>
+                      <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                      <td class="mailbox-star" style="text-align:center;"><a href="#"><!--<i class="fa fa-star text-yellow text-center"></i>--></a></td>
+                      <td class="mailbox-edit">{% if access_level == 'edit' %}<a href="/bi/dashboard/{{ dashboard.id }}/"><i class="fa fa-wrench text-blue"i></a>{% endif %}</td>
+                        <td class="mailbox-name"><a href="#"><a href="viewdashboard/{{ dashboard.id }}/">{{ dashboard.name }}</a></td>
+                        <td class="mailbox-subject">{{ dashboard.description }}</td>
+                        <td class="mailbox-date">{{ dashboard.last_modified }}</td>
+                        <td>{{dashboard.status}}</td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+                      {% else %}
+                      <tr>
+                        <td colspan="7" align="center">No dashboards available!</td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                  <!-- /.table -->
+                </div>
+                <!-- /.mail-box-messages -->
+              </div>
+            </div>
+          {% endif %}
+          {% endblock %}
+          {% block settings-sidebar %}
+        <div class="box box-solid" id="bi_general_filters">
+          <div class="box-header with-border">
+            <h3 class="box-title">Categories</h3>
+
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body no-padding" style="">
+            <ul class="nav nav-pills nav-stacked">
+              <li{% if filters.category == '' or filters.category == 'all' %} class="active"{% endif %}><a href="/bi/{{section}}/filter?category=all"><i class="fa fa-inbox"></i> All
+                {% if counts.all != 0 %}<span class="label label-primary pull-right">{{ counts.all }}</span>{% endif %}</a></li>
+                <li{% if filters.category == 'active' %} class="active"{% endif %}><a href="/bi/{{section}}/filter?category=active"><i class="fa fa-envelope-o"></i> Active
+                {% if counts.active != 0 %}<span class="label label-primary pull-right">{{ counts.active }}</span>{% endif %}</a></li>
+                <li{% if filters.category == 'drafts' %} class="active"{% endif %}><a href="/bi/{{section}}/filter?category=drafts"><i class="fa fa-file-text-o"></i> Drafts
+                {% if counts.drafts != 0 %}<span class="label label-primary pull-right">{{ counts.drafts }}</span>{% endif %}</a></li>
+                <li{% if filters.category == 'favorited' %} class="active"{% endif %}><a href="/bi/{{section}}/filter?category=favorited"><i class="fa fa-star text-yellow"></i> Favorited
+                {% if counts.favorited != 0 %}<span class="label label-primary pull-right">{{ counts.favorited }}</span>{% endif %}</a></li>
+                <li{% if filters.category == 'deleted' %} class="active"{% endif %}><a href="/bi/{{section}}/filter?category=deleted"><i class="fa fa-trash-o"></i> Deleted
+                {% if counts.deleted != 0 %}<span class="label label-primary pull-right">{{ counts.deleted }}</span>{% endif %}</a></li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Organization</h3>
+
+              <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                  {% if groups.count > 0 %}
+                  {% for group in groups %}
+                  <li{% if group.id is submitted_organization %} class="active"{% endif%}><a href="/bi/{{section}}/filter?organization={{group.id}}">{{group.name}}</a></li>
+                  {% endfor %}
+                  {% endif %}
+                </ul>
+              </div>
+          </div>
+
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Labels</h3>
+
+              <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li><a href="#"><i class="fa fa-circle-o text-red"></i> Ads</a></li>
+                <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Preprints</a></li>
+                <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Other</a></li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+          {% endblock %}

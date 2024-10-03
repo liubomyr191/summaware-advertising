@@ -1,0 +1,156 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h1>Edit Rate</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ rate.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" value="{{ rate.description }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_type">Unit Type</label>
+                        <select class="form-control" id="unit_type" name="unit_type" required>
+                            <option value="">Select Unit Type...</option>
+                            <option value="word" {% if rate.unit_type == 'word' %}selected{% endif %}>Word</option>
+                            <option value="line" {% if rate.unit_type == 'line' %}selected{% endif %}>Line</option>
+                            <option value="column" {% if rate.unit_type == 'column' %}selected{% endif %}>Column</option>
+                            <option value="inch" {% if rate.unit_type == 'inch' %}selected{% endif %}>Inch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_price">Unit Price</label>
+                        <input type="text" class="form-control" id="unit_price" name="unit_price" value="{{ rate.unit_price }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gl_code">GL Code</label>
+                        <select class="form-control" name="gl_code" id="gl_code" required>
+                            <option value="">Select GL Code...</option>
+                            {% for gl_code in gl_codes %}
+                                <option class="form-control" value="{{ gl_code.id }}" {% if rate.gl_code.id == gl_code.id %}selected{% endif %}>{{ gl_code.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tax_category">Tax Category</label>
+                        <select class="form-control" name="tax_category" id="tax_category" required>
+                            <option value="">Select Tax Category...</option>
+                            <option value="none" {% if rate.tax_category == 'none' %}selected{% endif %}>None</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pricing">Pricing</label>
+                        <select class="form-control" name="pricing" id="pricing" required>
+                            <option value="">Select Pricing...</option>
+                            <option value="standard" {% if rate.pricing == 'standard' %}selected{% endif %}>Standard</option>
+                            <option value="cumulative" {% if rate.pricing == 'cumulative' %}selected{% endif %}>Cumulative</option>
+                            <option value="tiered" {% if rate.pricing == 'tiered' %}selected{% endif %}>Tiered</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="active" id="active" value="{{ rate.active }}" {% if rate.active %}checked{% endif %} required/>
+                        <label for="active">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="publication">Publication</label>
+                        <select class="form-control" name="publication" id="publication" multiple required>
+                            {% for publication in publications %}
+                                <option value="{{ publication.id }}" {% if publication.id in ratePublications %}selected{% endif %}>{{ publication.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ad_type">Ad Type</label>
+                        <select class="form-control" name="ad_type" id="ad_type" required>
+                            <option value="">Select Ad Type...</option>
+                            {% for ad_type in ad_types %}
+                                <option value="{{ ad_type.id }}" {% if rate.ad_type.id == ad_type.id %}selected{% endif %}>{{ ad_type.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ rate.start_date }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ rate.end_date }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select class="form-control" name="location" id="location" required>
+                            <option value="">Select Location...</option>
+                            {% for location in locations %}
+                                <option value="{{ location.0 }}" {% if rate.location == location.0 %}selected{% endif %}>{{ location.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="hidden" id="hidden" value="{{ rate.hidden }}" {% if rate.hidden %}checked{% endif %} />
+                        <label for="hidden">Hidden</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" name="locked" id="locked" {% if rate.locked %}checked{% endif %}>
+                        <label for="locked">Locked</label>
+                    </div>
+                    <div class="form-group" id="account">
+                        <label for="account">Account</label>
+                        <select class="form-control" name="account">
+                            <option value="">Select Account...</option>
+                            {% for account in accounts %}
+                                <option value="{{ account.id }}" {% if rate.account.id == account.id %}selected{% endif %}>{{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default btn-primary">Save</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <script>
+        let lockedInput = document.querySelector('#locked');
+        let accountInput = document.querySelector('#account');
+
+        if (lockedInput.checked) {
+            accountInput.style.display = 'block';
+        } else {
+            accountInput.style.display = 'none';
+        }
+
+        lockedInput.addEventListener('change', function() {
+            if (this.checked) {
+                accountInput.style.display = 'block';
+            } else {
+                accountInput.style.display = 'none';
+                accountInput.value = '';
+            }
+        });
+
+
+    </script>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/finance/ServiceCharges.js" %}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        {% include 'snippets/finance/service-charges/NewServiceChargeModal.html' %}
+        {% include 'snippets/finance/service-charges/EditServiceChargeModal.html' %}
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Service Charges</h4>
+                <table class="table table-hover table-striped" id="service_charges"> 
+                    <thead>
+                        <tr>
+                            <th>Enabled?</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for charge in serviceCharges %}
+                        <tr data-row-id="{{ charge.id }}">
+                            {% if charge.enabled %}
+                                <td><i class="fa fa-check"></i></td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            <td>{{ charge.name }}</td>
+                            <td>$ {{ charge.amount }}</td>
+                            <td><button class="btn btn-default btn-sm"><i class="fa fa-pencil edit-btn"></i> </button></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3"> No Service Charges</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% comment %} <script>
+    var table = document.querySelector('#service_charges');
+    var rows = table.tBodies[0].rows;
+
+    Array.from(rows).forEach((row, rowIndex) => {
+        var cells = [...row.cells];        
+        var checkbox = cells[0].children[0];
+
+        checkbox.addEventListener('click', (event) => {
+            fetch("{% url 'list_service_charges' %}", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Accept": "application/json",
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            "charge_id": row.dataset["rowId"],
+                            "enabled": event.target.checked
+                        })
+                    })
+        })
+    })
+</script> {% endcomment %}
+{% endblock %}

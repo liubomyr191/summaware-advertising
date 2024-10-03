@@ -1,0 +1,101 @@
+{% load static %}
+<div id="newRegion" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('newRegion').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-3">
+      <h3 class="heading">New Region</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form method="post" id="new-region-form">
+      <div class="row w50 center-block">
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="region-name">Name:</label>
+            <input type="text" name="name" id="region-name" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="form-group">
+            <label for="region-code">Code:</label>
+            <input type="text" name="code" id="region-code" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </form>
+    {% include "components/item_select.html" with item_type="publications" available_items=publications id="new-region" %}
+
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary" onclick="createRegion()">Create Region</button>
+    </div>
+  </div>
+  <script>
+    function createRegion() {
+      let form = $('#new-region-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      var selectElement = document.getElementById('new-region-lstBox2');
+      var values = [];
+      
+      for (var i = 0; i < selectElement.options.length; i++) {
+          values.push(selectElement.options[i].value);
+      }
+      data['publication_id'] = JSON.stringify(values);
+      fetch("general/create-region", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(res => {
+        if(res.success) {
+          $.toastr.success("Region created successfully");
+          var tbody = document.getElementById('region-table-body');
+          var lastTr = tbody.lastElementChild;
+          var lastRateId = 0
+          // Check if the lastTr is a <tr> element
+          if (lastTr.tagName === 'TR') {
+              // Get the ID of the last rate element from the last <tr> element
+              var lastRateId = lastTr.querySelector('input[name$="-region-switch-one"]').name.split('-')[0];
+          }
+          var newRow = `
+          <tr>
+            <td>${data['code']}</td>
+            <td>${data['name']}</td>
+            <td>Kyle Jernigan</td>
+            <td>See assigned</td>
+            <td>
+              <div class="toggle-switch-container">
+                <div class="switch-field">
+                  <input type="radio" id="${res.id}-region-radio-one" name="${res.id}-region-switch-one" value="active" checked />
+                  <label for="${res.id}-region-radio-one">Active</label>
+                  <input type="radio" id="${res.id}-region-radio-two" name="${res.id}-region-switch-one" value="inactive" />
+                  <label for="${res.id}-region-radio-two">Inactive</label>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="mr-1" onclick="editRegion('${res.id}')"><i class="fa fa-solid fa-pencil"></i></span>
+              <span><i class="fa fa-solid fa-envelope-open"></i></span>
+            </td>
+          </tr>`
+          tbody.insertAdjacentHTML('beforeend', newRow);
+          document.getElementById('newRegion').style.display='none';
+        } else {
+          $.toastr.error("Creating Region Failed");
+        }
+      }).catch((error) => {
+        $.toastr.error("Creating Region Failed");
+      })
+    }
+  </script>
+</div>

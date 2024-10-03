@@ -1,0 +1,21 @@
+<section class="form-section" id="new_code_form_section">
+    <div class="form-content">
+        <h1 class="column-title">New Industry Code</h1>
+        <hr>
+        <form method="post" id="new_code_form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="code">Code</label>
+                <input type="text" class="form-control" name="code" placeholder="Enter Code ..."/>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="description" placeholder="Enter Your Description ..." rows="5"></textarea>
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="btn submit-btn" id="new_code_submit">Create</button>
+                <button type="button" class="btn cancel-btn" id="cancel_btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</section>

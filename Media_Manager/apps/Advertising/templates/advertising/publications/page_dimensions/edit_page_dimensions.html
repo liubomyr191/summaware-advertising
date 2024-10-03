@@ -1,0 +1,56 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h2>Edit Page Dimensions for {{ page_dimensions.publication.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="page_size">Page Size</label>
+                        <input type="number" class="form-control" id="page_size" name="page_size" placeholder="Enter page size..." value="{{ page_dimensions.page_size }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="columns_per_page">Columns Per Page</label>
+                        <input type="number" class="form-control" id="columns_per_page" name="columns_per_page" placeholder="Enter columns per page..." value="{{ page_dimensions.columns_per_page }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="column_width">Column Width</label>
+                        <input type="number" class="form-control" id="column_width" name="column_width" placeholder="Enter column width..." value="{{ page_dimensions.column_width }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="page_width">Page Width</label>
+                        <input type="number" class="form-control" id="page_width" name="page_width" placeholder="Enter page width..." value="{{ page_dimensions.page_width }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="page_height">Page Height</label>
+                        <input type="number" class="form-control" id="page_height" name="page_height" placeholder="Enter page height..." value="{{ page_dimensions.page_height }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="page_border">Page Border</label>
+                        <input type="number" class="form-control" id="page_border" name="page_border" placeholder="Enter page border..." value="{{ page_dimensions.page_border }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gutter_size">Gutter Size</label>
+                        <input type="number" class="form-control" id="gutter_size" name="gutter_size" placeholder="Enter gutter size..." value="{{ page_dimensions.gutter_size }}" required>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% include 'templates/partials/modal/admin/pricing/_edit-info.html'%}
+<div class="multisteps-form__panel p-4 rounded js-active" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Group Overview</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+      <div class="">
+        <div class="tabcontent">
+          <div class="btn-search-container">
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="filter-container">
+                  <button class="btn btn-secondary" onclick="document.getElementById('editInfo').style.cssText = 'display: block; opacity: 1; visibility: visible;'"><i class="fa fa-solid fa-edit"></i>  Edit Info </button>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                  <h2 class="heading">{{rategroup.name}}</h2>
+                  <p>{{rategroup.description}}</p>
+                </div>
+                <div class="col-md-6">
+                    <div id="default_styles_content">
+                        <h3 class="multisteps-form__title">Assigned Publications</h3>
+                        <hr />
+                        <div id="default_styles_table">
+                            <div class="default-styles-row">
+                                <textarea rows="10" style="width: 100%;">
+                                  {% for publication in assigned_publications %}
+                                    {{publication.name}}
+                                  {% endfor %}
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('.item-select-container').each(function () {
+        var $container = $(this);
+
+        $container.find('.btnRight').click(function (e) {
+          var selectedOpts = $container.find('.lstBox1 option:selected');
+          if (selectedOpts.length == 0) {
+            alert('Nothing to move.');
+            e.preventDefault();
+            return;
+          }
+
+          $container.find('.lstBox2').append($(selectedOpts).clone());
+          $(selectedOpts).remove();
+          e.preventDefault();
+        });
+
+        $container.find('.btnLeft').click(function (e) {
+          var selectedOpts = $container.find('.lstBox2 option:selected');
+          if (selectedOpts.length == 0) {
+            alert('Nothing to move.');
+            e.preventDefault();
+            return;
+          }
+
+          $container.find('.lstBox1').append($(selectedOpts).clone());
+          $(selectedOpts).remove();
+          e.preventDefault();
+        });
+      });
+    });
+
+  </script>
+</div>

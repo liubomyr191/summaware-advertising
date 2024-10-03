@@ -1,0 +1,151 @@
+#calendar table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#calendar th, #calendar td {
+  border: none;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#calendar th {
+  background-color: transparent !important;
+}
+
+#calendar td:hover {
+  background-color: rgb(193,213,252); /* Adjust the background color on hover */
+}
+
+#calendar .other-month {
+  opacity: 0.5; /* Adjust the opacity value as needed */
+  color: #aaa; /* Optional: Change the color for better visibility */
+}
+
+
+#calendar .arrow-btn {
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f2f2f2;
+}
+
+#calendar .arrow-btn:hover {
+  background-color: #ddd;
+}
+
+#calendar-controls button {
+  font-size: 17px;
+  float: right;
+  margin-left: 5px;
+}
+
+.slider-container {
+  width: 100%;
+  height: 10px; /* Adjust the height as needed */
+  background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px; /* Adjust the margin as needed */
+  border: 1px solid black;
+}
+
+.slider-fill {
+  height: 100%;
+  width: 25%; /* Adjust the width for the dark color (e.g., 25% for 1/4) */
+  background-color: rgba(242, 103, 34, 0.50); /* Set background color of the slider fill */
+  border-top-right-radius: 5px; /* Adjust the radius as needed */
+  border-bottom-right-radius: 5px; /* Adjust the radius as needed */
+}
+
+#ad-calendar table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#ad-calendar th, #ad-calendar td {
+  border: none !important;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#ad-calendar th {
+  background-color: #f2f2f2;
+}
+
+#ad-calendar td:hover {
+  background-color: rgb(193,213,252); /* Adjust the background color on hover */
+}
+
+#ad-calendar .other-month {
+  opacity: 0.5; /* Adjust the opacity value as needed */
+  color: #aaa; /* Optional: Change the color for better visibility */
+}
+
+
+#ad-calendar .arrow-btn {
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f2f2f2;
+}
+
+#ad-calendar .arrow-btn:hover {
+  background-color: #ddd;
+}
+
+#ad-calendar-controls button {
+  font-size: 17px;
+  float: right;
+  margin-left: 5px;
+}
+
+/**/
+
+#ad-sum-calendar table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#ad-sum-calendar th, #ad-sum-calendar td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#ad-sum-calendar th {
+  background-color: #f2f2f2;
+}
+
+#ad-sum-calendar td:hover {
+  background-color: rgb(193,213,252); /* Adjust the background color on hover */
+}
+
+#ad-sum-calendar .other-month {
+  opacity: 0.5; /* Adjust the opacity value as needed */
+  color: #aaa; /* Optional: Change the color for better visibility */
+}
+
+
+#ad-sum-calendar .arrow-btn {
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f2f2f2;
+}
+
+#ad-sum-calendar .arrow-btn:hover {
+  background-color: #ddd;
+}
+
+#ad-calendar-controls button {
+  font-size: 17px;
+  float: right;
+  margin-left: 5px;
+}

@@ -1,0 +1,60 @@
+<div id="editMarketCode" class="modal my-modal">
+  <div class="custom-modal-content">
+    <span class="close" onclick="document.getElementById('editMarketCode').style.display='none'">&times;</span>
+
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">Edit Market Code</h3>
+      <hr class="w-50 m-auto" />
+    </div>
+    <form method="post" id="edit-marketcode-form">
+      <div class="center-block">
+        <div class="form-group">
+          <label for="market-name">Market Name:</label>
+          <input type="text" name="name" id="edit-marketcode-name" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="market-code">Code:</label>
+          <input type="text" name="code" id="edit-marketcode-code" class="form-control" />
+        </div>
+      </div>
+    </form>
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="saveChange(1)">Archive</button>
+      <button class="btn btn-danger" id="marketcode-active" onclick="saveChange(2)">Deactivate</button>
+      <button class="btn btn-secondary" onclick="saveChange(3)">Save Changes</button>
+    </div>
+  </div>
+  <script>
+    function saveChange(index) {
+      let form = $('#edit-marketcode-form');
+      var formData = new FormData(form[0]);
+      let data = {};
+      data['status'] = localStorage.getItem('edit-marketcode-status');
+      data['active'] = localStorage.getItem('edit-marketcode-active') == 'true' ? true : false;
+      if(index == 1) {
+        data['status'] = 2;
+      } else if(index == 2) {
+        data['active'] = !data['active'];
+      }
+      for (const [key, value] of formData) {
+          data[key] = value;
+      }
+      if(isNaN(data['status'])) data['status'] = 1;
+      data['id'] = localStorage.getItem('edit-marketcode-id');
+      fetch("ads/edit-marketcode", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Accept": "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        window.location.href = `{% url 'adminAds' %}`
+      }).catch((err) => {
+        $.toastr.error("Saving MarketCode Failed");
+      })
+    };
+  </script>
+</div>

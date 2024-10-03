@@ -1,0 +1,442 @@
+{% load static %}
+
+<div id="newStyle" class="modal my-modal">
+  <div class="custom-modal-content w-75 h-50 m-auto">
+    <span class="close" onclick="document.getElementById('newStyle').style.display='none'">&times;</span>
+
+    <div class="multistep-container mgt-5 mgb-100">
+      <div class="c-card">
+        <div class="progress-icons">
+          <div class="progress-dot-container">
+            <div id="progress_0" class="progress-dot progress-active">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">General Info</p>
+          </div>
+          <div class="progress-dot-container">
+            <div id="progress_1" class="progress-dot">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">Fonts</p>
+          </div>
+          <div class="progress-dot-container">
+            <div id="progress_2" class="progress-dot">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">Fonts Specs</p>
+          </div>
+          <div class="progress-dot-container">
+            <div id="progress_3" class="progress-dot">
+              <span><i class="fa fa-solid fa-check"></i></span>
+            </div>
+            <p class="step-label">Review</p>
+          </div>
+        </div>
+        <form id="style_creation_step">
+
+          <div id="section1" class="section multistep-content mgb-3">
+            <div class="heading-container text-center">
+              <h3 class="heading">General Info</h3>
+            </div>
+
+            <div class="section-content text-center">
+              <div class="text-center mgb-3">
+                <p>Begin creating your new style by filling out<br />the information below.</p>
+              </div>
+
+              <div class="form-group mgb-3 w50 center-block">
+                <label for="">Style Name:</label>
+                <input type="text" name="name" id="" class="styleName form-control" required/>
+              </div>
+
+              <div class="item-select-container mgb-3">
+                <div class="available-pubs">
+                  <b>Available Publications:</b><br />
+                  {% if publications %}
+                    <select multiple="multiple" id="lstBox1" class="form-control">
+                      {% for publication in publications %}
+                        <option id="{{ publication.id }}" value="{{ publication.id }}">{{ publication.name }}</option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+                </div>
+                <div class="transferBtns">
+                  <input type="button" id="btnRight" value="  >  " />
+                  <br /><input type="button" id="btnLeft" value="  <  " />
+                </div>
+                <div class="selected-pubs">
+                  <b>Selected Publications: </b><br />
+                  <select multiple="multiple" id="lstBox2" class="form-control"></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center mgb-3">
+              <p><strong>Available in Self-service</strong></p>
+              <div class="effects-container">
+                <div class="custom-switch-container">
+                  <div class="switch-field center-block">
+                    <input type="radio" id="self-service-radio-one" name="self_service_status" value="yes"  />
+                    <label for="self-service-radio-one">Yes</label>
+                    <input type="radio" id="self-service-radio-two" name="self_service_status" value="no" checked/>
+                    <label for="self-service-radio-two">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-container content-even">
+              <button class="btn btn-secondary" onclick="handleFormSubmit(event, 'style_creation_step')">Next</button>
+            </div>
+          </div>
+        </form>
+
+        <form id="font_color_creation_step">
+          <div id="section2" class="section multistep-content mgb-3 hide">
+            <div class="heading-container text-center">
+              <h3 class="heading">Fonts &amp; Colors</h3>
+            </div>
+
+            <div class="section-content">
+              <div class="text-center mgb-3">
+                <p>Here you can pick the fonts and colors you'd like<br />associated with your selected Publications.</p>
+              </div>
+
+              <div class="row mgb-3">
+                <div class="col-md-12 col-lg-6">
+                  <div class="text-center">
+                    <h3>Fonts</h3>
+                    <hr />
+                  </div>
+                  <div id="fontSelector mgb-3">
+                    <div class="form-group">
+                      <div class="label-container">
+                        <label for="fontSelect">Select a font:</label>
+                      </div>
+                      <select id="fontSelect" class="form-control" multiple></select>
+                    </div>
+
+                    <div class="text-center"><p>Selected Fonts:</p></div>
+
+                    <div id="selected-font-names" class="selected-fonts-container mgb-3"></div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6">
+                  <div class="text-center">
+                    <h3>Colors</h3>
+                    <hr />
+                  </div>
+                  <div class="form-group">
+                    <div class="label-container">
+                      <label for="fontColorSelect">Color Option:</label>
+                    </div>
+                    <select id="fontColorSelect" class="form-control">
+                      <option value="" selected>Select Color Options</option>
+                      <option value="spot-color">Spot Color</option>
+                      <option value="black-white">Black &amp; White</option>
+                      <option value="grayscale">Grayscale</option>
+                    </select>
+                  </div>
+
+                  <div class="colors-container">
+                    <span>Colors:</span>
+                    <div class="colors" id="selected-color-names">
+                      <div class="color-block yellow">
+                        <span class="check"><i class="fa fa-solid fa-check"></i></span>
+                      </div>
+                      <div class="color-block cyan">
+                        <span class="check"><i class="fa fa-solid fa-check"></i></span>
+                      </div>
+                      <div class="color-block magenta">
+                        <span class="check"><i class="fa fa-solid fa-check"></i></span>
+                      </div>
+                      <div class="color-block black">
+                        <span class="check"><i class="fa fa-solid fa-check"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-container content-even">
+              <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+              <button class="btn btn-secondary" onclick="handleFormSubmit(event,'font_color_creation_step')">Next</button>
+            </div>
+          </div>
+        </form>
+        
+        <form id="font-spec-step">
+          <div id="section3" class="section multistep-content mgb-3 hide">
+            <div class="heading-container text-center">
+              <h3 class="heading">Font Specs</h3>
+            </div>
+
+            <div class="section-content">
+              <div class="text-center mgb-3">
+                <p>Add any custom specs to your selected fonts.</p>
+              </div>
+
+              <div class="font-specs-container mgb-3">
+                <div class="available-fonts">
+                  <div class="fonts-heading">
+                    <h3>Available Fonts</h3>
+                  </div>
+                  <div class="fonts-list"></div>
+                </div>
+                <div class="specs-container">
+                  <div id="font-step-slider" class="custom-step-form secondary">
+                    <div class="step-form-progress">
+                      <button class="arrow" type="button">
+                        <i class="fa fa-solid fa-chevron-left"></i>
+                      </button>
+                      <div class="progress-buttons">
+                        <button type="button" class="progress-btn active-step">Font</button>
+                        <button type="button" class="progress-btn">Spacing &amp; Typography</button>
+                        <button type="button" class="progress-btn">Advanced</button>
+                        <button type="button" class="progress-btn">Effects</button>
+                      </div>
+                      <button type="button" class="arrow">
+                        <i class="fa fa-solid fa-chevron-right"></i>
+                      </button>
+                    </div>
+                    <hr />
+                    <section class="step-form-content active">{% include 'templates/partials/stepform/admin/classifieds/_font.html'%}</section>
+                    <section class="step-form-content hide">{% include 'templates/partials/stepform/admin/classifieds/_spacing-typography.html'%}</section>
+                    <section class="step-form-content hide">{% include 'templates/partials/stepform/admin/classifieds/_advanced.html'%}</section>
+                    <section class="step-form-content hide">{% include 'templates/partials/stepform/admin/classifieds/_effects.html'%}</section>
+                    <div class="preview-container">
+                      <p>Font Preview</p>
+                      <div class="font-preview">
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio dolor repellendus rem animi odit, eius iste magni, totam perspiciatis eveniet recusandae at aliquid omnis vero consequuntur aspernatur veritatis? Quod, deserunt?</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-container content-even">
+              <button type="button" class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+              <button type="button" class="btn btn-secondary" onclick="handleFormSubmit(event,'font-spec-step')">Next</button>
+            </div>
+          </div>
+        </form>
+
+        <div id="section4" class="section multistep-content mgb-3 hide">
+          <div class="heading-container text-center">
+            <h3 class="heading">Review</h3>
+          </div>
+
+          <div class="section-content">
+            <div class="text-center mgb-3">
+              <p>Review your information below<br />then click “Create”</p>
+            </div>
+          </div>
+
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <div>
+                <h3>General</h3>
+                <hr />
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <span>Style name:</span>
+                  <p class="style-name"></p>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <div id="selfService">
+                    <span>Available in Self Service:</span>
+                    <p id="selfServiceValue" class="text-capitalize"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6">
+              <div>
+                <h3>Colors</h3>
+                <hr />
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <div class="selected-color-options">
+                    <span>Color option:</span>
+                    <!-- Show selected color option -->
+                    <p id="selectedColorOption"></p>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                  <span>Selected Colors:</span>
+                  <div id="selectedColors">
+                    <div class="colors">
+                      <!-- Show selected color-blocks -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <div id="selectedPubs" class="selected-pubs">
+                <span>Selected Publications:</span>
+                <select multiple="multiple" id="selectedPubs" class="form-control"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="selected-font-styles mgb-3">
+            <div class="center-block">
+              <h3>Fonts</h3>
+              <hr />
+            </div>
+            <div id="review-font-specs-container" class="font-specs-container mgb-3">
+              <div class="chosen-fonts available-fonts">
+                <div class="fonts-heading">
+                  <h3>Chosen Fonts</h3>
+                </div>
+                <div id="chosenFonts" class="fonts-list">
+                  <div id="choosen-fonts-container" class="font-container"></div>
+                  <!-- Fonts Go here -->
+                </div>
+              </div>
+              <div class="specs-container">
+                <div id="review-font-step-slider" class="custom-step-form secondary">
+                  <div class="step-form-progress">
+                    <button class="arrow">
+                      <i class="fa fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="progress-buttons">
+                      <button class="progress-btn active-step">Font</button>
+                      <button class="progress-btn">Spacing &amp; Typography</button>
+                      <button class="progress-btn">Advanced</button>
+                      <button class="progress-btn">Effects</button>
+                    </div>
+                    <button class="arrow">
+                      <i class="fa fa-solid fa-chevron-right"></i>
+                    </button>
+                  </div>
+                  <hr />
+                  <section class="step-form-content active">Review Font</section>
+                  <section class="step-form-content hide">Spacing &amp; Typography</section>
+                  <section class="step-form-content hide">Advanced</section>
+                  <section class="step-form-content hide">Effects</section>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-container content-even">
+            <button type="button" class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+            <button type="button" class="btn btn-secondary" onclick="handleFormSubmit(event,'final-step')">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function handleFormSubmit(event, step_name) {
+      if (step_name === 'final-step') {
+        const data = {};
+        data.name = 'psuedo';
+        fetch('advertising/create-style', {
+          method: 'POST',
+          body: JSON.stringify({
+            step_name: step_name,
+            data: data
+          }),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => response.json())
+        .then((response) => {
+          if(response.success) {
+            $.toastr.success("Progress Saved Successfully");
+            window.location.href = '/advertising/adadmin/classifieds';
+          } else {
+            $.toastr.error("Save Failed");
+          }
+        })
+        .catch((error) => {
+          $.toastr.error("Save Failed");
+          console.error(error);
+        });
+        return;
+      }
+      let available_for_service = document.getElementById('selfServiceValue');
+      if (document.getElementById('self-service-radio-one').checked) {
+        available_for_service.textContent = 'Yes';
+      } else {
+        available_for_service.textContent = 'No';
+      }
+      let choosenFontsContainer = document.getElementById('choosen-fonts-container');
+      let selectedFonts = document.getElementById('selected-font-names').querySelectorAll('span');
+      choosenFontsContainer.innerHTML = '';
+      selectedFonts.forEach(function (font) {
+        let fontName = font.textContent.trim();
+        let fontDiv = document.createElement('div');
+        fontDiv.classList.add('font-container');
+        fontDiv.style.textWrap = 'nowrap';
+        fontDiv.textContent = fontName;
+        choosenFontsContainer.appendChild(fontDiv);
+      });
+
+      const formData = new FormData(document.getElementById(step_name));
+      const data = {};
+
+      var parent = event.target.closest('.c-card');
+      var currentSection = parent.querySelector('.multistep-content:not(.hide)');
+
+      var requiredInputs = currentSection.querySelectorAll('[required]');
+      var allFilled = true;
+
+      // just making all fields that are required to be filled out
+      // if not filled out, don't submit the form
+      requiredInputs.forEach(function (input) {
+        if (!input.value.trim()) {
+          allFilled = false;
+          input.classList.add('input-error');
+        } else {
+          input.classList.remove('input-error');
+        }
+      });
+      if (!allFilled) {
+        return;
+      }
+      
+      formData.forEach((value, key) => {
+          if (data[key]) {
+              if (!Array.isArray(data[key])) {
+                  data[key] = [data[key]];
+              }
+              data[key].push(value);
+          } else {
+              data[key] = value;
+          }
+      });
+      if (step_name == 'style_creation_step') {
+        data.selectedPublications = Array.from(document.getElementById('lstBox2').options).map(option => option.value);
+      } else if (step_name == 'font_color_creation_step') {
+          const fontNamesDiv = document.getElementById('selected-font-names');
+          const spans = fontNamesDiv.querySelectorAll('span');
+          const fontNames = Array.from(spans).map(span => span.textContent.trim());
+          data.fontNames = fontNames;
+
+          const selectedColorNamesDiv = document.getElementById('selected-color-names');
+          const colorBlocks = selectedColorNamesDiv.querySelectorAll('.color-block');
+          const selectedColors = Array.from(colorBlocks).filter(block => block.classList.contains('selected')).map(block => block.classList[1]);
+          data.selectedColors = selectedColors;
+
+ 
+      }
+      next_step(event, '', step_name, data);
+
+    }
+    
+  </script>
+</div>

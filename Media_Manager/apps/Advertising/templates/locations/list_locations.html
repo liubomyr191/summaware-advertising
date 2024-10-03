@@ -1,0 +1,79 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% load custom_filters %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/location/Locations.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/locations/list_locations.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div id="page_content">
+            {% if access == "deny" %}
+                <div id="message">{{ message }}</div>
+            {% else %}
+                <div id="message">{{ message }}</div>
+
+                {% include 'snippets/location/CreateLocationModal.html' %}
+                <div id="page_header">
+                    <h2>Locations</h2>
+                </div>
+                <div id="page_body">
+                    <div id="btn_search_header">
+                        <button data-toggle="modal" data-target="#create_location_modal">
+                            <i class="fa fa-plus"></i> Create Location
+                        </button>
+                        <input type="text" style="padding-left: 15px;" id="search-location" placeholder="Search ..."/>
+                    </div>
+                    <table id="location_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Location Code</th>
+                                <th>Description</th>
+                                <th>PC</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="location_table_tbody">
+                            {% for location in locations %}
+                                <tr>
+                                    <td>{{ location.id }}</td>
+                                    <td>{{ location.location }}</td>
+                                    <td>{{ location.description }}</td>
+                                    <td>{{ location.pc }}</td>
+                                    <td data-location-id="{{ location.id }}">
+                                        <a href="#" class="edit-btn"><i class="fa fa-pencil" ></i></a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No Location found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+    {% include 'snippets/location/EditLocationModal.html' %}
+<script>
+    const companyId = "{{ company_id }}";
+</script>
+{% endblock %}

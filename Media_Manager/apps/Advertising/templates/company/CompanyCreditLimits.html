@@ -1,0 +1,59 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/companies/CreditLimits.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+	<div class="col-md-10">
+		{% if access == "deny" %}
+		<div id="message">{{ message }}</div>
+		{% else %}
+			<div id="message">{{ message }}</div>
+
+            <h2>{{ company.name }} Credit Limits</h2>
+
+            <h3>Accounts</h3>
+            <br>
+            <table class="table table-hover table-striped table-condensed" id="account_credit_table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Credit Limit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in company_accounts %}
+                    <tr>
+                        <td>{{ account.id }}</td>
+                        <td>{{ account.name }}</td>
+                        {% comment %} {% if adminOrManager %} {% endcomment %}
+                        <td>
+                            <input type="number" step="0.01" name="{{ account.id }}_credit_limit" id="{{ account.id }}_credit_limit" value="{{ account.credit_limit}}">
+                        </td>
+                        {% comment %} {% else %}
+                        <td>
+                            <input type="number" step="0.01" name="{{ account.id }}_credit_limit" id="{{ account.id }}_credit_limit" value="{{ account.credit_limit}}" disabled>
+                        </td>
+                        {% endif %} {% endcomment %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% comment %} {% if adminOrManager %} {% endcomment %}
+            <button class="btn btn-md btn-primary" id="save_btn">Save</button>
+            {% comment %} {% endif %} {% endcomment %}
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

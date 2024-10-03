@@ -1,0 +1,291 @@
+{% load static %}
+<div class="c-card">
+  <div class="progress-icons">
+    <div id="progress_0" class="progress-dot progress-active">
+      <span><i class="fa fa-solid fa-check"></i></span>
+    </div>
+    <div id="progress_1" class="progress-dot">
+      <span><i class="fa fa-solid fa-check"></i></span>
+    </div>
+    <div id="progress_2" class="progress-dot">
+      <span><i class="fa fa-solid fa-check"></i></span>
+    </div>
+    <div id="progress_3" class="progress-dot">
+      <span><i class="fa fa-solid fa-check"></i></span>
+    </div>
+  </div>
+
+  <div id="section1" class="section multistep-content mgb-3">
+    <div class="heading-container text-center">
+      <h3 class="heading">Product Info</h3>
+    </div>
+    <div class="section-content">
+      <div class="row mgb-3">
+        <div class="col-lg-6 col-md-12">
+          <div class="form-group mb-5">
+            <label for="product-mag">Digital Product Name:</label>
+            <input type="text" name="" id="product-mag" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="format">Select Format:</label>
+                  <select name="" id="format" class="form-control"></select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="ad-type">Ad Type:</label>
+                  <select name="" id="ad-type" class="form-control"></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-5">
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <label for="height">Height:</label>
+                <input type="text" name="" id="height" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label for="width">Width</label>
+                <input type="text" name="" id="width" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+          <div class="measurement-container text-center">
+            <img class="img-fluid" src="{% static 'images/mobile-img.png' %}" alt="mobile-img" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-container text-center">
+      <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+    </div>
+  </div>
+
+  <div id="section2" class="section multistep-content mgb-3 hide">
+    <div class="heading-container text-center">
+      <h3 class="heading">Size Setup</h3>
+    </div>
+
+    <div class="section-content">
+      <div class="row mgb-3">
+        <div class="col-lg-4 col-md-12">
+          <div class="standard-size-container">
+            <div class="heading-container">
+              <h3 class="heading">New Standard Size</h3>
+              <hr />
+            </div>
+
+            <div class="form-group px-3 mb-3">
+              <label for="size-description">Size Description</label>
+              <input type="text" name="" id="size-description" class="form-control" />
+            </div>
+
+            <div class="form-group px-3 mb-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="width">Width</label>
+                  <input type="text" name="" id="width" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                  <label for="height">Height</label>
+                  <input type="text" name="" id="height" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+            <div class="link-container text-center w-50 mx-auto">
+              <a href="" class="calculation-link">Click here to see Total Column Inches calculation</a>
+            </div>
+
+            <div class="total-container text-center my-5">
+              <h3 class="total">Total Column Inches: <span>2.25</span></h3>
+            </div>
+
+            <div class="btn-container text-center mb-3">
+              <button class="btn btn-secondary">Create</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 col-md-12">
+          <div class="created-sizes-container">
+            <div class="heading-container">
+              <h3 class="heading">Created Standard Size</h3>
+              <hr />
+            </div>
+
+            <div class="product-table-container table-container mt-3">
+              <table class="table product-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">No. of Columns</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Total Column In.</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0001</td>
+                    <td>Description</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>{{ size.total_columns_in }}</td>
+                    <td>
+                      <div class="switch2">
+                        <input id="status-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                        <label for="status-toggle"></label>
+
+                        <span class="active">Active</span>
+                        <span class="deactivate">Deactivate</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+      <button class="btn btn-secondary" onclick="next_step(event)">Next</button>
+    </div>
+  </div>
+
+  <div id="section3" class="section multistep-content mgb-3 hide">
+    <div class="heading-container text-center">
+      <h3 class="heading">Review</h3>
+    </div>
+
+    <div class="section-content">
+      <div class="row mgb-3">
+        <div class="col-lg-4 col-md-12">
+          <div class="product-info">
+            <div class="heading-container text-center">
+              <h3 class="heading">Product Info</h3>
+              <hr />
+            </div>
+
+            <div class="info-container">
+              <span>Magazine Product:</span>
+              <span class="d-block font-weight-bold">Mini Mag</span>
+            </div>
+
+            <div class="info-container">
+              <span>Fold Orientation: <span class="color-primary">*</span></span>
+            </div>
+
+            <div class="info-container">
+              <span>Size: <span class="color-primary">*</span></span>
+            </div>
+
+            <div class="info-container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="page-columns">
+                    <span>Columns Per Page: (optional)</span>
+                    <div class="value-container d-flex justify-content-between">
+                      <span class="value"></span>
+                      <span class="inch">In</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="page-height">
+                    <span>Page Height: (optional)</span>
+                    <div class="value-container d-flex justify-content-between">
+                      <span class="value"></span>
+                      <span class="inch">In</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="page-border">
+                  <span>Page Border: (optional)</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="gutter-size">
+                  <span>Gutter Size: (optional)</span>
+                  <div class="value-container d-flex justify-content-between">
+                    <span class="value"></span>
+                    <span class="inch">In</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 col-md-12">
+          <div class="created-sizes-container">
+            <div class="heading-container">
+              <h3 class="heading">Applied Standard Size</h3>
+              <hr />
+            </div>
+
+            <div class="product-table-container mt-3">
+              <table class="table product-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">No. of Columns</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Total Column In.</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0001</td>
+                    <td>Description</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>{{ size.total_columns_in }}</td>
+                    <td>Active</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-container text-center">
+      <button class="btn btn-gray" onclick="previous_step(event)">Previous</button>
+      <button class="btn btn-secondary" onclick="create_product(event)">Create Product</button>
+    </div>
+  </div>
+
+  <div id="section4" class="section multistep-content hide">
+    <div class="section-content">
+      <div class="complete-product-container text-center">
+        <h3 class="heading">Product has been created!</h3>
+        <div class="big-check mx-auto my-5">
+          <i class="fa fa-solid fa-check"></i>
+        </div>
+        <div class="btn-container d-flex justify-content-around">
+          <a href="{% url 'adminNewDigital' %}" class="btn btn-gray">Create Another Product</a>
+          <button class="btn btn-secondary">Return to Products</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.top-admin-bar {
+  background-color: #333055;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  .hamburger-container {
+    .fa {
+      color: $white;
+    }
+  }
+  .logo-container {
+    max-width: 200px;
+  }
+  .profile-container {
+    display: flex;
+    .profile-icon {
+      text-decoration: none;
+      color: $white;
+      &:not(:last-of-type) {
+        margin-right: 10px;
+      }
+
+      .fa-user {
+        color: #333055;
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<!-- <script src="{% static "dist/js/advertising/idleTimeout.js" %}"></script> -->
+<!-- <script src="{% static "dist/js/advertising/OrderSubtotal.js" %}"></script> -->
+<script src="{% static "dist/js/advertising/orders/EditOrder.js" %}"></script>
+
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h1>New Order Form</h1>
+        <div class="row">
+            
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

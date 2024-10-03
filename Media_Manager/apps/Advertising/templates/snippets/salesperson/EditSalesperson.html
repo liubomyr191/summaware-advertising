@@ -1,0 +1,82 @@
+<div method="POST" id="edit_salesperson_form" style="display:none;">
+    {% csrf_token %}
+    <div class="section-title">
+        New Sales Rep
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="editFirstName">First Name</label>
+                <input class="edit-salesrep-input" type="text" name="editFirstName" id="editFirstName" required/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="editLastName">Last Name</label>
+                <input class="edit-salesrep-input" type="text" name="editLastName" id="editLastName" required/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="editCompany">Company</label>
+                <input class="edit-salesrep-input" type="text" name="editCompany" id="editCompany" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input class="edit-salesrep-input" type="email" name="editEmail" id="editEmail" required/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="editPhone">Phone Number</label>
+                <input class="edit-salesrep-input" type="text" name="editPhone" id="editPhone" required/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="editAddress">Address</label>
+                <input class="edit-salesrep-input" type="text" name="editAddress" id="editAddress" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="editCity">City</label>
+                <input class="edit-salesrep-input" type="text" name="editCity" id="editCity" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-6">
+                <label for="editState">State</label>
+                <input class="edit-salesrep-input" type="text" name="editState" id="editState" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-6">
+                <label for="editZipCode">Zip Code</label>
+                <input class="edit-salesrep-input" type="text" name="editZipCode" id="editZipCode" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="editCommission">Commission Percentage</label>
+                <input class="edit-salesrep-input" type="number" name="editCommission" id="editCommission" />
+            </div>
+        </div>
+    </div>
+    <div class="button-section">
+        <button class="btn cancel-btn">Cancel</button>
+        <button class="btn" id="edit_btn">Create</button>
+    </div>
+</div>

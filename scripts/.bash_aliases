@@ -1,0 +1,5 @@
+alias start="sh /var/www/Media_Manager/scripts/start.sh"
+alias stop="sh /var/www/Media_Manager/scripts/stop.sh"
+alias kp="sh /var/www/Media_Manager/scripts/kill_port.sh"
+alias debug="sh /var/www/Media_Manager/scripts/start-debug.sh"
+alias mm="cd /var/www/Media_Manager/"

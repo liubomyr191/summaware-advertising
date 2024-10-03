@@ -1,0 +1,80 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/accounts/IndustryCodes.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/industry_codes.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+    {% else %}
+        <div id="message">{{ message }}</div>
+        
+        <div class="main">
+            <div class="row">
+                <div class="column left">
+                    <div class="column-header">
+                        <div class="title-search">
+                            <div class="column-title">Industry Codes</div>
+                            <div class="search-options">
+                                <i class="fa fa-search" id="code_search"></i>
+                                <i class="fa fa-plus" id="new_code_plus"></i>
+                            </div>
+                        </div>
+                        <input type="text" id="code_search_input" placeholder="Search ..."/>
+                    </div>
+                    <div class="column-body">
+                        <table id="industry_codes_table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Description</th>
+                                    <th>Code</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in industry_codes %}
+                                <tr data-code-id="{{ row.id }}">
+                                    <td>{{ row.id }}</td>
+                                    <td>{{ row.description }}</td>
+                                    <td>{{ row.code }}</td>
+                                    <td>
+                                        <i class="fa fa-pencil edit-icon"></i>
+                                        <i class="fa fa-trash delete-icon"></i>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column right">
+                    {% include 'snippets/industry_codes/NewIndustryCodeForm.html' %}
+                    {% include 'snippets/industry_codes/EditIndustryCodeForm.html' %}
+                    <button class="btn" id="create_new_btn">Create New Industry Code</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script>
+    let accountId = '{{ account_id }}';
+</script>
+{% endblock %}

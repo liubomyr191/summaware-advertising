@@ -1,0 +1,129 @@
+<div id="new_rate_1_general_info_1" class="modal modal-md my-modal chase-modal">
+  <div class="modal-content w-75 h-50 m-auto" style="background-image: url(../../../static/images/step-form-border.png); background-repeat: no-repeat; background-size: contain; background-position: top center">
+    <br />
+    <span class="close" onclick="document.getElementById('new_rate_1_general_info_1').style.display='none'">&times;</span>
+    <div class="heading-container text-center mb-5">
+      <h3 class="heading">New Rate</h3>
+    </div>
+    <div class="progress-icons">
+      <div id="progress_0" class="progress-active"></div>
+      <div id="progress_1"></div>
+      <div id="progress_2"></div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Rate Name:</strong></label>
+              <input type="text" name="" id="" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Measurement Type:</strong></label>
+              <select name="" id="" class="form-control">
+                <option>select</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Ad Type:</strong></label>
+              <select name="" id="" class="form-control">
+                <option>select</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Pricing:</strong></label>
+              <br />
+              <div class="switch2">
+                <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                <label for="cc-toggle"></label>
+
+                <span class="active">Standard</span>
+                <span class="deactivate">Customary</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Tax Category:</strong></label>
+              <select name="" id="" class="form-control">
+                <option>select</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Override Previlieges:</strong></label>
+              <br />
+              <div class="switch2">
+                <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                <label for="cc-toggle"></label>
+
+                <span class="active">Yes</span>
+                <span class="deactivate">No</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Default GL Code (optional):</strong></label>
+              <select name="" id="" class="form-control">
+                <option></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              With Override Privilieges, a user can<br />
+              request an override from their<br />
+              administrator
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for=""><strong>Override Previliage:</strong></label>
+              <br />
+              <div class="switch2" onclick="document.getElementById('new_rate_1_general_info_1').style.display='none';document.getElementById('new_rate_1_general_info').style.display='block';">
+                <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                <label for="cc-toggle"></label>
+                <span class="active">Yes</span>
+                <span class="deactivate">No</span>
+              </div>
+              <br />
+              <div class="">
+                <label for=""><strong>Select extra group:</strong></label>
+                <select multiple="multiple" id="lstBox1" class="form-select form-control">
+                  <option value="times-leader-print-edition">Group1</option>
+                  <option value="times-leader-e-edition">Group2</option>
+                  <option value="times-leader-e-edition">Group3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="btn-container text-right">
+          <button class="btn btn-secondary px-5" onclick="document.getElementById('new_rate_1_general_info_1').style.display='none';document.getElementById('new_rate_2_date').style.display='block';">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

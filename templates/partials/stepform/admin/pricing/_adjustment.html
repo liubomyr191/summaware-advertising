@@ -1,0 +1,101 @@
+{% include 'templates/partials/modal/admin/pricing/_new-adjustment.html'%} 
+{% include 'templates/partials/modal/admin/pricing/_edit-adjustment.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-company-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-company-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-location-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-location-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-department-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-department-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-profit-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-profit-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-gl-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_new-gl-code.html'%} 
+{% include 'templates/partials/modal/admin/financial/_edit-code-layout.html'%}
+<div class="multisteps-form__panel p-4 rounded js-active" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Adjustments</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div class="">
+      <div class="save-container">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+
+      <div class="">
+        <div class="tabcontent">
+          <div class="btn-search-container">
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="filter-container">
+                  <button class="btn btn-secondary" onclick="document.getElementById('newAdjustment').style.display='block'"><i class="fa fa-solid fa-plus"></i> New Adjustment </button>
+                  <div class="filters d-flex align-items-center"><a href="" class="active">Active</a>&nbsp;|&nbsp;<a href="">Inactive</a>&nbsp;|&nbsp;<a href="">Archived</a></div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 search-container">
+                <div class="form-group has-search">
+                  <input type="text" class="form-control" placeholder="Search..." />
+                  <span class="fa fa-search form-control-feedback"></span>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div class="table-container mt-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Code</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Credit/Debit</th>
+                  <th scope="col">Apply Level</th>
+                  <th scope="col">Section</th>
+                  <th scope="col">GL Codes</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0000</td>
+                  <td>Example1</td>
+                  <td>example_1</td>
+                  <td>$0.00</td>
+                  <td>Debit</td>
+                  <td> </td>
+                  <td>All</td>
+                  <td> See List </td>
+                  <td>
+                    <div class="switch2">
+                      <input id="cc-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                      <label for="cc-toggle"></label>
+
+                      <span class="active">Active</span>
+                      <span class="deactivate">Deactivate</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="pe-5" onclick="document.getElementById('editAdjustment').style.display='block'"><i class="fa fa-solid fa-pencil"></i></span>
+                    <span><i class="fa fa-solid fa-envelope-open"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="end-of-list-heading-container text-center py-5">
+              <span>You've reached the end!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-container d-flex justify-content-end mt-5">
+        <button class="btn btn-secondary-light">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

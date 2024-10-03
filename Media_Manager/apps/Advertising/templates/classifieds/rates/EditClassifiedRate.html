@@ -1,0 +1,192 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "admin/css/advertiser.css" %}">
+{% endblock %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/classifications/EditClassification.js" %}"></script>
+{% endblock %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div class="advertiser-back-image">
+    <img src="{% static "svg/advertiser_back_img.svg" %}">
+</div>
+
+<div id="advertiser-content">
+    <div class="col-md-12">
+        {% if access == "deny" %}
+            <div id="message">{{ message }}</div>
+        {% else %}
+            <div id="message">{{ message }}</div>
+
+            <div class="advertiser-title">
+                <span>Create a New Rate!</span>
+            </div>
+
+            <div class="advertiser-info">
+                <div class="info-left">
+                    <div class="advertiser-item">
+                        <label>Name:</label>
+
+                        <input id="name" type="text" class="advertiser-item-input" placeholder="Enter Name..." value="{% if rate_detail %}{{ rate_detail.name }}{% endif %}">
+                    </div>
+
+                    <div class="advertiser-item-group">
+                        <div class="advertiser-item market">
+                            <label>Unit Type:</label>
+                            
+                            <select id="unit-type" class="advertiser-item-input">
+                                <option disabled value="0">Select</option>
+                                <option value="line" {% if rate_detail.unit_type == 'line' %}selected{% endif %}>line</option>
+                                <option value="inch" {% if rate_detail.unit_type == 'inch' %}selected{% endif %}>inch</option>
+                                <option value="word" {% if rate_detail.unit_type == 'word' %}selected{% endif %}>word</option>                                
+                            </select>
+                            
+                        </div>
+
+                        <div class="advertiser-item">
+                            <label>Price Per Unit:</label>
+
+                            <input id="price-per-unit" type="number" class="advertiser-item-input" placeholder="Enter Price Per Unit..." value="{% if rate_detail %}{{ rate_detail.unit_price }}{% endif %}">
+                        </div>
+                    </div>
+
+                    <div class="advertiser-item">
+                        <label>Rate Type:</label>
+                        <select id="rate-type" class="advertiser-item-input">
+                            <option disabled selected value="0">Select</option>
+                            {% for adType in adTypes %}
+                                <option value="{{ adType.id }}" {% if rate_detail.ad_type_id == adType.id %}selected{% endif %}>
+                                    {{ adType.code }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                    <div class="advertiser-item">
+                        <label>Location:</label>
+
+                        <input id="ad-location" type="text" class="advertiser-item-input" value="{% if rate_detail %}{{ rate_detail.location }}{% endif %}" placeholder="Enter Location...">
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="5">{% if rate_detail %}{{ rate_detail.description }}{% endif %}</textarea>
+                    </div>
+                </div>
+
+                <div class="info-right">
+                    <div class="advertiser-item-group">
+                        <div class="advertiser-item market">
+                            <label>Status:</label>
+
+                            <select id="status" class="advertiser-item-input">
+                                <option selected value="0">Active</option>
+                                <option value="1">Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="advertiser-item market">
+                            <label>Hidden:</label>
+
+                            <select id="hidden" class="advertiser-item-input">
+                                <option selected value="0">yes</option>
+                                <option value="1">no</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="advertiser-item">
+                        <label>Publication:</label>
+
+                        <select id="publication" class="advertiser-item-input">
+                            <option disabled selected value="0">Select</option>
+                            {% for adPublication in adPublications %}
+                                <option value="{{adPublication.id}}" {% if rate_detail.publication_id == adPublication.id %}selected{% endif %}>{{adPublication.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="advertiser-item">
+                        <label>GL Code:</label>
+
+                        <select id="gl-code" class="advertiser-item-input">
+                            <option disabled selected value="0">Select</option>
+                            <option value="1" {% if rate_detail.default_gl_code_id == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if rate_detail.default_gl_code_id == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if rate_detail.default_gl_code_id == 3 %}selected{% endif %}>3</option>
+                        </select>
+                    </div>
+
+                    
+
+                    <div class="advertiser-item-group">
+                        <div class="advertiser-item market">
+                            <label>Start/End Date:</label>
+
+                            <input id="start-date" type="date" class="advertiser-item-input" value="{% if rate_detail %}{{ rate_detail.start_date }}{% endif %}" placeholder="2002/09/25">
+                        </div>
+
+                        <div class="advertiser-item sales">
+                            <label>&nbsp;</label>
+
+                            <input id="end-date" type="date" class="advertiser-item-input" value="{% if rate_detail %}{{ rate_detail.end_date }}{% endif %}" placeholder="2002/09/25">
+                        </div>
+                    </div>
+
+                    <div class="advertiser-item-group">
+                        <div class="advertiser-item market">
+                            <label>Pricing:</label>
+
+                            <select id="pricing" class="advertiser-item-input">
+                                <option disabled selected value="0">Select</option>
+                                <option value="standard" {% if rate_detail.pricing == 'standard' %}selected{% endif %}>standard</option>
+                                <option value="cumulative" {% if rate_detail.pricing == 'cumulative' %}selected{% endif %}>cumulative</option>
+                            </select>
+                        </div>
+
+                        <div class="advertiser-item sales">
+                            <label>Tax Category:</label>
+
+                            <select id="tax-category" class="advertiser-item-input">
+                                <option disabled selected value="0">Select</option>
+                                <option value="none" {% if rate_detail.tax_category == 'none' %}selected{% endif %}>none</option>
+                                <option value="some" {% if rate_detail.tax_category == 'some' %}selected{% endif %}>some</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="advertiser-row-item">
+                        <label>Locked:</label>
+
+                        <input id="locked" type="checkbox" {% if rate_detail.locked == 1 %}checked{% endif %}>
+                        <input id="rate_id" type="text" class="advertiser-item-input" value="{% if rate_detail %}{{ rate_detail.id }}{% endif %}" hidden>
+                    </div>
+
+                    <div class="advertiser-option">
+                        <div class="advertiser-cancel" onclick="window.history.back();">Cancel</div>
+                        <div id="create-rate" class="advertiser-create" onclick="updateAdrate()"> Save
+                            <!-- <a href="{% url 'info_classified_rate' %}">
+                                Create Rate!
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="advertiser-option">
+            </div>
+           
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,242 @@
+<div class="multisteps-form__panel p-4 rounded" data-animation="scaleIn">
+  <div class="heading-arrows-container d-flex justify-content-between">
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-left"></i></button>
+    <h3 class="multisteps-form__title text-center">Scheduling</h3>
+    <button class="multistep-form__arrow"><i class="fa fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="multisteps-form__content">
+    <div>
+      <form method="post" id="new-publication-scheduling-form">
+        <div class="text-center mgb-3">
+          <p>Calendar Type:</p>
+          <div class="toggle-switch-container">
+            <div class="switch-field center-block">
+              <input type="radio" id="calendar-radio-one" name="calendar_type" value="repeat" checked />
+              <label for="calendar-radio-one">Repeat</label>
+              <input type="radio" id="calendar-radio-two" name="calendar_type" value="non-repeating" />
+              <label for="calendar-radio-two">Non-repeating</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="repeating-calendar active">
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group">
+                <label for="">Name:</label>
+                <input type="text" name="product_name" id="" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <label for="">Product Type:</label>
+              <select name="product" id="product" class="form-control">
+                {% for product in products %}
+                <option value="{{ product_mag }}">{{ product.product_mag }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <div>
+                <label for="gl-override">GL Override (optional)</label>
+              </div>
+              <div class="toggle-switch-container">
+                <div class="switch-field">
+                  <input type="radio" id="repeat-gl-override-radio-one" name="repeat-gl-override" value="Yes" checked />
+                  <label for="repeat-gl-override-radio-one">Yes</label>
+                  <input type="radio" id="repeat-gl-override-radio-two" name="repeat-gl-override" value="No" />
+                  <label for="repeat-gl-override-radio-two">No</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <label for="">GL Code:</label>
+              <select name="gl_code" id="" class="form-control">
+                {% for gl_code in gl_codes %}
+                <option value="{{gl_code.id}}">{{gl_code.code}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <label for="">Select your schedule:</label>
+              <div class="schedule-select-buttons">
+                <button type="button" class="schedule-select-btn js-active">Daily</button>
+                <button type="button" class="schedule-select-btn">Weekly</button>
+                <button type="button" class="schedule-select-btn">Monthly</button>
+                <button type="button" class="schedule-select-btn">Yearly</button>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <label for="">Frequency:</label>
+              <form action="" class="content-center">
+                <div class="form-group">
+                  <label for="">Repeat Every</label>
+                  <input type="number" name="" id="" class="form-control w50" />
+                  <label for="">week(s)</label>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="dow-container mgb-3 text-center">
+            <label for="">Select your Day(s) of week:</label>
+            <div class="dow-picker">
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow1" data-day="sunday" />
+                <label for="dow1">Sun</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow2" data-day="monday" />
+                <label for="dow2">Mon</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow3" data-day="tuesday" />
+                <label for="dow3">Tues</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow4" data-day="wednesday" />
+                <label for="dow4">Wed</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow5" data-day="thursday" />
+                <label for="dow5">Thur</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow6" data-day="friday" />
+                <label for="dow6">Fri</label>
+              </div>
+              <div class="dow-picker-option">
+                <input type="checkbox" id="dow7" data-day="saturday" />
+                <label for="dow7">Sat</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mgb-3">
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group">
+                <label for="">Start Date:</label>
+                <input type="date" name="start_date" id="" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group">
+                <label for="">End Date (optional):</label>
+                <input type="date" name="end_date" id="" class="form-control" />
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="calendar-container mgb-3">
+                <div class="calendar">
+                  <div class="header">
+                    <button id="prevBtn">&lt;</button>
+                    <h1 id="monthYear"></h1>
+                    <button id="nextBtn">&gt;</button>
+                  </div>
+                  <div class="days">
+                    <div class="day">Sun</div>
+                    <div class="day">Mon</div>
+                    <div class="day">Tue</div>
+                    <div class="day">Wed</div>
+                    <div class="day">Thu</div>
+                    <div class="day">Fri</div>
+                    <div class="day">Sat</div>
+                  </div>
+                  <div class="dates" id="dates">
+                    <div class="date" data-day="1">1</div>
+                    <div class="date" data-day="2">2</div>
+                    <div class="date" data-day="3">3</div>
+                    <div class="date" data-day="4">4</div>
+                    <div class="date" data-day="5">5</div>
+                    <div class="date" data-day="6">6</div>
+                  </div>
+                </div>
+
+                Modal for Event Details 
+                <div class="modal event show-modal hide-modal" id="eventModal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="eventDate"></h2>
+                    <textarea class="area" id="eventDescription"></textarea>
+                    <button id="saveEventBtn">Save</button>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+
+        <div class="non-repeating hide">
+          <button class="start-schedule-button">
+            <i class="fa fa-solid fa-plus"></i>
+            <p>Start another schedule</p>
+          </button>
+          <div class="row non-repeating-parent">
+            <div class="col-md-12 col-lg-6">
+              <div class="non-repeating-container">
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="">Name:</label>
+                      <input type="text" name="product_name" id="" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <label for="">Product:</label>
+                    <select name="product" id="product" class="form-control">
+                      {% for product in products %}
+                      <option value="{{ product_mag }}">{{ product.product_mag }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div>
+                      <label for="gl-override">GL Override (optional)</label>
+                    </div>
+                    <div class="toggle-switch-container">
+                      <div class="switch-field">
+                        <input type="radio" id="non-repeat-gl-override-radio-one" name="gl_override" value="Yes" checked />
+                        <label for="non-repeat-gl-override-radio-one">Yes</label>
+                        <input type="radio" id="non-repeat-gl-override-radio-two" name="gl_override" value="No" />
+                        <label for="non-repeat-gl-override-radio-two">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <label for="">GL Code:</label>
+                    <select name="gl_code" id="" class="form-control">
+                      {% for gl_code in gl_codes %}
+                      <option value="{{gl_code.id}}">{{gl_code.code}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="">Publish Date:</label>
+                      <input type="date" name="start_date" id="" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="btn-container content-even mgt-5">
+        <button class="btn btn-secondary">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

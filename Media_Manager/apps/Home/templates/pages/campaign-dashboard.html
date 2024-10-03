@@ -1,0 +1,16 @@
+{% extends 'base_beta.html' %} {% block content %} {% include 'templates/partials/modal/_edit-ad-info.html'%}
+<div class="page-heading-container container">
+  <h1>Campaign Dashboard</h1>
+  <hr />
+</div>
+
+<!-- Step Form Container -->
+<div class="link-container container mb-3">
+  <a href="{% url 'index' %}">Back to Ad Campaigns</a>
+</div>
+<div class="container">
+  <!-- Step Form -->
+  {% include 'templates/partials/stepform/_stepform.html'%}
+</div>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base_beta.html' %} {% block content %} {% include 'templates/partials/modal/admin/financial/_edit-fiscal-year.html'%} {% include 'templates/partials/modal/admin/financial/_edit-accounting-year.html'%}{% include 'templates/partials/modal/admin/financial/_new-accounting-year.html'%}
+<div class="landing-container container mt-5">
+  <div class="heading-container text-center">
+    <h3 class="heading">Fiscal Year Name Goes Here</h3>
+  </div>
+
+  <div class="link-container">
+    <a href="{% url 'admin' %}">Admin Home</a>
+  </div>
+
+  <div class="content-container pb-3">
+    <div class="d-flex justify-content-end mb-5">
+      <button class="btn btn-secondary-light">Save Changes</button>
+    </div>
+
+    <div class="fiscal-details-container mb-5">
+      <h3 class="heading">Fiscal Year Name Goes Here</h3>
+      <div class="date-container py-3">
+        <div class="row justify-content-around">
+          <div class="col">
+            <span>Start Date:</span>
+            <p class="date">00/00/0000</p>
+          </div>
+          <div class="col">
+            <span>End Date:</span>
+            <p class="date">00/00/0000</p>
+          </div>
+        </div>
+      </div>
+      <div class="btn-container text-center">
+        <button class="btn btn-secondary" onclick="document.getElementById('editFiscalYear').style.display='block'"><i class="fa fa-solid fa-pencil"></i> Edit</button>
+      </div>
+    </div>
+
+    <div class="add-container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="filter-container d-flex">
+            <h3 class="heading me-3">Account Periods</h3>
+            <button class="btn btn-secondary mb-1" onclick="document.getElementById('newAccountingYear').style.display='block'"><i class="fa fa-solid fa-plus"></i> New Accounting Period</button>
+          </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <div class="form-group has-search">
+            <input type="text" class="form-control" placeholder="Search..." />
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+    </div>
+
+    <div class="accounts-table-container mb-5">
+      <div class="table-container mt-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0001</td>
+              <td>Accounting Period Name</td>
+              <td>00/00/0000</td>
+              <td>00/00/0000</td>
+              <td>
+                <div class="switch2">
+                  <input id="accounting-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" />
+                  <label for="accounting-toggle"></label>
+
+                  <span class="open active">Open</span>
+                  <span class="locked deactivate">Locked</span>
+                </div>
+              </td>
+              <td>
+                <span class="pe-5" onclick="document.getElementById('editAccountingYear').style.display='block'"><i class="fa fa-solid fa-pencil"></i></span>
+                <span><i class="fa fa-solid fa-envelope-open"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="end-of-list-heading-container text-center py-5">
+          <span>You've reached the end!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary-light">Save Changes</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'templates/base_gamma.html' %}{% load static %} {% block content %}
+
+<div class="container mt-5">
+  <div class="heading-container text-center mgb-5 mgt-5">
+    <h3 class="heading">Advertisers</h3>
+  </div>
+
+  <div class="btn-search-container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="filter-container">
+          <button class="btn btn-secondary" onclick="document.getElementById('').style.cssText = 'display: block; opacity: 1; visibility: visible;'"> <a href="{{url}}/advertising/new-advertiser/">+ New Advertiser</a></button>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 search-container">
+        <div class="form-group has-search">
+          <input type="text" class="form-control" placeholder="Search..." />
+          <span class="fa fa-search form-control-feedback"></span>
+        </div>
+      </div>
+    </div>
+    <hr class="mgt-0" />
+  </div>
+
+  <div class="table-container mt-3">
+    <table class="table">
+      <thead>
+        <th scope="col">Business Name</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Account Type</th>
+        <th scope="col">Market Code</th>
+        <th scope="col">Submitter</th>
+        <th scope="col">Billing Contact</th>
+      </thead>
+      <tbody>
+        {% for account in accountList %}
+        <tr>
+            <td><a href="{{ url }}/advertising/advertiser_dashboard?advertiserId={{ account.id }}">{{ account.company_name_1 }}</a></td>
+            <td>{{ account.contact_name }}</td>
+            <td>{{ account.account_type.name }}</td>
+            <td>{{ account.industry_code.code }}</td>
+            <td>{{ account.submitter }}</td>
+            <td>{{ account.billing_contact }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

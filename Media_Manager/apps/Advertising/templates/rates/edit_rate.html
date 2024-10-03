@@ -1,0 +1,418 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/rates/EditAdRate.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/rates/edit_rate.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    {% if access == "deny" %}
+    <div id="message">{{ message }}</div>
+    {% else %}
+    <div id="message">{{ message }}</div>
+    <div class="page_content">
+        <div id="title">Edit Rate</div>
+        <div class="row">
+            <form method="post" id="edit_rate_form">
+                {% csrf_token %}
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ rate.name }}" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="unit_type">Unit Type</label>
+                                <select class="form-control" id="unit_type" name="unit_type" required />
+                                <option value="" {% if rate.unit_type == '' %}selected{% endif %}>Select Unit Type...</option>
+                                <option value="word" {% if rate.unit_type == 'word' %}selected{% endif %}>Word</option>
+                                <option value="line" {% if rate.unit_type == 'line' %}selected{% endif %}>Line</option>
+                                <option value="column" {% if rate.unit_type == 'column' %}selected{% endif %}>Column</option>
+                                <option value="inch" {% if rate.unit_type == 'inch' %}selected{% endif %}>Inch</option>
+                                <option value="page" {% if rate.unit_type == 'page' %}selected{% endif %}></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="unit_price>">Price Per Unit</label>
+                                <input type="number" step="0.001" class="form-control " id="unit_price"
+                                    name="unit_price" value="{{ rate.unit_price }}" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ad_type">Rate Type</label>
+                                <select class="form-control" id="ad_type" name="ad_type" required>
+                                    <option value="">Select Rate Type...</option>
+                                    {% for type in ad_types %}
+                                    <option value="{{ type.id }}" {% if rate.ad_type.id == type.id %}selected{% endif %}>{{ type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <select class="form-control" id="location" name="location" required>
+                                    <option value="" {% if rate.location == '' %}selected{% endif %}>Select Location...</option>
+                                    <option value="static" {% if rate.location == 'static' %}selected{% endif %}>Static</option>
+                                    <option value="prem_insideCover" {% if rate.location == 'prem_insideCover' %}selected{% endif %}>Inside Cover (Premium)</option>
+                                    <option value="prem_backCover" {% if rate.location == 'prem_backCover' %}selected{% endif %}>Back Cover (Premium)</option>
+                                    <option value="prem_center" {% if rate.location == 'prem_center' %}selected{% endif %}>Center (Premium)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" name="description" id="description" cols="30" rows="3"
+                                    placeholder="Enter Description..." required>{{ rate.description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="default_gl_code">Default GL Code</label>
+                                <select name="default_gl_code" id="default_gl_code" class="form-control">
+                                    <option value="">Select a GL Code ...</option>
+                                    {% for code in gl_codes %}
+                                        <option value="{{ code.id }}" {% if code.id == rate.default_gl_code.id %}selected{% endif %}>{{ code.code }} - {{ code.description }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="publication">Publication</label>
+                                <select class="form-control" id="publication" name="publication" required multiple>
+                                    {% for publication in publications %}
+                                        <option value="{{ publication.id }}" {% if publication.id in ratePublications %}selected{% endif %}>{{ publication.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input class="form-check-input" type="checkbox" id="select_all_publications" />
+                                <label class="form-check-label" for="select_all_publications">
+                                    Select All Publications
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="gl-code-btn-modal" class="form-control btn btn-primary gl-code-modal">Select
+                                    GL Codes</button>
+                                <div class="modal fade" id="gl-code-modal" tabindex="-1" role="dialog"
+                                    aria-labelledby="gl-code-modal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="">Select GL Codes</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="publication-gl-codes-select"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="date">Start/End Date:</label>
+                            <div id="date_select">
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ rate.start_date }}" required />
+                                <i class="fa fa-long-arrow-right" id="arrow_right"></i>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ rate.end_date }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pricing">Pricing</label>
+                                <select class="form-control" id="pricing" name="pricing" required>
+                                    <option value="" {% if rate.pricing == '' %}selected{% endif %}>Select Pricing...</option>
+                                    <option value="standard" {% if rate.pricing == 'standard' %}selected{% endif %}>Standard</option>
+                                    <option value="cumulative" {% if rate.pricing == 'cumulative' %}selected{% endif %}>Cumulative</option>
+                                    <option value="tiered" {% if rate.pricing == 'tiered' %}selected{% endif %}>Tiered</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tax_category">Tax Category</label>
+                                <select class="form-control" id="tax_category" name="tax_category" required>
+                                    <option value="" {% if rate.tax_category == '' %}selected{% endif %}>Select Tax Category...</option>
+                                    <option value="none" {% if rate.tax_category == 'none' %}selected{% endif %}>None</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" name="locked" id="locked" {% if rate.locked %}checked{% endif %}>
+                                <label class="form-check-label" for="locked">Locked</label>
+                            </div>
+                            <div class="form-group" id="account" style="display: none;">
+                                <label for="account">Account</label>
+                                <select class="form-control" name="account">
+                                    <option value="">Select Account...</option>
+                                    {% for account in accounts %}
+                                        <option value="{{ account.id }}" {% if rate.account.id == account.id %}selected{% endif %}>{{ account.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="final_buttons">
+                        <button type="submit" id="rate-submit-btn" class="btn dark-blue">Save Rate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        const rateId = "{{ rate.id }}";
+        const lockedCheckbox = document.getElementById('locked');
+        const accountDropdown = document.getElementById('account');
+
+        lockedCheckbox.addEventListener('click', function(e) {
+            accountDropdown.style.display = e.target.checked ? 'block' : 'none';
+        });
+    </script>
+
+    {% comment %} 
+    <form method="post" id="new_rate_form">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3">
+                <div id="adRateCalculator">
+                    <h3>Ad Rate Calculator</h3>
+                    <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+                    <ul id="errors"></ul>
+                    <div id="subtotal">
+                        <div>$ <span id="pricePerUnit"></span> per <span id="unitType"></span></div>
+                        <div>Location: <span id="finalLocation"></span></div>
+                    </div>
+                    <div class="form-group" id="standardRateTotal">
+                        <label>Rate: $</label>
+                        <span name="standard_rate" id="standardRate"></span>
+                        <input type="hidden" name="rate_price" id="rate_price">
+                    </div>
+                    <div class="form-group" id="customRateTotal">
+                        <div id="minPriceTotal">
+                            <label>Minimum Price: $</label>
+                            <span name="minimum_price" id="minPrice"></span>
+                        </div>
+                        <div class="form-group" id="maxPriceTotal">
+                            <label>Maximum Price: $</label>
+                            <span name="maximum_price" id="maxPrice"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="rate-submit-btn" class="btn btn-default">Create Rate</button>
+    </form> 
+    {% endcomment %}
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% comment %} {% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        <h1>Edit Rate</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ rate.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" value="{{ rate.description }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_type">Unit Type</label>
+                        <select class="form-control" id="unit_type" name="unit_type" required>
+                            <option value="">Select Unit Type...</option>
+                            <option value="word" {% if rate.unit_type == 'word' %}selected{% endif %}>Word</option>
+                            <option value="line" {% if rate.unit_type == 'line' %}selected{% endif %}>Line</option>
+                            <option value="column" {% if rate.unit_type == 'column' %}selected{% endif %}>Column</option>
+                            <option value="inch" {% if rate.unit_type == 'inch' %}selected{% endif %}>Inch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_price">Unit Price</label>
+                        <input type="text" class="form-control" id="unit_price" name="unit_price" value="{{ rate.unit_price }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gl_code">GL Code</label>
+                        <select class="form-control" name="gl_code" id="gl_code" required>
+                            <option value="">Select GL Code...</option>
+                            {% for gl_code in gl_codes %}
+                                <option class="form-control" value="{{ gl_code.id }}" {% if rate.gl_code.id == gl_code.id %}selected{% endif %}>{{ gl_code.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tax_category">Tax Category</label>
+                        <select class="form-control" name="tax_category" id="tax_category" required>
+                            <option value="">Select Tax Category...</option>
+                            <option value="none" {% if rate.tax_category == 'none' %}selected{% endif %}>None</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pricing">Pricing</label>
+                        <select class="form-control" name="pricing" id="pricing" required>
+                            <option value="">Select Pricing...</option>
+                            <option value="standard" {% if rate.pricing == 'standard' %}selected{% endif %}>Standard</option>
+                            <option value="cumulative" {% if rate.pricing == 'cumulative' %}selected{% endif %}>Cumulative</option>
+                            <option value="tiered" {% if rate.pricing == 'tiered' %}selected{% endif %}>Tiered</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="active" id="active" value="{{ rate.active }}" {% if rate.active %}checked{% endif %} required/>
+                        <label for="active">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="publication">Publication</label>
+                        <select class="form-control" name="publication" id="publication" multiple required>
+                            {% for publication in publications %}
+                                <option value="{{ publication.id }}" {% if publication.id in ratePublications %}selected{% endif %}>{{ publication.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ad_type">Ad Type</label>
+                        <select class="form-control" name="ad_type" id="ad_type" required>
+                            <option value="">Select Ad Type...</option>
+                            {% for ad_type in ad_types %}
+                                <option value="{{ ad_type.id }}" {% if rate.ad_type.id == ad_type.id %}selected{% endif %}>{{ ad_type.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ rate.start_date }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ rate.end_date }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select class="form-control" name="location" id="location" required>
+                            <option value="">Select Location...</option>
+                            {% for location in locations %}
+                                <option value="{{ location.0 }}" {% if rate.location == location.0 %}selected{% endif %}>{{ location.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="hidden" id="hidden" value="{{ rate.hidden }}" {% if rate.hidden %}checked{% endif %} />
+                        <label for="hidden">Hidden</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" name="locked" id="locked" {% if rate.locked %}checked{% endif %}>
+                        <label for="locked">Locked</label>
+                    </div>
+                    <div class="form-group" id="account">
+                        <label for="account">Account</label>
+                        <select class="form-control" name="account">
+                            <option value="">Select Account...</option>
+                            {% for account in accounts %}
+                                <option value="{{ account.id }}" {% if rate.account.id == account.id %}selected{% endif %}>{{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <script>
+        let lockedInput = document.querySelector('#locked');
+        let accountInput = document.querySelector('#account');
+
+        if (lockedInput.checked) {
+            accountInput.style.display = 'block';
+        } else {
+            accountInput.style.display = 'none';
+        }
+
+        lockedInput.addEventListener('change', function() {
+            if (this.checked) {
+                accountInput.style.display = 'block';
+            } else {
+                accountInput.style.display = 'none';
+                accountInput.value = '';
+            }
+        });
+
+
+    </script>
+</div>
+{% endblock %} {% endcomment %}

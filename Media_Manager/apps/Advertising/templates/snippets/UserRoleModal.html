@@ -1,0 +1,65 @@
+<div id="userRoleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit User Roles</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="username">Username</label>
+                                <select class="form-control" name="username" id="username">
+                                    <option value="">Select a user...</option>
+                                    {% for user in users %}
+                                        {% if user.first_name and user.last_name%}
+                                            <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                                        {% else %}
+                                            <option value="{{ user.id }}">{{ user.username }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="account">Account</label>
+                                <select class="form-control" name="account" id="account">
+                                    <option value="">Select an account...</option>
+                                    {% for account in accounts %}
+                                    <option value="{{ account.id }}">{{ account.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div><br>
+                        
+                        <table class="table table-hover table-striped table-condensed" id="role-table">
+                            <thead>
+                                <tr>
+                                    <th>Decription</th>
+                                    <th>Has Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for role in roles %}
+                                <tr>
+                                    <td>{{ role.description }}</td>
+                                    <td>
+                                        <input type="checkbox" id="role_{{ role.name }}" name="{{ role.name }}" class="role-checkbox"/>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<section id="edit_charge_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Service Charge</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit_charge_form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="edit_name">Name</label>
+                        <input class="form-control" type="text" name="edit_name" id="edit_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_amount">Amount</label>
+                        <input class="form-control" type="number" name="edit_amount" id="edit_amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_apply_level">Apply Level</label>
+                        <select class="form-control" name="edit_apply_level" id="edit_apply_level">
+                            <option value="">Select apply level...</option>
+                            <option value="account">Account</option>.
+                            <option value="order">Order</option>
+                            <option value="insertion">Insertion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="edit_locked" />
+                        <label for="edit_locked">Lock this service charge to an account?</label>
+                    </div>
+                    <div class="form-group" id="edit_account_select" style="display:none">
+                        <label for="edit_account">Account</label>
+                        <select class="form-control" name="account" id="edit_account">
+                            <option value="">Select Account...</option>
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">{{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="edit_enabled" id="edit_enabled">
+                        <label for="edit_enabled">Enabled</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="edit_charge_submit_btn">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,32 @@
+<section id="edit_ad_type_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Ad Type</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="edit_ad_type_form">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="adtype-form-grounp">
+                            <div>Code:</div>
+                            <input type="text" name="editCode" id="editCode"/>
+                        </div>
+                        <div class="adtype-form-grounp">
+                            <div>Description:</div>
+                            <textarea type="text" name="editName" id="editName"></textarea>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="save_btn" id="edit_ad_type_submit">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,133 @@
+{% extends "templates/base.html" %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% load static %}
+
+{% block endjs %}
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/accounts/ListAccountContacts.js" %}"></script>
+{% comment %} <script src="{% static "dist/js/advertising/accounts/EditAccountContacts.js" %}"></script> {% endcomment %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "dist/css/advertising/main.css" %}">
+<link rel="stylesheet" href="{% static "dist/css/advertising/accounts/account_contacts/account_contacts.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+
+    <div id="content_box">
+        <div class="column" id="left_side">
+            <div id="header_box">
+                <div id="header_title">Company Contacts (<span>{{ numContacts }}</span>)</div>
+                <div id="header_search">
+                    <button id="search_btn"><i class="fa fa-search"></i></button>
+                    <button id="filter_btn"><i class="fa fa-filter"></i></button>
+                    <button id="add_btn"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+            <div id="left_side_content">
+                <div id="active_contacts">
+                    <div id="active_header">
+                        <div id="active_title" class="section-header">Active</div>
+                    </div>
+                    <div id="active_contact_list">
+                        {% for contact in active_contacts %}
+                        <div class="item active">
+                            <h3 class="item-id">{{ contact.id }}</h3>
+                            <div class="item-content">
+                                <div class="item-name">
+                                    <strong>{{ contact.first_name }} {{ contact.last_name }}</strong> - <small>{{ contact.department }}</small>
+                                    {% if contact.default %}
+                                        <i class="fa fa-star" id="default_star"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="item-contact">
+                                    <div class="item-phone">
+                                        <div class="item-phone-label">
+                                            <i class="fa fa-phone"></i> 
+                                            Phone: 
+                                        </div>
+                                        {{ contact.phone_number }}
+                                    </div>
+                                    <div class="item-email">
+                                        <div class="item-email-label">
+                                            <i class="fa fa-envelope"></i> 
+                                            Email: 
+                                        </div>
+                                        {{ contact.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-icons" data-contact-id="{{ contact.id }}">
+                                <i class="fa fa-pencil edit-icon"></i>
+                                <i class="fa fa-trash delete-icon"></i>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="inactive_contacts">
+                    <div id="inactive_header">
+                        <div id="inactive_title" class="section-header">Inactive</div>
+                    </div>
+                    <div id="inactive_contact_list">
+                        {% for contact in inactive_contacts %}
+                        <div class="item inactive">
+                            <h3 class="item-id">{{ contact.id }}</h3>
+                            <div class="item-content">
+                                <div class="item-name">
+                                    <strong>{{ contact.first_name }} {{ contact.last_name }}</strong> - <small>{{ contact.department }}</small>
+                                    {% if contact.default %}
+                                        <i class="fa fa-star" id="default_star"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="item-contact">
+                                    <div class="item-phone">
+                                        <div class="item-phone-label">
+                                            <i class="fa fa-phone"></i> 
+                                            Phone: 
+                                        </div>
+                                        {{ contact.phone_number }}
+                                    </div>
+                                    <div class="item-email">
+                                        <div class="item-email-label">
+                                            <i class="fa fa-envelope"></i> 
+                                            Email: 
+                                        </div>
+                                        {{ contact.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-icons" data-contact-id="{{ contact.id }}">
+                                <i class="fa fa-pencil edit-icon"></i>
+                            </div>
+                        </div>
+                        {% empty %}
+                            <div id="inactive-message">
+                                There are currently no inactive company contacts
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column" id="right_side">
+            <section id="new_company_contact_section">
+                <button class="btn" id="new_company_contact_btn">Add a New Company Contact</button>
+            </section>
+            {% include 'snippets/accounts/contacts/CreateAccountContact.html' %}
+            {% include 'snippets/accounts/contacts/EditAccountContact.html' %}
+        </div>
+    </div>
+</div>
+<script>
+    const accountId = "{{ account_id }}"
+</script>
+{% endblock %}

@@ -1,0 +1,877 @@
+{% extends "templates/base.html" %} {% load static %} {% block endjs %}
+<script src="{% static 'dist/js/advertising/SearchPublic.js' %}"></script>
+<script src="{% static 'admin/js/event-calendar.js' %}"></script>
+<script src="{% static 'dist/js/advertising/ClassfiedsNew.js' %}"></script>
+
+{% endblock %} {% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %} {% block content %}
+
+<div id="content">
+  <div class="content">
+    <div class="heading-container text-center">
+      <h1>New Ad Campaign</h1>
+    </div>
+    <div class="card c-card">
+      <div class="progress-icons">
+        <div id="progress_0" class="progress-active"></div>
+        <div id="progress_1"></div>
+        <div id="progress_2"></div>
+        <div id="progress_3"></div>
+        <div id="progress_4"></div>
+        <div id="progress_5"></div>
+      </div>
+
+      <div id="section1">
+        <div class="heading-container mgb-3 text-center">
+          <h3 class="sub-title">Select An Advertiser</h3>
+        </div>
+        <div>
+          <select id="search-select" class="form-control shadow">
+            <option value="" disabled selected>Select an Advertiser</option>
+            {% for account in accounts %}
+            <option value="{{ account.id }}">
+              {% if account.company_name_1 and account.company_name_1 != 'nan' %}
+              {{ account.company_name_1 }}
+              {% else %}
+                  {{ account.account_number}}
+              {% endif %}
+          </option>  
+          {% endfor %}
+          </select>
+
+          <div class="content-end mgt-1">
+            <span>Don't see your advertiser?</span>
+            <!-- <a style="cursor: pointer; color: #21215f; text-decoration: underline;" data-toggle="modal"
+                           data-target="#createAdvertiseModal">
+                            Click here to create one!
+                        </a> -->
+            <a class="color-secondary" data-target="#createAdvertiseModal" href="{% url 'create_advertiser' %}"> Click here to create one! </a>
+          </div>
+        </div>
+
+        <div class="mgt-5 content-end">
+          <button class="btn btn-secondary-light bg-primary shadow" onclick="advertiser_next()">
+            Next
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none">
+              <path d="M19.7071 8.70711C20.0976 8.31658 20.0976 7.68342 19.7071 7.29289L13.3431 0.928932C12.9526 0.538408 12.3195 0.538408 11.9289 0.928932C11.5384 1.31946 11.5384 1.95262 11.9289 2.34315L17.5858 8L11.9289 13.6569C11.5384 14.0474 11.5384 14.6805 11.9289 15.0711C12.3195 15.4616 12.9526 15.4616 13.3431 15.0711L19.7071 8.70711ZM0 9L19 9V7L0 7L0 9Z" fill="white" />
+            </svg> -->
+          </button>
+        </div>
+      </div>
+
+      <div class="hide" id="section2">
+        <div class="heading-container mgb-3 text-center">
+          <h3 class="sub-title">Ad Campaign Info</h3>
+        </div>
+        <div class="mgt-3">
+          <form class="" action="#">
+            <div class="form-group">
+              <label for="orderName">*Campaign Name:</label>
+
+              <input type="text" id="order-name" class="form-control shadow" placeholder="Enter Campaign Name" name="orderName" />
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="sel1">*Sales Contact:</label>
+
+                  <select class="form-control shadow" id="sales-contact" style="border-radius: 4px">
+                    <option>Select a Salesperson</option>
+                    {% for salesPerson in salesPersonQuery %}
+                    <option value="{{ salesPerson.id }}">{{ salesPerson.first_name }} {{ salesPerson.last_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="start-date">*Start Date:</label>
+
+                    <input type="date" id="start-date" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="end-date">End Date(optional):</label>
+
+                    <input type="date" id="end-date" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="brief">Brief Description(optional)</label>
+
+              <textarea class="form-control shadow" rows="5" id="brief" style="resize: none; border-radius: 4px"></textarea>
+            </div>
+          </form>
+        </div>
+
+        <div class="content-between">
+          <button class="btn btn-secondary-light bg-primary" onclick="showSection(1)">Previous</button>
+
+          <button class="btn btn-secondary-light bg-primary" onclick="campaign_next()">
+            Next
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none">
+              <path d="M19.7071 8.70711C20.0976 8.31658 20.0976 7.68342 19.7071 7.29289L13.3431 0.928932C12.9526 0.538408 12.3195 0.538408 11.9289 0.928932C11.5384 1.31946 11.5384 1.95262 11.9289 2.34315L17.5858 8L11.9289 13.6569C11.5384 14.0474 11.5384 14.6805 11.9289 15.0711C12.3195 15.4616 12.9526 15.4616 13.3431 15.0711L19.7071 8.70711ZM0 9L19 9V7L0 7L0 9Z" fill="white" />
+            </svg> -->
+          </button>
+        </div>
+      </div>
+
+      <div class="hide" id="section3">
+        <div class="heading-container mgb-3 text-center">
+          <h3 class="sub-title">Select Your Product Types</h3>
+        </div>
+
+        <div class="content-between mgb-3">
+          <button class="btn btn-secondary-light bg-primary c-filter" onclick="filterAdFormats()">
+            <img src="{% static 'svg/Vector (1).svg' %}" />
+            Filter
+          </button>
+
+          <div class="input-group-rounded" style="width: 300px; float: right">
+            <input id="search-pub" type="text" class="form-control" placeholder="Search" />
+
+            <span class="input-group-mark">
+              <i class="glyphicon glyphicon-search mr-1 primary"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="card scrollbar mgb-3" id="scrollbar1">
+          <div id="ad-format" class="publication row mgb-3">
+            <div id="ad_newspaper" class="col-md-12 col-lg-4 mgb-1 pub_ele">
+              <div class="flex-col pub-card">
+                <div class="c-ad-name">
+                  <h3 id="adTypeName_newspaper" class="pub_name">Newspaper</h3>
+                </div>
+                <div class="flex-row content-left c-ml-10" onclick="selectStar('newspaper')">
+                  <img id="star_newspaper" src="{% static 'svg/Star-white.svg' %}" style="height: 18px" />&nbsp;
+                  <h4 class="c-favorite" style="line-height: 20px">Add to Favorites</h4>
+                </div>
+                <div id="ad-format-hover-newspaper" class="c-adType-hover" onclick="selectAdFormat('newspaper')">
+                  Add to <br />
+                  Campaign!
+                </div>
+              </div>
+              <div id="favoriteIcon_newspaper" class="text-center pub-mark">
+                <img src="{% static 'svg/Vector (2).svg' %}" style="height: 15px; margin-top: 8px" />
+              </div>
+            </div>
+
+            <div id="ad_magazine" class="col-md-12 col-lg-4 mgb-1 pub_ele">
+              <div class="flex-col pub-card">
+                <div class="c-ad-name">
+                  <h3 id="adTypeName_magazine" class="pub_name">Magazine</h3>
+                </div>
+                <div class="flex-row content-left c-ml-10" onclick="selectStar('magazine')">
+                  <img id="star_magazine" src="{% static 'svg/Star-white.svg' %}" style="height: 18px" />&nbsp;
+                  <h4 class="c-favorite" style="line-height: 20px">Add to Favorites</h4>
+                </div>
+                <div id="ad-format-hover-magazine" class="c-adType-hover" onclick="selectAdFormat('magazine')">
+                  Add to <br />
+                  Campaign!
+                </div>
+              </div>
+              <div id="favoriteIcon_magazine" class="text-center pub-mark">
+                <img src="{% static 'svg/Vector (2).svg' %}" style="height: 15px; margin-top: 8px" />
+              </div>
+            </div>
+
+            <div id="ad_digital" class="col-md-12 col-lg-4 mgb-1 pub_ele">
+              <div class="flex-col pub-card">
+                <div class="c-ad-name">
+                  <h3 id="adTypeName_digital" class="pub_name">Digital</h3>
+                </div>
+                <div class="flex-row content-left c-ml-10" onclick="selectStar('digital')">
+                  <img id="star_digital" src="{% static 'svg/Star-white.svg' %}" style="height: 18px" />&nbsp;
+                  <h4 class="c-favorite" style="line-height: 20px">Add to Favorites</h4>
+                </div>
+                <div id="ad-format-hover-digital" class="c-adType-hover" onclick="selectAdFormat('digital')">
+                  Add to <br />
+                  Campaign!
+                </div>
+              </div>
+              <div id="favoriteIcon_digital" class="text-center pub-mark">
+                <img src="{% static 'svg/Vector (2).svg' %}" style="height: 15px; margin-top: 8px" />
+              </div>
+            </div>
+
+            <div id="ad_custom" class="col-md-12 col-lg-4 pub_ele">
+              <div class="flex-col pub-card">
+                <div class="c-ad-name">
+                  <h3 id="adTypeName_custom" class="pub_name">New Custom Product</h3>
+                </div>
+                <div class="flex-row content-left c-ml-10" onclick="selectStar('custom')">
+                  <img id="star_custom" src="{% static 'svg/Star-white.svg' %}" style="height: 18px" />&nbsp;
+                  <h4 class="c-favorite" style="line-height: 20px">Add to Favorites</h4>
+                </div>
+                <div id="ad-format-hover-custom" class="c-adType-hover" onclick="selectAdFormat('custom')">
+                  Add to <br />
+                  Campaign!
+                </div>
+              </div>
+              <div id="favoriteIcon_custom" class="text-center pub-mark">
+                <img src="{% static 'svg/Vector (2).svg' %}" style="height: 15px; margin-top: 8px" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-between">
+          <button class="btn btn-secondary-light" onclick="showSection(2)">Previous</button>
+
+          <button class="btn btn-secondary-light" onclick="adFormat_next()">
+            Next
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none">
+              <path d="M19.7071 8.70711C20.0976 8.31658 20.0976 7.68342 19.7071 7.29289L13.3431 0.928932C12.9526 0.538408 12.3195 0.538408 11.9289 0.928932C11.5384 1.31946 11.5384 1.95262 11.9289 2.34315L17.5858 8L11.9289 13.6569C11.5384 14.0474 11.5384 14.6805 11.9289 15.0711C12.3195 15.4616 12.9526 15.4616 13.3431 15.0711L19.7071 8.70711ZM0 9L19 9V7L0 7L0 9Z" fill="white" />
+            </svg> -->
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-12 hide" id="section4">
+        <div class="heading-container text-center">
+          <h2 class="sub-title">Select Your Ad Specs</h2>
+        </div>
+
+        <div id="spec-area"></div>
+
+        <div class="flex-row content-between mt-4">
+          <button class="btn btn-secondary-light bg-primary" onclick="showSection(3)">Previous</button>
+
+          <button class="btn btn-secondary-light bg-primary" onclick="publication_next()">Next</button>
+        </div>
+
+        <select id="publication_data" style="display: none">
+          {% for publication in publications %}
+          <option value="{{publication.id}}" data-product-type="{{publication.product_type}}">{{publication.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-12 hide" id="section5">
+        <div class="campaign-title">Campaign Summary</div>
+
+        <div class="text-left campaign-area">
+          <div class="campaign-detail-label">Campaign Details</div>
+
+          <hr class="campaign-hr" />
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="campaign-item">
+                <div class="campaign-item-label">Campaign Name</div>
+
+                <div id="sum-campaign-name" class="campaign-name">Campaign Name Goes Here</div>
+              </div>
+
+              <div class="campaign-item">
+                <div class="campaign-item-label">Brief Descriptions</div>
+
+                <div id="sum-brief" class="campaign-brief">No current Description.</div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="" style="display: flex; margin-left: 15px">
+                <div class="campaign-item">
+                  <div class="campaign-item-label">Start Date:</div>
+                  <div class="campaign-item-value" id="sum-start-date">5/22/2023</div>
+                </div>
+
+                <div class="campaign-item" style="margin-left: 25px">
+                  <div class="campaign-item-label">End Date:</div>
+                  <div class="campaign-item-value" id="sum-end-date">5/25/2023</div>
+                </div>
+              </div>
+
+              <div style="display: flex">
+                <div class="col-md-6 campaign-item">
+                  <div class="campaign-item-label">Advertiser:</div>
+                  <div id="sum-advertiser-name" class="campaign-item-value small-value">Advertiser Name Goes Here:</div>
+                </div>
+
+                <div class="col-md-6 campaign-item">
+                  <div class="campaign-item-label">Account #:</div>
+                  <div id="sum-advertiser-id" class="campaign-item-value small-value">Account Goes Here:</div>
+                </div>
+              </div>
+
+              <div style="display: flex">
+                <div class="col-md-6 campaign-item">
+                  <div class="campaign-item-label">Sales Contact:</div>
+                  <div id="sum-sales-name" class="campaign-item-value small-value">Kyle Jerming</div>
+                </div>
+
+                <div class="col-md-6 campaign-item">
+                  <div class="campaign-item-label">Contact ID #:</div>
+                  <div id="sum-sales-id" class="campaign-item-value small-value">Account Goes Here:</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="campaign-detail-label">Ad Details</div>
+
+            <hr class="ad-hr" />
+
+            <div id="sum-ad-details"></div>
+          </div>
+
+          <div class="mt-4">
+            <div class="flex-row">
+              <div class="campaign-item-label">Subtotal:</div>
+              <div class="campaign-item-value small-value mr-2">$<span id="sum-print-total">0.00</span></div>
+            </div>
+
+            <div class="flex-row">
+              <div class="campaign-item-label">Total Adjustments:</div>
+              <div class="campaign-item-value small-value mr-2">$<span id="sum-adj-total">0.00</span></div>
+            </div>
+
+            <hr />
+
+            <div class="flex-row mt-4">
+              <div class="campaign-item-label big-campaign-label">Campaign Total:</div>
+              <div class="campaign-item-value big-campaign-label mr-2">$<span id="sum-campaign-total">0.00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-row" style="margin-top: 40px">
+          <button class="btn btn-secondary-light bg-primary c-option-btn" onclick="showSection(4)" style="margin: 0">Previous</button>
+
+          <button class="btn btn-secondary origin c-option-btn" onclick="summary_next()" style="margin: 0">Create Campaign!</button>
+        </div>
+      </div>
+
+      <div class="col-md-12 hide" id="section6">
+        <div class="m-6 text-center">
+          <div class="success-label">Ad Campaign Created!</div>
+
+          <div id="favoriteIcon1" class="mt-2 adsuccess-mark">
+            <img src="{% static 'svg/Vector (2).svg' %}" style="height: 140px; margin-top: 35px" />
+          </div>
+        </div>
+
+        <div class="flex-row m-2 ad-success-btn" style="justify-content: space-evenly">
+          <button class="btn btn-primary" style="width: 25%; background-color: rgb(33, 33, 95)"><a style="color: white" href="{% url 'create_classified_ad' %}">Create Another Ad Campaign</a></button>
+
+          <a class="btn btn-primary bg-primary campaign-view" onclick="viewCampaign()">View Ad Campaign</a>
+
+          <button class="btn btn-primary bg-primary" onclick="" style="width: 25%">Print Receipt</button>
+        </div>
+
+        <img class="mt-2" src="{% static 'svg/Ellipse 9 (1).svg' %}" style="width: 100%" />
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="createAdvertiseModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><br /><br />Get Started With Something New!</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="card anim-btn text-center">
+            <a href="{% url 'create_classified_ad' %}">
+              <h4><span class="success">+</span> New Ad Campaign</h4>
+            </a>
+          </div>
+
+          <div class="card anim-btn text-center mt-2">
+            <a href="{% url 'create_advertiser' %}">
+              <h4><span class="success">+</span> New Advertiser</h4>
+            </a>
+          </div>
+
+          <div class="card anim-btn text-center mt-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade create-ad" id="create-ad" role="dialog" style="visibility: visible; overflow-y: visible">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content" style="width: 100%">
+        <!-- Modal header-->
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" onclick="resetDropdownOnClose()">&times;</button>
+        </div>
+        <h3 class="modal-title">
+          New Ad
+          <hr />
+        </h3>
+
+        <div class="value-area">
+          <div class="ad-value-row">
+            <div class="ad-value-item">
+              <div>Ad Name:</div>
+              <input id="ad-name" type="text" placeholder="Enter name here..." />
+            </div>
+
+            <div class="ad-value-item">
+              <div>Ad Type:</div>
+              <select id="ad-type" onchange="showNextStep('ad-type', 'ad-size-step')">
+                {% for item in adTypes %}
+                <option value="{{item.adminadtype.name}}" data-publication-id="{{item.adminpublication.id}}">{{item.adminadtype.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="ad-value-row">
+            <div class="ad-value-item" id="ad-size-step">
+              <div>Default Ad Sizes:</div>
+              <select id="ad-size" onchange="showNextStep('ad-size', 'ad-rate-step')">
+                <option value="custom" data-column-size-id=0>Custom</option>
+
+                {% for item in adSizes %}
+                <option value="{{item.description}}" data-column-size-id="{{item.total_columns_in}}">{{item.description}}</option>
+                {% endfor %}
+
+              </select>
+            </div>
+
+            <div class="ad-value-item" id="ad-rate-step">
+              <div>Available Rates:</div>
+              <select id="ad-rate" onchange="showNextStep('ad-rate', 'ad-description-step')">
+                {% for item in rating %}
+                <option value="{{item.id}}" data-column-rate-id='{{item.measurement_type}}' data-column-no-of-x-id='{{item.base_count}}' data-column-no-of-extra-x-id='{{additional_count}}' data-column-additional-cost-id='{{additional_cost}}'>{{item.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- <div class="ad-textarea-row" id="ad-description-step">
+            <div>Brief Description:</div>
+            <textarea id="ad-brief" onchange="showNextStep('ad-brief', 'ad-adjustment-step')"></textarea>
+          </div> -->
+
+          <div class="content-even mgb-3">
+            <div class="form-group">
+              <label for="columns">Columns:</label>
+              <input class="form-control" type="text" name="" id="columns" />
+            </div>
+            <div class="form-group">
+              <label for="length">Length:</label>
+              <input class="form-control" type="text" name="" id="length" />
+            </div>
+            <div class="form-group">
+              <label for="words">Words:</label>
+              <input class="form-control" type="text" name="" id="words" />
+            </div>
+            <div class="form-group">
+              <label for="lines">Lines:</label>
+              <input class="form-control" type="text" name="" id="lines" />
+            </div>
+            <div class="form-group">
+              <label for="units">Units</label>
+              <input class="form-control" type="text" name="" id="units" />
+            </div>
+          </div>
+
+          <!-- Account Notes -->
+
+          <div class="accord-container mgb-1">
+            <div class="c-m-panel">
+              <div class="btn secondary c-section" data-toggle="collapse" data-target="#accountNotes" onclick="collapseEditSpec(this)" aria-expanded="true">
+                Account Notes
+                <svg class="" xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none">
+                  <path d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97919 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z" fill="#666666"></path>
+                </svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none" class="c-svg-active">
+                  <path d="M13.0607 0.93934C12.4749 0.353553 11.5251 0.353553 10.9393 0.93934L1.3934 10.4853C0.807611 11.0711 0.807611 12.0208 1.3934 12.6066C1.97919 13.1924 2.92893 13.1924 3.51472 12.6066L12 4.12132L20.4853 12.6066C21.0711 13.1924 22.0208 13.1924 22.6066 12.6066C23.1924 12.0208 23.1924 11.0711 22.6066 10.4853L13.0607 0.93934ZM13.5 3V2L10.5 2V3L13.5 3Z" fill="#666666"></path>
+                </svg>
+              </div>
+
+              <div id="accountNotes" class="secondary c-ad-spec p-2 collapse">
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <textarea name="" id="dnotes" class="form-control" placeholder="Write your note here..." rows="7"></textarea>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <div class="text-center">
+                      <h3>Added Notes</h3>
+                      <div class="notes-container">
+                        <div class="note" id="added_notes">No current notes.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                      <label for="staus">Status</label>
+                      <select name="" id="status" class="form-control mgb-3">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                      </select>
+                      <div class="text-center">
+                        <button id ="addNoteBtn" class="btn btn-secondary">Add Note</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Design Notes -->
+
+          <div class="accord-container mgb-1">
+            <div class="c-m-panel">
+              <div class="btn secondary c-section" data-toggle="collapse" data-target="#designNotes" onclick="collapseEditSpec(this)" aria-expanded="true">
+                Design Notes
+                <svg class="" xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none">
+                  <path d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97919 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z" fill="#666666"></path>
+                </svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none" class="c-svg-active">
+                  <path d="M13.0607 0.93934C12.4749 0.353553 11.5251 0.353553 10.9393 0.93934L1.3934 10.4853C0.807611 11.0711 0.807611 12.0208 1.3934 12.6066C1.97919 13.1924 2.92893 13.1924 3.51472 12.6066L12 4.12132L20.4853 12.6066C21.0711 13.1924 22.0208 13.1924 22.6066 12.6066C23.1924 12.0208 23.1924 11.0711 22.6066 10.4853L13.0607 0.93934ZM13.5 3V2L10.5 2V3L13.5 3Z" fill="#666666"></path>
+                </svg>
+              </div>
+
+              <div id="designNotes" class="secondary c-ad-spec p-2 collapse">
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <textarea name="" id="designNotesInput" class="form-control" placeholder="Write your note here..." rows="7"></textarea>
+                    <div class="btn-container mgt-1 text-center">
+                      <button id="desginNotesBtn" class="btn btn-secondary">Add Note</button>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <div class="text-center">
+                      <h3>Added Notes</h3>
+                      <div class="notes-container">
+                        <div class="note" id="designNotesPlaceHolder">No current notes.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 col-lg-8">
+                    <div class="content-between">
+                      <h3 class="mgt-0">File Attachments</h3>
+                      <input type="file" class="form-control-file" id="designNotesFileUpload">
+                    </div>
+                    <hr />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layout Notes -->
+
+          <div class="accord-container mgb-3">
+            <div class="c-m-panel">
+              <div class="btn secondary c-section" data-toggle="collapse" data-target="#layoutNotes" onclick="collapseEditSpec(this)" aria-expanded="true">
+                Layout Notes
+                <svg class="" xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none">
+                  <path d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97919 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z" fill="#666666"></path>
+                </svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none" class="c-svg-active">
+                  <path d="M13.0607 0.93934C12.4749 0.353553 11.5251 0.353553 10.9393 0.93934L1.3934 10.4853C0.807611 11.0711 0.807611 12.0208 1.3934 12.6066C1.97919 13.1924 2.92893 13.1924 3.51472 12.6066L12 4.12132L20.4853 12.6066C21.0711 13.1924 22.0208 13.1924 22.6066 12.6066C23.1924 12.0208 23.1924 11.0711 22.6066 10.4853L13.0607 0.93934ZM13.5 3V2L10.5 2V3L13.5 3Z" fill="#666666"></path>
+                </svg>
+              </div>
+
+              <div id="layoutNotes" class="secondary c-ad-spec p-2 collapse">
+                <div class="row mgb-3">
+                  <div class="col-md-12 col-lg-6">
+                    <textarea name="" id="layoutNotesInput" class="form-control" placeholder="Write your note here..." rows="7"></textarea>
+                  </div>
+                  <div class="col-md-12 col-lg-6">
+                    <div class="text-center mgb-3">
+                      <h3>Added Notes</h3>
+                      <div class="notes-container">
+                        <div class="note" id="layoutNotesAdded">No current notes.</div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button class="btn btn-secondary" id="layoutNotesBtn">Add Note</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group mgt-1">
+                <label for="section">Section:</label>
+                <select name="" id="section" class="form-control"></select>
+              </div>
+
+              <div class="form-group">
+                <label for="pageNum">Page #</label>
+                <input id= "pageNum"type="text" class="form-control" />
+              </div>
+
+              <div class="ad-adjustment-calender" id="ad-adjustment-step">
+                <div class="">
+                  <div class="ad-adjustment-label">
+                    <div>Adjustments:</div>
+
+                    <span>+</span>
+
+                    <div data-target="#add-adjustment" data-toggle="modal">Add Adjustment(s)</div>
+                  </div>
+
+                  <div id="adjustment-value" class="ad-adjustment-value"></div>
+                </div>
+
+                <!-- <div class="ad-calender" id="ad-calender">
+              <span>Select Ad Dates: </span>
+              <div style="border: 1px solid #666; border-radius: 4px">
+                <div id="calendar-controls">
+                  <select id="year-selector" class="form-select">
+                    
+                  </select>
+                  <select id="month-selector" class="form-select">
+                    
+                  </select>
+
+                  <button id="prev-month-btn" class="arrow-btn">&#8595;</button>
+                  <button id="next-month-btn" class="arrow-btn">&#8593;</button>
+                </div>
+
+                <div id="calendar"></div>
+              </div>
+            </div> -->
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+              <div class="form-group">
+                <label for="pubDate">Publish Date</label>
+                <div class="content-between">
+                  <input class="form-control w-50 mgr-0" type="date" id="pubDate" />
+                  <a href="#" id="addDate">+ Add Date To Table</a>
+                </div>
+              </div>
+            
+              <div class="list-group">
+                <div class="list-group-item content-between active">
+                  <h5>Selected Publish Date</h5>
+                </div>
+                <div id="selectedDatesList"></div>
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="subtotal-container content-between mgb-3">
+            <div class="text-center w75">
+              <span class="mgr-1">Subtotal Cost For this Ad: <strong>$0.00</strong></span>
+              <button class="btn btn-secondary-light">Update</button>
+            </div>
+          </div>
+
+          <div class="total-override w50 content-between">
+            <div class="form-group">
+              <input class="form-check-input" type="checkbox" name="" id="override-total" />
+              <label for="totalOverride">Override Total</label>
+            </div>
+            <div class="form-group">
+              <label for="totalOverride">Custom Total</label>
+              <input type="text" id="custom-total"class="form-check-input" />
+            </div>
+          </div>
+
+          <div class="create-btn">
+            <button onclick="createAdItem()" data-dismiss="modal">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="add-adjustment" role="dialog" style="visibility: visible; margin-top: 200px">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal header-->
+      <div class="modal-header text-center">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal content-->
+      <div class="mt-4 modal-content" style="width: 100%; margin-top: 200px">
+        <h3 class="modal-title">
+          Adjustments
+          <hr />
+        </h3>
+
+        <div class="adjustment-row scrollbar" id="adjustment-row">
+          {% for item in adjustments %}
+          <div class="adjustment-item" data-publication-id="{{item.adminpublication.id}}" onclick="adjustment_select(this, {{item.id}})">
+            <div class="adj-item-title">
+              <div id="adjustment-code-{{item.id}}">{{item.adminadjustment.code}}</div>
+              <span id="adjustment-amount-{{item.id}}">${{item.adminadjustment.value}}</span>
+            </div>
+
+            <div class="adj-item-value">
+              <span class="item-value-label">Description:</span>
+              <span class="item-value-value">{{item.description}}</span>
+            </div>
+
+            <div class="adj-item-value">
+              <div>
+                <span class="item-value-label">Apply Level:</span>
+                <span class="item-value-value">{{item.adminadjustment.apply_level}}</span>
+              </div>
+
+              <div>
+                <span class="item-value-label">Section:</span>
+                <span class="item-value-value">{{item.adminadjustment.section.name}}</span>
+              </div>
+            </div>
+
+            <div class="adj-item-value">
+              <div>
+                <span class="item-value-label">Value:</span>
+                <span class="item-value-value">{{item.adminadjustment.value}}</span>
+              </div>
+
+              <div>
+                <span class="item-value-label">Value:</span>
+                <span class="item-value-value">Credit(+)</span>
+              </div>
+            </div>
+
+            <div id="adjustment-select-{{item.id}}" class="adjustment-select">Selected</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <hr style="color: #666; height: 1px" />
+
+        <div class="option-button">
+          <button onclick="addAdjustment()" data-dismiss="modal">Add Adjustment</button>
+        </div>
+
+        <div class="modal-footer-img">
+          <img src="{% static 'svg/Ellipse 9 (1).svg' %}" style="width: 100%" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let salesPersonList = JSON.parse(`{{ salespersonList }}`);
+  let ratingList = JSON.parse(`{{ ratingList|escapejs }}`);
+  let publicationsList = JSON.parse(`{{ publicationsList }}`);
+
+  $(document).ready(function () {
+    $('#search-select').select2();
+  });
+</script>
+
+<script>
+  var currentSection = 1;
+  document.getElementById('layoutNotesBtn').addEventListener('click', function() {
+    // Get the note from the textarea
+    const newNote = document.getElementById('layoutNotesInput').value;
+    
+    // Get the element where the note will be replaced
+    const appendedNotes = document.getElementById('layoutNotesAdded');
+    
+    // Replace the content of appended_notes with the new note
+    appendedNotes.innerHTML = newNote;
+    
+});
+  document.getElementById('desginNotesBtn').addEventListener('click', function() {
+    // Get the note from the textarea
+    const newNote = document.getElementById('designNotesInput').value;
+    
+    // Get the element where the note will be replaced
+    const appendedNotes = document.getElementById('designNotesPlaceHolder');
+    
+    // Replace the content of appended_notes with the new note
+    appendedNotes.innerHTML = newNote;
+    
+});
+  document.getElementById('addNoteBtn').addEventListener('click', function() {
+    // Get the note from the textarea
+    const newNote = document.getElementById('dnotes').value;
+    
+    // Get the element where the note will be replaced
+    const appendedNotes = document.getElementById('added_notes');
+    
+    // Replace the content of appended_notes with the new note
+    appendedNotes.innerHTML = newNote;
+    
+});
+  document.addEventListener("DOMContentLoaded", function() {
+    const addDateButton = document.getElementById('addDate');
+    const pubDateInput = document.getElementById('pubDate');
+    const selectedDatesList = document.getElementById('selectedDatesList');
+
+    addDateButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const selectedDate = pubDateInput.value;
+        if (selectedDate) {
+            const dateItem = document.createElement('div');
+            dateItem.classList.add('list-group-item', 'content-between');
+
+            dateItem.innerHTML = `
+                <span>${new Date(selectedDate).toLocaleDateString()}</span>
+                <span><i class="fa fa-solid fa-trash delete-date"></i></span>
+            `;
+
+            dateItem.querySelector('.delete-date').addEventListener('click', function() {
+                dateItem.remove();
+            });
+
+            selectedDatesList.appendChild(dateItem);
+
+            // Clear the input field
+            pubDateInput.value = '';
+        }
+    });
+});
+
+  function showSection(section) {
+    // Hide the current section
+    var currentSectionElement = document.getElementById('section' + currentSection);
+    currentSectionElement.classList.add('hide');
+
+    // Show the specified section
+    var targetSectionElement = document.getElementById('section' + section);
+    targetSectionElement.classList.remove('hide');
+
+    // Update the current section variable
+    currentSection = section;
+
+    showProgress(section - 1);
+  }
+
+  function showProgress(index) {
+    const parents = document.querySelector('.progress-icons');
+    const progress_items = parents.querySelectorAll('div');
+
+    for (var i = 0; i < progress_items.length; i++) {
+      document.getElementById('progress_' + i).classList.remove('progress-active');
+    }
+
+    for (var j = 0; j <= index; j++) {
+      document.getElementById('progress_' + j).classList.add('progress-active');
+    }
+  }
+</script>
+{% endblock %}

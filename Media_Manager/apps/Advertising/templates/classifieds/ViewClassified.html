@@ -1,0 +1,84 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+        
+        {% comment %}
+            if the ad only needs a manger override before it can start, 
+            add that as a message inside parentheses next to on hold, cancelled, etc.
+        {% endcomment %}
+        {% if classified.status == 'on hold' %}
+            <div class="alert alert-warning" role="alert">
+                This ad is on hold
+            </div>
+        {% elif classified.status == 'inactive' %}
+            <div class="alert alert-danger" role="alert">
+                This ad is not active
+            </div>
+        {% elif classified.status == 'cancelled' %}
+        <div class="alert alert-info" role="alert">
+            This ad has been cancelled
+        </div>
+        {% endif %}
+
+        {% if classified.status != 'inactive' or adminOrManager %}
+            <a href="{% url 'edit_classified_ad' classified.id %}">
+                <button class="btn btn-primary btn-md"><i class="fa fa-pencil"></i> Edit </button>
+            </a>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-8">
+                <h3>Account: {{ classified.account.name }}</h3>
+                <br>
+                <p><strong>Salesperson:</strong> {{ classified.salesperson.first_name }} {{ classified.salesperson.last_name }}</p>
+                <p><strong>Classification:</strong> {{ classified.classification.name }}</p>
+                <p><strong>Ad Type:</strong> {{ classified.ad_type.code }} - {{ classified.ad_type.name }}</p>
+                {% if classified.recurring %}
+                <p><strong>Run Days:</strong> Recurring (starting {{ classified.start_date }} lasting {{ classified.recurring_amount }})</p>
+                {% else %}
+                <p><strong>Run Days:</strong> {{ classified.start_date }} - {{ classified.end_date }}</p>
+                {% endif %}
+                <br>
+                {% if classified.notes %}
+                    <p><strong>Notes:</strong> {{ classified.notes }}</p>
+                {% endif %}
+
+                {% if classified.size == 'Column Based' %}
+                <p><strong>Size:</strong> {{ classified.columns }} columns</p>
+                {% else %}
+                <p><strong>Size:</strong> {{ classified.size }}</p>
+                {% endif %}
+                
+                <p><strong>Price:</strong> $ {{ classified.price }}</p>
+            </div>
+            <div class="col-md-4">
+                <div style="{{ styling.style_tag }}">{{ classified.content }}</div>
+                <br>
+                <p>Line Count: {{ classified.line_count }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

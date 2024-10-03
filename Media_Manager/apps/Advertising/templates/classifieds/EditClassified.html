@@ -1,0 +1,222 @@
+{% extends "templates/base.html" %}
+
+{% load static %}
+
+{% block page-header %}<i class="fa fa-bullhorn"></i> Advertising{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">Advertising</li>
+{% endblock %}
+
+{% block endjs %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+<script src="{% static "dist/js/advertising/utils.js" %}"></script>
+<script src="{% static "dist/js/advertising/classifieds/EditClassified.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/datepicker.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "dist/css/advertising/classifieds/classifieds.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="col-md-10">
+        {% if access == "deny" %}
+        <div id="message">{{ message }}</div>
+        {% else %}
+        <div id="message">{{ message }}</div>
+
+        <h2>Edit Classified #{{ classified.id }}</h2>
+
+        <br>
+        <form id="edit_classified_form" method='post'>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="account">Account</label>
+                                <select class="form-control" name="account" id="account">
+                                    <option value="">Select an account ...</option>
+                                    {% for account in accounts %}
+                                    <option value="{{ account.id }}" {% if classified.account.id == account.id %}selected{% endif %}>{{ account.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="salesperson">Salesperson</label>
+                                <select class="form-control" name="salesperson" id="salesperson">
+                                    <option value="">Select a salesperson ...</option>
+                                    {% for person in salespersonList %}
+                                    <option value="{{ person.id }}" {% if classified.salesperson.id == person.id %}selected{% endif %}>
+                                        {{ person.first_name }} {{ person.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="classification">Classification</label>
+                                <select class="form-control" name="classification" id="classification">
+                                    <option value="">Select an classification ...</option>
+                                    {% for classification in classifications %}
+                                    <option value="{{ classification.id }}" {% if classified.classification.id == classification.id %}selected{% endif %}>
+                                        {{ classification.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="submitter">Ad Taker/Submitter</label>
+                                <input type="text" name="submitter" id="submitter" class="form-control" value="{{ classified.submitter }}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="publications">Publications</label>
+                                <select name="publications" id="publications" class="form-control" multiple>
+                                    {% for publication in publications %}
+                                    <option value="{{ publication.id }}" {% if publication.id in adPublications %}selected{% endif %}>{{ publication.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="adType">Ad Type</label>
+                                <select name="adType" id="adType" class="form-control">
+                                    <option value="">Select an ad type ...</option>
+                                    {% for type in adTypes %}
+                                        <option value="{{ type.id }}" {% if type.id == selectedTypeId %}selected{% endif %}>{{ type.code }} - {{ type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" id="dates_section">
+                                <label for="dates">Dates</label>
+                                <input class="form-control" type="text" name="dates" id="dates"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="recurring-check" id="recurring-check" class="form-check">
+                                <label for="recurring">Recurring</label>
+                            </div>
+                            <div class="form-group" id="recurring_section" style="display:none">
+                                <div class="form-group">
+                                    <label for="start_date">Start Date</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control" value="{{ classified.start_date }}"/>
+                                </div>
+                                <input type="number" name="recurring-amount" id="recurring-amount" step="1" min="1" value="{{ recurringAmount.0 }}">
+                                <select name="recurring-time" id="recurring-time">
+                                    <option value="">Select a time period ...</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                    <option value="insertions">Insertions</option>
+                                </select>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-sunday" id="recurr-sunday" value="sunday">Sunday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-monday" id="recurr-monday" value="monday">Monday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-tuesday" id="recurr-tuesday" value="tuesday">Tuesday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-wednesday" id="recurr-wednesday" value="wednesday">Wednesday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-thursday" id="recurr-thursday" value="thursday">Thursday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-friday" id="recurr-friday" value="friday">Friday
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="recurr-saturday" id="recurr-saturday" value="saturday">Saturday
+                                </label>
+                            </div>
+                            {% comment %} <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date</label>
+                                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ classified.start_date }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" id="end_date_section">
+                                        <label for="end_date">End Date</label>
+                                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ classified.end_date }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="recurring-check" id="recurring-check" class="form-check" {% if classified.recurring %}checked{% endif %}>
+                                <label for="recurring">Recurring</label>
+                            </div>
+                            <div class="form-group" id="recurring_section" style="display:none">
+                                <input type="number" name="recurring-amount" id="recurring-amount" step="1" min="1" value="{{ recurringAmount }}">
+                                <select name="recurring-time" id="recurring-time">
+                                    <option value="" {% if recurringTimePeriod == "" %}selected{% endif %}>Select a time period ...</option>
+                                    <option value="days" {% if recurringTimePeriod == "days" %}selected{% endif %}>Days</option>
+                                    <option value="weeks" {% if recurringTimePeriod == "weeks" %}selected{% endif %}>Weeks</option>
+                                    <option value="months" {% if recurringTimePeriod == "months" %}selected{% endif %}>Months</option>
+                                </select>
+                            </div> {% endcomment %}
+                            <div class="form-group">
+                                <label for="size">Size</label>
+                                <select class="form-control" name="size" id="size">
+                                    <option value="">Select a size...</option>
+                                    <option value="quarter_page">Quarter Page</option>
+                                    <option value="half_page">Half Page</option>
+                                    <option value="column_based">Column Based</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="column_section" style="display:none;">
+                                <label for="columns"># of Columns</label>
+                                <input type="number" name="columns" id="columns" class="form-control" step="1" min="0" value="{{ classified.columns }}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="" {% if classified.status == "" %}selected{% endif %}>Select a status ...</option>
+                                    <option value="active" {% if classified.status == "active" %}selected{% endif %}> Active</option>
+                                    <option value="on hold" {% if classified.status == "on hold" %}selected{% endif %}>On Hold</option>
+                                    <option value="cancelled" {% if classified.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                                    <option value="inactive" {% if classified.status == "inactive" %}selected{% endif %}>Inactive</option>
+                                </select>
+                            </div>
+
+                            {% include 'snippets/classifieds/rates/PublicationRateModal.html' %}
+
+                            <div class="form-group">
+                                <label for="notes">Notes</label>
+                                <textarea class="form-control" name="notes" id="notes" cols="30" rows="5">{{ classified.notes }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="text-content">
+                        {{ classified.content }}
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="edit_classified_submit">Save</button>
+        </form>
+
+        {% endif %}
+    </div>
+    <script>
+        const columnsValue = "{{ classified.columns }}";
+
+        let sizeInputValue = "{{ classified.size }}";
+        let selectedRates = "{{ selectedRates }}";
+
+        let isRecurring = "{{ classified.recurring }}" != "False";
+        let recurringTimePeriod = "{{ recurringTimePeriod }}";
+
+        let dateArray = "dateArray";
+    </script>
+</div>
+
+{% endblock %}

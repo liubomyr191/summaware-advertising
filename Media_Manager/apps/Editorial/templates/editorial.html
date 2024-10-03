@@ -1,0 +1,20 @@
+    {% extends "templates/base.html" %}
+
+    {% block page-header %}<i class="fa fa-edit"></i> Editorial{% endblock %}
+
+    {% block breadcrumb %}
+    <li class="active">Editorial</li>
+    {% endblock %}
+
+	{% block content %}
+    <div id="content">
+		<div class="col-md-10">
+			{% if access == "deny" %}
+			<div id="message">{{ message }}</div>
+			{% else %}
+			<div id="message">{{ message }}</div>
+			<div>Coming soon!</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endblock %}

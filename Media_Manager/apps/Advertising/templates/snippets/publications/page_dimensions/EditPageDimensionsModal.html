@@ -1,0 +1,75 @@
+<section id="edit_dimensions_modal" class="modal fade" role="dialog" data-publication="{{ publication.id }}">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Page Dimensions</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="edit_dimensions">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="page_size">Page Size</label>
+                                <input type="number" class="form-control" id="page_size" name="page_size" placeholder="Enter page size..." value="{{ page_dimensions.page_size }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="columns_per_page">Columns Per Page</label>
+                                <input type="number" class="form-control" id="columns_per_page" name="columns_per_page" placeholder="Enter columns per page..." value="{{ page_dimensions.columns_per_page }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="column_width">Column Width</label>
+                                <input type="number" class="form-control" id="column_width" name="column_width" placeholder="Enter column width..." value="{{ page_dimensions.column_width }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_width">Page Width</label>
+                                <input type="number" class="form-control" id="page_width" name="page_width" placeholder="Enter page width..." value="{{ page_dimensions.page_width }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_height">Page Height</label>
+                                <input type="number" class="form-control" id="page_height" name="page_height" placeholder="Enter page height..." value="{{ page_dimensions.page_height }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="page_border">Page Border</label>
+                                <input type="number" class="form-control" id="page_border" name="page_border" placeholder="Enter page border..." value="{{ page_dimensions.page_border }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gutter_size">Gutter Size</label>
+                                <input type="number" class="form-control" id="gutter_size" name="gutter_size" placeholder="Enter gutter size..." value="{{ page_dimensions.gutter_size }}" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="column_inches">Column Inches</label>
+                                        <input type="number" class="form-control" id="column_inches" name="column_inches" placeholder="Enter conversion..." value="{{ page_dimensions.column_inches }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inches">Inches</label>
+                                        <input type="number" class="form-control" id="inches" name="inches" placeholder="Enter conversion..." value="{{ page_dimensions.inches }}" required>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="default_size">Default Size</label>
+                                <select name="default_size" id="default_size" class="form-control" required>
+                                    <option value="">Select size...</option>
+                                    <option value="quarter">Quarter Page</option>
+                                    <option value="half">Half Page</option>
+                                    <option value="full">Full Page</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="edit_dimensions_submit">Save</button>
+            </div>
+        </div>
+    </div>
+</section>

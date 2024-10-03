@@ -1,0 +1,42 @@
+{% block content %}
+
+<div class="step-form-container">
+  <div class="content">
+    <!--content inner-->
+    <div class="content__inner">
+      <div class="container">
+        <!--multisteps-form-->
+        <div class="multisteps-form">
+          <!--progress bar-->
+          <div class="row justify-content-center progress-btns-container">
+            <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+              <div class="multisteps-form__progress">
+                <button class="multisteps-form__progress-btn js-active" type="button">Campaign Overview</button>
+                <!-- <button class="multisteps-form__progress-btn" type="button">Insertions</button>
+                <button class="multisteps-form__progress-btn" type="button">History / Logs</button> -->
+                <button class="multisteps-form__progress-btn" type="button">Notes</button>
+              </div>
+            </div>
+          </div>
+          <!--form panels-->
+          <div class="row">
+            <div class="col-12 m-auto">
+              <div class="multisteps-form__form">
+                <!--single form panel-->
+                {% include 'templates/partials/stepform/_campaign-overview.html'%}
+                <!--single form panel-->
+                <!-- {% include 'templates/partials/stepform/_insertions.html'%} -->
+                <!--single form panel-->
+                <!-- {% include 'templates/partials/stepform/_history-logs.html'%} -->
+                <!--single form panel-->
+                {% include 'templates/partials/stepform/_notes.html'%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
